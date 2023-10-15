@@ -12,6 +12,11 @@
     <description>easyetl-dependencies</description>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>easyetl-tool</module>
+        <module>easyetl-maven-plugin</module>
+    </modules>
+
     <!-- 属性（子模块可以继承直接使用） -->
     <properties>
         <!-- 编译插件属性 -->
@@ -22,7 +27,7 @@
 
         <!-- 单元测试插件属性-->
         <maven.test.version>2.12.4</maven.test.version>
-        <maven.test.skip>true</maven.test.skip> <!-- true表示不执行单元测试 -->
+        <maven.test.skip>false</maven.test.skip> <!-- true表示不执行单元测试 -->
 
         <!-- Javadoc插件属性-->
         <maven.javadoc.version>3.5.0</maven.javadoc.version>
@@ -129,13 +134,6 @@
 
             <dependency>
                 <groupId>icu.etl</groupId>
-                <artifactId>easyetl-parent</artifactId>
-                <version>${easyetl.project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>icu.etl</groupId>
                 <artifactId>easyetl-tool</artifactId>
                 <version>${easyetl.project.version}</version>
                 <scope>provided</scope>
@@ -235,6 +233,13 @@
             <dependency>
                 <groupId>icu.etl</groupId>
                 <artifactId>easyetl-compress</artifactId>
+                <version>${easyetl.project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>icu.etl</groupId>
+                <artifactId>easyetl-maven-plugin</artifactId>
                 <version>${easyetl.project.version}</version>
                 <scope>provided</scope>
             </dependency>

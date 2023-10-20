@@ -49,6 +49,15 @@ public class CharBuffer implements Appendable, CharSequence {
     }
 
     /**
+     * 重置缓冲区的长度
+     *
+     * @param length 长度，大于等于零
+     */
+    public void setLength(int length) {
+        this.count = length;
+    }
+
+    /**
      * 设置对象格式化接口
      *
      * @param converter 转换接口
@@ -396,7 +405,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 清空缓冲区
      */
     public void clear() {
-        this.count = 0;
+        this.setLength(0);
     }
 
     public int length() {

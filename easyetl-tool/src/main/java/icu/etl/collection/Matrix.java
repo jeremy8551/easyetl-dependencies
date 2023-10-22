@@ -411,7 +411,7 @@ public class Matrix<E> implements Cloneable {
      * @param titles      表格标题信息(标题个数要与矩阵列数相等), 为null时默认为L1格式的标题
      * @param aligns      表格中每列信息的排列方式(居左LEFT,居中MIDDLE,局右RIGHT), 为null时默认为居中MIDDLE
      * @param charsetName 表格中字符串的字符集, 为null时取jvm默认字符集作为默认值
-     * @return
+     * @return 字符图形表格
      */
     public String toString(List<String> titles, List<String> aligns, String charsetName) {
         if (titles != null && titles.size() != this.col) {
@@ -428,17 +428,17 @@ public class Matrix<E> implements Cloneable {
         for (int i = 0; i < this.col; i++) {
             String colAlign = (aligns == null) ? CharTable.ALIGN_MIDDLE : StringUtils.defaultString(aligns.get(i), CharTable.ALIGN_MIDDLE);
             String colName = (titles == null) ? ("L" + String.valueOf(i + 1)) : titles.get(i);
-            table.addTitle(colAlign, colName);
+            table.addTitle(colName, colAlign);
         }
 
         // 添加单元格
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
-                table.addValue(this.matrix[i][j]);
+                table.addCell(this.matrix[i][j]);
             }
         }
 
-        return table.toStandardShape();
+        return table.toStandardShape().toString();
     }
 
 }

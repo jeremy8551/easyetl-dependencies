@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
@@ -736,8 +735,8 @@ public class ClassUtils {
 
         String prefix = "obj.";
         CharTable table = new CharTable();
-        table.addTitle(CharTable.ALIGN_LEFT, "FUNCTION_NAME");
-        table.addTitle(CharTable.ALIGN_LEFT, "RETURN");
+        table.addTitle("FUNCTION_NAME", CharTable.ALIGN_LEFT);
+        table.addTitle("RETURN", CharTable.ALIGN_LEFT);
 
         ArrayList<String> list = ArrayUtils.asList(methodPrefix);
         Method[] methods = obj.getClass().getMethods();
@@ -761,23 +760,22 @@ public class ClassUtils {
                 if (StringUtils.startsWith(functionName, list, ignoreCase)) {
                     try {
                         Object value = method.invoke(obj);
-                        table.addValue(prefix + functionName);
+                        table.addCell(prefix + functionName);
 
                         if (value == null || value.getClass().getName().startsWith("java.") || !deep) {
-                            table.addValue(value == null ? "" : StringUtils.toString(value));
+                            table.addCell(value == null ? "" : StringUtils.toString(value));
                         } else {
-                            table.addValue(toString(value, false, ignoreCase, methodPrefix));
+                            table.addCell(toString(value, false, ignoreCase, methodPrefix));
                         }
                     } catch (Throwable e) {
-                        table.addValue(prefix + functionName);
-                        table.addValue(StringUtils.toString(e));
+                        table.addCell(prefix + functionName);
+                        table.addCell(StringUtils.toString(e));
                     }
                 }
             }
         }
 
-        table.removeLeftBlank();
-        return table.toStandardShape();
+        return table.toStandardShape().ltrim().toString();
     }
 
     /**

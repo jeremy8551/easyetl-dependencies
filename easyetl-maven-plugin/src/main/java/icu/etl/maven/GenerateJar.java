@@ -89,7 +89,9 @@ public class GenerateJar extends AbstractMojo {
 
         // 返回生成jar包的目录
         File srcMainJava = this.getSrcMainJava(basedir);
+        FileUtils.createDirectory(srcMainJava);
         File srcMainResources = this.getSrcMainResources(basedir);
+        FileUtils.createDirectory(srcMainResources);
 
         ct.addCell("清空目录:");
         ct.addCell(srcMainJava.getAbsolutePath());
@@ -153,11 +155,7 @@ public class GenerateJar extends AbstractMojo {
     private File getSrcMainJava(File barsedir) throws IOException {
         String filepath = FileUtils.joinFilepath(barsedir.getAbsolutePath(), "src", "main", "java");
         File file = new File(filepath);
-        if (!file.exists()) {
-            throw new IOException(file.getAbsolutePath());
-        } else {
-            return file;
-        }
+        return file;
     }
 
     /**
@@ -186,6 +184,9 @@ public class GenerateJar extends AbstractMojo {
         }
         if (dest == null) {
             throw new NullPointerException();
+        }
+        if (StringUtils.inArray(file.getName(), ".DS_Store")) { // 需要过滤的文件名
+            return;
         }
 
         // 复制文件

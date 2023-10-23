@@ -26,12 +26,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Maven插件，将easyetl所有模块的源代码打包到 easyetl-all 模块中
+ * Maven插件，将easyetl所有子模块的源代码复制到指定的模块中
  *
  * @author jeremy8551@qq.com
  * @createtime 2023-10-01
  */
-@Mojo(name = "jar", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 @Execute(phase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateJar extends AbstractMojo {
 

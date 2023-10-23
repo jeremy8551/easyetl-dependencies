@@ -526,7 +526,7 @@ public class CharTable implements Iterable<String> {
      * @return 当前字符表格对象
      */
     public CharTable ltrim() {
-        if (StringUtils.isBlank(this.tableShape)) {
+        if (this.tableShape == null) {
             throw new UnsupportedOperationException();
         }
 
@@ -558,7 +558,7 @@ public class CharTable implements Iterable<String> {
      * @return 字符图形表格的遍历器
      */
     public Iterator<String> iterator() {
-        if (StringUtils.isBlank(this.tableShape)) {
+        if (this.tableShape == null) {
             throw new UnsupportedOperationException();
         }
 

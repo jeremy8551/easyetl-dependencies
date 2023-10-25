@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,8 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 /**
  * 类信息工具
@@ -797,25 +796,85 @@ public class ClassUtils {
     }
 
     /**
-     * 查询 JNDI 资源
+     * 返回类实现的所有接口，包括所有子类上的接口，以及接口继承的所有接口
      *
-     * @param <E>
-     * @param jndiName
-     * @return
+     * @param cls    类信息
+     * @param filter 接口的过滤器
+     * @return 接口信息集合
      */
-    @SuppressWarnings("unchecked")
-    public static <E> E lookup(String jndiName) {
-        try {
-            Context context = null;
-            if (StringUtils.startsWith(jndiName, "java:", 0, true, true)) {
-                context = new InitialContext();
-            } else {
-                context = (Context) new InitialContext().lookup("java:comp/env");
-            }
-            return (E) context.lookup(jndiName);
-        } catch (Throwable e) {
-            throw new RuntimeException(jndiName, e);
+    public static List<Class<?>> getAllInterface(Class<?> cls, InterfaceFilter filter) {
+        List<Class<?>> list = new ArrayList<Class<?>>();
+        if (cls == null) {
+            return list;
         }
+
+        loadAllInterface(cls, filter, list);
+
+        // 查询父类上的接口
+        Class<?> supcls = cls.getSuperclass();
+        while (supcls != null) {
+            loadAllInterface(supcls, filter, list);
+            supcls = supcls.getSuperclass();
+        }
+        return list;
+    }
+
+    /**
+     * 查询类实现的所有接口，包括接口继承的所有接口
+     *
+     * @param cls    类信息
+     * @param filter 接口的过滤器
+     * @param list   存储接口的集合
+     */
+    private static void loadAllInterface(Class<?> cls, InterfaceFilter filter, List<Class<?>> list) {
+        Class<?>[] array = cls.getInterfaces();
+        if (array != null && array.length > 0) {
+            for (Class<?> c : array) { // 判断是否有重复接口
+                String name = c.getName();
+                boolean add = true;
+                for (Class<?> cl : list) {
+                    if (cl.getName().equals(name)) { // 判断类名是否重复
+                        add = false;
+                        break;
+                    }
+                }
+
+                if (add && (filter == null || filter.accept(c, name))) {
+                    list.add(c);
+                }
+            }
+
+            for (Class<?> c : array) {
+                loadAllInterface(c, filter, list);
+            }
+        }
+    }
+
+    /**
+     * 返回类信息 {@code cls} 上指定接口 {@code interfacecls} 的范型
+     *
+     * @param cls          类信息
+     * @param interfacecls 类 {@cod cls} 上实现的接口
+     * @return 范型类型
+     */
+    public static Class<?>[] getInterfaceGenerics(Class<?> cls, Class<?> interfacecls) {
+        Type[] types = cls.getGenericInterfaces(); // TODO 只支持 jdk8
+        for (Type type : types) {
+            if (type instanceof ParameterizedType) {
+                ParameterizedType pt = (ParameterizedType) type;
+//                System.out.println(pt.getActualTypeArguments().length);
+//                System.out.println(pt.getTypeName() + " ---------> " + pt.getActualTypeArguments()[0].getTypeName());
+                if (pt.getTypeName().startsWith(interfacecls.getName())) { // 判断接口名是否匹配
+                    Type[] actualTypeArguments = pt.getActualTypeArguments();
+                    Class<?>[] array = new Class<?>[actualTypeArguments.length];
+                    for (int i = 0; i < array.length; i++) {
+                        array[i] = ClassUtils.forName(actualTypeArguments[i].getTypeName());
+                    }
+                    return array;
+                }
+            }
+        }
+        return new Class<?>[0];
     }
 
 }

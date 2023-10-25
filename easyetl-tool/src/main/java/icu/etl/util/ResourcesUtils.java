@@ -13,6 +13,8 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 /**
  * 资源文件工具类
@@ -42,6 +44,28 @@ public class ResourcesUtils {
      * 初始化
      */
     public ResourcesUtils() {
+    }
+
+    /**
+     * 查询 JNDI 资源
+     *
+     * @param <E>
+     * @param jndiName
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> E lookup(String jndiName) {
+        try {
+            Context context = null;
+            if (StringUtils.startsWith(jndiName, "java:", 0, true, true)) {
+                context = new InitialContext();
+            } else {
+                context = (Context) new InitialContext().lookup("java:comp/env");
+            }
+            return (E) context.lookup(jndiName);
+        } catch (Throwable e) {
+            throw new RuntimeException(jndiName, e);
+        }
     }
 
     /**

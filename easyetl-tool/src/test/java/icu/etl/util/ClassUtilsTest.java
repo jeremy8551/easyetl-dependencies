@@ -1,8 +1,11 @@
 package icu.etl.util;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
+import icu.etl.collection.ArrayDeque;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -143,6 +146,46 @@ public class ClassUtilsTest {
             Assert.fail();
         } catch (Exception e) {
         }
+    }
+
+    @Test
+    public void testgetAllInterface() {
+        Class<?> cls = ArrayDeque.class;
+        List<Class<?>> list = ClassUtils.getAllInterface(cls, new InterfaceFilter() {
+            public boolean accept(Class<?> cls, String name) {
+                return !name.startsWith("java.");
+            }
+        });
+        Assert.assertTrue(list.isEmpty());
+
+        list = ClassUtils.getAllInterface(cls, null);
+        Assert.assertEquals(4, list.size());
+        Assert.assertEquals(Cloneable.class, list.get(0));
+        Assert.assertEquals(Serializable.class, list.get(1));
+        Assert.assertEquals(Collection.class, list.get(2));
+        Assert.assertEquals(Iterable.class, list.get(3));
+    }
+
+    @Test
+    public void testgetInterfaceGenerics() {
+        Class<?>[] array = ClassUtils.getInterfaceGenerics(GenericTest.class, G2.class);
+        Assert.assertEquals(3, array.length);
+        Assert.assertEquals(String.class, array[0]);
+        Assert.assertEquals(Long.class, array[1]);
+        Assert.assertEquals(Integer.class, array[2]);
+
+        Class<?>[] array1 = ClassUtils.getInterfaceGenerics(GenericSample.class, List.class);
+        Assert.assertEquals(1, array1.length);
+        Assert.assertEquals(String.class, array1[0]);
+    }
+
+    interface G1<E> {
+    }
+
+    interface G2<E, F, G> {
+    }
+
+    class GenericTest implements G1<String>, G2<String, Long, Integer> {
     }
 
 //    @Test

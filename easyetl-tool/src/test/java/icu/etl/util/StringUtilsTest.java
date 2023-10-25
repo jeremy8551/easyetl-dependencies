@@ -465,7 +465,7 @@ public class StringUtilsTest {
         StringUtils.trim(lc);
 
         lc = new ArrayList<String>(l1);
-        String[] a4 = CollUtils.toArray(lc);
+        String[] a4 = CollectionUtils.toArray(lc);
         StringUtils.trim(a4);
 
         lc = new ArrayList<String>(l1);
@@ -492,7 +492,7 @@ public class StringUtilsTest {
         assertTrue(lc.get(3).equals("4 　"));
 
         lc = new ArrayList<String>(l1);
-        String[] a4 = CollUtils.toArray(lc);
+        String[] a4 = CollectionUtils.toArray(lc);
         StringUtils.trim(a4);
         assertTrue(a4[0].equals("1"));
         assertTrue(a4[1].equals("2"));
@@ -515,7 +515,7 @@ public class StringUtilsTest {
         assertTrue(lc.get(2).equals("3"));
         assertTrue(lc.get(3).equals("4"));
 
-        String[] a5 = CollUtils.toArray(lc);
+        String[] a5 = CollectionUtils.toArray(lc);
         StringUtils.trimBlank(a5);
         assertTrue(a5[0].equals("1"));
         assertTrue(a5[1].equals("2"));
@@ -1249,7 +1249,7 @@ public class StringUtilsTest {
     public void testSplitStringCharListOfString() {
         List<String> list = new ArrayList<String>();
         StringUtils.split("|0|1|2|3|4|5|", '|', list);
-        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && StringUtils.isEmpty(CollUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
+        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && StringUtils.isEmpty(CollectionUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
     }
 
     @Test
@@ -1262,14 +1262,14 @@ public class StringUtilsTest {
     public void testSplitStringCharCharListOfString() {
         List<String> list = new ArrayList<String>();
         StringUtils.split("|0|1|2|3|4|5|\\|", '|', '\\', list);
-        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && "|".equals(CollUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
+        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && "|".equals(CollectionUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
     }
 
     @Test
     public void testSplitStringStringCharListOfString() {
         List<String> list = new ArrayList<String>();
         StringUtils.split("||0||1||2||3||4||5||\\||", "||", '\\', list);
-        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && "||".equals(CollUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
+        Assert.assertTrue(StringUtils.isEmpty(list.get(0)) && "||".equals(CollectionUtils.lastElement(list)) && list.get(1).equals("0") && list.get(2).equals("1"));
     }
 
     @Test
@@ -1333,7 +1333,7 @@ public class StringUtilsTest {
 //		Assert.assertEquals("a", ST.toString(" a "));
         Assert.assertEquals("null", StringUtils.toString(null));
         Assert.assertEquals("", StringUtils.toString(""));
-        Assert.assertEquals("String[1, 2, 3]", StringUtils.toString(CollUtils.toArray(ArrayUtils.asList("1", "2", "3"))));
+        Assert.assertEquals("String[1, 2, 3]", StringUtils.toString(CollectionUtils.toArray(ArrayUtils.asList("1", "2", "3"))));
 
         Assert.assertEquals("2017-01-23", StringUtils.toString(Dates.parse("2017-01-23")));
         Assert.assertEquals("2017-01-23 12:34:56", StringUtils.toString(Dates.parse("2017-01-23 12:34:56")));
@@ -1579,7 +1579,7 @@ public class StringUtilsTest {
         list.add("1");
         list.add("2");
         list.add("3");
-        assertTrue(Arrays.equals(CollUtils.toArray(list), new String[]{"1", "2", "3"}));
+        assertTrue(Arrays.equals(CollectionUtils.toArray(list), new String[]{"1", "2", "3"}));
     }
 
     @Test
@@ -1635,7 +1635,7 @@ public class StringUtilsTest {
         map.put("a", "A");
         map.put("b", "A");
         map.put("c", "A");
-        String[] keys = CollUtils.toArray(map.keySet());
+        String[] keys = CollectionUtils.toArray(map.keySet());
         assertTrue(Arrays.equals(keys, new String[]{"a", "b", "c"}));
     }
 

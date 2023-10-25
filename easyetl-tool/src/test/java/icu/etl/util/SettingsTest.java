@@ -64,7 +64,7 @@ public class SettingsTest {
      */
     public static void printProperties() {
         Properties config = System.getProperties();
-        Set<String> names = CollUtils.stringPropertyNames(config);
+        Set<String> names = CollectionUtils.stringPropertyNames(config);
         Matrix<String> m = new Matrix<String>(names.size(), 2);
         int i = 0;
         for (String name : names) {

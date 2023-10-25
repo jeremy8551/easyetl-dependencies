@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -621,7 +620,7 @@ public class XMLUtils {
             }
         }
 
-        Property property = CollUtils.lastElement(list);
+        Property property = CollectionUtils.lastElement(list);
         if (property.getValue() != null) {
             if (ignoreNoName) {
                 return;

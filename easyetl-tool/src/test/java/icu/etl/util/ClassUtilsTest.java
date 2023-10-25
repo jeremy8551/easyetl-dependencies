@@ -168,15 +168,15 @@ public class ClassUtilsTest {
 
     @Test
     public void testgetInterfaceGenerics() {
-        Class<?>[] array = ClassUtils.getInterfaceGenerics(GenericTest.class, G2.class);
+        String[] array = ClassUtils.getInterfaceGenerics(GenericTest.class, G2.class);
         Assert.assertEquals(3, array.length);
-        Assert.assertEquals(String.class, array[0]);
-        Assert.assertEquals(Long.class, array[1]);
-        Assert.assertEquals(Integer.class, array[2]);
+        Assert.assertEquals(String.class.getName(), array[0]);
+        Assert.assertEquals(Long.class.getName(), array[1]);
+        Assert.assertEquals(Integer.class.getName(), array[2]);
 
-        Class<?>[] array1 = ClassUtils.getInterfaceGenerics(GenericSample.class, List.class);
+        String[] array1 = ClassUtils.getInterfaceGenerics(GenericSample.class, List.class);
         Assert.assertEquals(1, array1.length);
-        Assert.assertEquals(String.class, array1[0]);
+        Assert.assertEquals(String.class.getName(), array1[0]);
     }
 
     interface G1<E> {

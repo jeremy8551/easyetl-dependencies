@@ -12,30 +12,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class CollUtilsTest {
+public class CollectionUtilsTest {
 
     @Test
     public void testIsEmptyMapOfEF() {
         Map<String, String> map = null;
-        assertTrue(CollUtils.isEmpty(map));
+        assertTrue(CollectionUtils.isEmpty(map));
 
         map = new HashMap<String, String>();
-        assertTrue(CollUtils.isEmpty(map));
+        assertTrue(CollectionUtils.isEmpty(map));
 
         map.put("", "");
-        assertTrue(!CollUtils.isEmpty(map));
+        assertTrue(!CollectionUtils.isEmpty(map));
     }
 
     @Test
     public void testIsEmptyCollectionOfE() {
         List<String> map = null;
-        assertTrue(CollUtils.isEmpty(map));
+        assertTrue(CollectionUtils.isEmpty(map));
 
         map = new ArrayList<String>();
-        assertTrue(CollUtils.isEmpty(map));
+        assertTrue(CollectionUtils.isEmpty(map));
 
         map.add("");
-        assertTrue(!CollUtils.isEmpty(map));
+        assertTrue(!CollectionUtils.isEmpty(map));
     }
 
     @Test
@@ -53,10 +53,10 @@ public class CollUtilsTest {
         list.add("6");
         list.add("9");
 
-        List<String> newlist = CollUtils.removeDuplicate(list, null);
+        List<String> newlist = CollectionUtils.removeDuplicate(list, null);
         assertEquals(newlist.size(), 8);
 
-        newlist = CollUtils.removeDuplicate(list, new StringComparator());
+        newlist = CollectionUtils.removeDuplicate(list, new StringComparator());
         assertEquals(newlist.size(), 8);
     }
 
@@ -64,7 +64,7 @@ public class CollUtilsTest {
     public void testToHashMap() {
         String[] keys = {"key1", "key2"};
         String[] vals = {"val1", "val2"};
-        Map<String, String> map = CollUtils.toHashMap(keys, vals);
+        Map<String, String> map = CollectionUtils.toHashMap(keys, vals);
         assertEquals(map.get("key1"), "val1");
         assertEquals(map.get("key2"), "val2");
     }
@@ -80,7 +80,7 @@ public class CollUtilsTest {
         list.add("5");
         list.add("6");
 
-        assertTrue(ArrayUtils.equals(CollUtils.toArray(list), new String[]{"", "1", "2", "3", "4", "5", "6"}, null));
+        assertTrue(ArrayUtils.equals(CollectionUtils.toArray(list), new String[]{"", "1", "2", "3", "4", "5", "6"}, null));
     }
 
     @Test
@@ -91,18 +91,18 @@ public class CollUtilsTest {
     public void testOnlyOne() {
         List<String> list = new ArrayList<String>();
         try {
-            CollUtils.onlyOne(list);
+            CollectionUtils.onlyOne(list);
             assertTrue(false);
         } catch (Exception e) {
             assertTrue(true);
         }
 
         list.add("");
-        assertEquals(CollUtils.onlyOne(list), "");
+        assertEquals(CollectionUtils.onlyOne(list), "");
 
         list.add("1");
         try {
-            CollUtils.onlyOne(list);
+            CollectionUtils.onlyOne(list);
             assertTrue(false);
         } catch (Exception e) {
             assertTrue(true);
@@ -112,33 +112,33 @@ public class CollUtilsTest {
     @Test
     public void testFirstElement() {
         List<String> list = null;
-        assertEquals(CollUtils.firstElement(list), null);
+        assertEquals(CollectionUtils.firstElement(list), null);
 
         list = new ArrayList<String>();
-        assertEquals(CollUtils.firstElement(list), null);
+        assertEquals(CollectionUtils.firstElement(list), null);
 
         list.add("1");
-        assertEquals(CollUtils.firstElement(list), "1");
+        assertEquals(CollectionUtils.firstElement(list), "1");
 
         list.add("1");
         list.add("2");
-        assertEquals(CollUtils.firstElement(list), "1");
+        assertEquals(CollectionUtils.firstElement(list), "1");
     }
 
     @Test
     public void testLastElement() {
         List<String> list = null;
-        assertEquals(CollUtils.lastElement(list), null);
+        assertEquals(CollectionUtils.lastElement(list), null);
 
         list = new ArrayList<String>();
-        assertEquals(CollUtils.lastElement(list), null);
+        assertEquals(CollectionUtils.lastElement(list), null);
 
         list.add("1");
-        assertEquals(CollUtils.lastElement(list), "1");
+        assertEquals(CollectionUtils.lastElement(list), "1");
 
         list.add("1");
         list.add("2");
-        assertEquals(CollUtils.lastElement(list), "2");
+        assertEquals(CollectionUtils.lastElement(list), "2");
 
     }
 
@@ -157,8 +157,8 @@ public class CollUtilsTest {
         m2.put("d", "d1");
         m2.put("e", "e");
 
-        assertEquals(CollUtils.getDiffAttrVal(m1, m2, null), ArrayUtils.asList("a", "d"));
-        assertEquals(CollUtils.getDiffAttrVal(m1, m2, new StringComparator()), ArrayUtils.asList("a", "d"));
+        assertEquals(CollectionUtils.getDiffAttrVal(m1, m2, null), ArrayUtils.asList("a", "d"));
+        assertEquals(CollectionUtils.getDiffAttrVal(m1, m2, new StringComparator()), ArrayUtils.asList("a", "d"));
     }
 
     @Test
@@ -172,11 +172,11 @@ public class CollUtilsTest {
         list.add("5");
         list.add("6");
 
-        assertNull(CollUtils.elementAt(list, -1));
-        assertNull(CollUtils.elementAt(list, list.size()));
-        assertNull(CollUtils.elementAt(list, list.size() + 1));
-        assertEquals(CollUtils.elementAt(list, 0), "0");
-        assertEquals(CollUtils.elementAt(list, 1), "1");
+        assertNull(CollectionUtils.elementAt(list, -1));
+        assertNull(CollectionUtils.elementAt(list, list.size()));
+        assertNull(CollectionUtils.elementAt(list, list.size() + 1));
+        assertEquals(CollectionUtils.elementAt(list, 0), "0");
+        assertEquals(CollectionUtils.elementAt(list, 1), "1");
     }
 
     @Test
@@ -186,7 +186,7 @@ public class CollUtilsTest {
         p.put(new Integer(1), "value2");
 
         Properties np = new Properties();
-        CollUtils.cloneProperties(p, np);
+        CollectionUtils.cloneProperties(p, np);
         assertEquals(np.get("name"), "value1");
         assertEquals(np.get(new Integer(1)), "value2");
     }
@@ -202,8 +202,8 @@ public class CollUtilsTest {
         list.add("5");
         list.add("6");
 
-        assertTrue(CollUtils.contain(list, null, new StringComparator()));
-        assertTrue(CollUtils.contain(list, "6", new StringComparator()));
+        assertTrue(CollectionUtils.contain(list, null, new StringComparator()));
+        assertTrue(CollectionUtils.contain(list, "6", new StringComparator()));
     }
 
     @Test
@@ -214,9 +214,9 @@ public class CollUtilsTest {
         map.put("d", "");
         map.put("c", "");
 
-        assertTrue(CollUtils.containsKeyIgnoreCase(map, "T"));
-        assertTrue(CollUtils.containsKeyIgnoreCase(map, "C"));
-        assertTrue(CollUtils.containsKeyIgnoreCase(map, "d"));
+        assertTrue(CollectionUtils.containsKeyIgnoreCase(map, "T"));
+        assertTrue(CollectionUtils.containsKeyIgnoreCase(map, "C"));
+        assertTrue(CollectionUtils.containsKeyIgnoreCase(map, "d"));
     }
 
 }

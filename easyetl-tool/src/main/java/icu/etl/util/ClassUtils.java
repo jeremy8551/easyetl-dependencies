@@ -694,6 +694,39 @@ public class ClassUtils {
     }
 
     /**
+     * 生成一个类的实例对象
+     *
+     * @param obj         类名
+     * @param classLoader 类加载器
+     * @param <E>         类信息
+     * @return 实例对象
+     */
+    public static <E> E newInstance(Object obj, ClassLoader classLoader) {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+
+        Class<?> cls = null;
+        if (obj instanceof String) {
+            String classname = (String) obj;
+            cls = ClassUtils.forName(classname, true, classLoader);
+            if (cls == null) {
+                throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, classname));
+            }
+        } else if (obj instanceof Class) {
+            cls = (Class) obj;
+        } else {
+            throw new UnsupportedOperationException(obj.getClass().getName());
+        }
+
+        try {
+            return (E) cls.newInstance();
+        } catch (Throwable e) {
+            throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, cls.getName()), e);
+        }
+    }
+
+    /**
      * 返回默认的 ClassLoader 对象
      *
      * @return 类加载器
@@ -796,6 +829,66 @@ public class ClassUtils {
     }
 
     /**
+     * 判断参数 {@code cls} 中是否包含接口 {@code interfacecls}
+     *
+     * @param cls          类信息
+     * @param interfaceCls 接口的类信息
+     * @return 返回true表示类 {@code cls} 已实现接口 {@code interfacecls}
+     */
+    public static boolean isInterfacePresent(Class<?> cls, Class<?> interfaceCls) {
+        if (cls == null) {
+            throw new NullPointerException();
+        }
+        if (interfaceCls == null) {
+            throw new NullPointerException();
+        }
+
+        Class<?>[] array = cls.getInterfaces();
+        if (array != null && array.length > 0) {
+            for (Class<?> c : array) { // 判断是否有重复接口
+                if (equals(interfaceCls, c)) {
+                    return true;
+                }
+            }
+
+            for (Class<?> c : array) {
+                if (isInterfacePresent(c, interfaceCls)) {
+                    return true;
+                }
+            }
+        }
+
+        // 查询父类上的接口
+        Class<?> supcls = cls.getSuperclass();
+        while (supcls != null) {
+            if (isInterfacePresent(supcls, interfaceCls)) {
+                return true;
+            }
+            supcls = supcls.getSuperclass();
+        }
+        return false;
+    }
+
+    /**
+     * 判断参数 {@code cls} 是否是参数 {@code interfacecls} 的子类
+     *
+     * @param cls          类信息
+     * @param interfaceCls 类信息
+     * @return 返回true表示类 {@code cls} 与 {@code interfacecls} 类相等或是他的父类
+     */
+    public static boolean isExtendClass(Class<?> cls, Class<?> interfaceCls) {
+        Class<?> superclass = cls;
+        while (superclass != null) {
+            if (ClassUtils.equals(superclass, interfaceCls)) {
+                return true;
+            } else {
+                superclass = superclass.getSuperclass();
+            }
+        }
+        return false;
+    }
+
+    /**
      * 返回类实现的所有接口，包括所有子类上的接口，以及接口继承的所有接口
      *
      * @param cls    类信息
@@ -830,16 +923,15 @@ public class ClassUtils {
         Class<?>[] array = cls.getInterfaces();
         if (array != null && array.length > 0) {
             for (Class<?> c : array) { // 判断是否有重复接口
-                String name = c.getName();
                 boolean add = true;
                 for (Class<?> cl : list) {
-                    if (cl.getName().equals(name)) { // 判断类名是否重复
+                    if (ClassUtils.equals(cl, c)) { // 判断类名是否重复
                         add = false;
                         break;
                     }
                 }
 
-                if (add && (filter == null || filter.accept(c, name))) {
+                if (add && (filter == null || filter.accept(c, c.getName()))) {
                     list.add(c);
                 }
             }
@@ -854,10 +946,10 @@ public class ClassUtils {
      * 返回类信息 {@code cls} 上指定接口 {@code interfacecls} 的范型
      *
      * @param cls          类信息
-     * @param interfacecls 类 {@cod cls} 上实现的接口
+     * @param interfacecls 类 {@code cls} 上实现的接口
      * @return 范型类型
      */
-    public static Class<?>[] getInterfaceGenerics(Class<?> cls, Class<?> interfacecls) {
+    public static String[] getInterfaceGenerics(Class<?> cls, Class<?> interfacecls) {
         Type[] types = cls.getGenericInterfaces(); // TODO 只支持 jdk8
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
@@ -866,15 +958,57 @@ public class ClassUtils {
 //                System.out.println(pt.getTypeName() + " ---------> " + pt.getActualTypeArguments()[0].getTypeName());
                 if (pt.getTypeName().startsWith(interfacecls.getName())) { // 判断接口名是否匹配
                     Type[] actualTypeArguments = pt.getActualTypeArguments();
-                    Class<?>[] array = new Class<?>[actualTypeArguments.length];
+                    String[] array = new String[actualTypeArguments.length];
                     for (int i = 0; i < array.length; i++) {
-                        array[i] = ClassUtils.forName(actualTypeArguments[i].getTypeName());
+                        array[i] = actualTypeArguments[i].getTypeName();
                     }
                     return array;
                 }
             }
         }
-        return new Class<?>[0];
+        return new String[0];
     }
 
+    /**
+     * 判断2个 Class 参数是否相等
+     * <p>
+     * 编写这个方法是因为 {@linkplain Class#equals(Object)} 方法不准确
+     *
+     * @param cls1 类信息
+     * @param cls2 类信息
+     * @return 返回true表示相等 返回false表示不等
+     */
+    public static boolean equals(Class<?> cls1, Class<?> cls2) {
+        boolean b1 = cls1 == null;
+        boolean b2 = cls2 == null;
+        if (b1 && b2) {
+            return true;
+        } else if (b1 || b2) {
+            return false;
+        } else {
+            return cls1.getName().equals(cls2.getName());
+        }
+    }
+
+    /**
+     * 判断集合参数 {@code c}中是否包含参数 {@code cls}
+     * <p>
+     * 编写这个方法是因为 {@linkplain Class#equals(Object)} 方法不准确
+     *
+     * @param c   集合
+     * @param cls 类信息
+     * @return 返回true表示包含 false表示不包含
+     */
+    public static boolean contains(Collection<Class<?>> c, Class<?> cls) {
+        if (c == null) {
+            throw new NullPointerException();
+        }
+
+        for (Iterator<Class<?>> it = c.iterator(); it.hasNext(); ) {
+            if (ClassUtils.equals(cls, it.next())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

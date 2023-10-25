@@ -19,9 +19,9 @@ import java.util.TreeSet;
  * @author jeremy8551@qq.com
  * @createtime 2011-05-24
  */
-public class CollUtils {
+public class CollectionUtils {
 
-    public CollUtils() {
+    public CollectionUtils() {
     }
 
     /**
@@ -243,7 +243,7 @@ public class CollUtils {
         }
 
         ArrayList<String> list = new ArrayList<String>();
-        String[] keys = CollUtils.toArray(map1.keySet());
+        String[] keys = CollectionUtils.toArray(map1.keySet());
         for (String key : keys) {
             if (map2.containsKey(key)) {
                 String v1 = map1.get(key);

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import icu.etl.util.CollUtils;
+import icu.etl.util.CollectionUtils;
 
 /**
  * 不可修改的 Properties 集合 <br>
@@ -206,7 +206,7 @@ public class UnmodifiableProperties extends Properties implements Cloneable {
     }
 
     public Set<String> stringPropertyNames() {
-        return Collections.unmodifiableSet(CollUtils.stringPropertyNames(obj));
+        return Collections.unmodifiableSet(CollectionUtils.stringPropertyNames(obj));
     }
 
     // public synchronized Object getOrDefault(Object key, Object defaultValue) {

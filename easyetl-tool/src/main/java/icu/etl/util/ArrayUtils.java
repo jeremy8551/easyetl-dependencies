@@ -43,7 +43,7 @@ public class ArrayUtils {
         for (int i = offset; i < array.length; i++) {
             Object obj = array[i];
             if (obj != null) {
-                if (obj.getClass().equals(cls)) { // 类信息相同
+                if (ClassUtils.equals(obj.getClass(), cls)) { // 类信息相同
                     return (E) obj;
                 }
                 if ((cls.isInterface() || Modifier.isAbstract(cls.getModifiers())) && cls.isAssignableFrom(obj.getClass())) { // 接口或抽象类的子类

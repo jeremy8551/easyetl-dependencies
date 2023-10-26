@@ -117,7 +117,7 @@ public class ClassUtilsTest {
     @Test
     public void testinst() {
         try {
-            Object o = ClassUtils.newInstance(Object.class.getName());
+            Object o = ClassUtils.newInstance(Object.class.getName(), null);
             System.out.println(o);
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,7 +185,18 @@ public class ClassUtilsTest {
     interface G2<E, F, G> {
     }
 
-    class GenericTest implements G1<String>, G2<String, Long, Integer> {
+    abstract class GenericTest implements G1<String>, G2<String, Long, Integer> {
+    }
+
+    class GenericABCTest extends GenericTest {
+    }
+
+    @Test
+    public void testisAssignableFrom() {
+        Assert.assertTrue(G1.class.isAssignableFrom(GenericTest.class));
+        Assert.assertTrue(G2.class.isAssignableFrom(GenericTest.class));
+        Assert.assertTrue(G2.class.isAssignableFrom(GenericABCTest.class));
+        Assert.assertTrue(GenericTest.class.isAssignableFrom(GenericABCTest.class));
     }
 
 //    @Test

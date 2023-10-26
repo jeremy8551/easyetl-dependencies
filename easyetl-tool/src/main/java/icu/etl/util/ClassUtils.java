@@ -664,26 +664,14 @@ public class ClassUtils {
     /**
      * 生成一个类的实例对象
      *
-     * @param obj 类名
+     * @param cls 类信息
      * @param <E> 类信息
      * @return 实例对象
      */
-    public static <E> E newInstance(Object obj) {
-        if (obj == null) {
+    @SuppressWarnings("unchecked")
+    public static <E> E newInstance(Class<?> cls) {
+        if (cls == null) {
             throw new NullPointerException();
-        }
-
-        Class<?> cls = null;
-        if (obj instanceof String) {
-            String classname = (String) obj;
-            cls = forName(classname);
-            if (cls == null) {
-                throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, classname));
-            }
-        } else if (obj instanceof Class) {
-            cls = (Class) obj;
-        } else {
-            throw new UnsupportedOperationException(obj.getClass().getName());
         }
 
         try {
@@ -696,27 +684,19 @@ public class ClassUtils {
     /**
      * 生成一个类的实例对象
      *
-     * @param obj         类名
+     * @param classname   类名或Class对象
      * @param classLoader 类加载器
      * @param <E>         类信息
      * @return 实例对象
      */
-    public static <E> E newInstance(Object obj, ClassLoader classLoader) {
-        if (obj == null) {
-            throw new NullPointerException();
+    public static <E> E newInstance(String classname, ClassLoader classLoader) {
+        if (StringUtils.isBlank(classname)) {
+            return null;
         }
 
-        Class<?> cls = null;
-        if (obj instanceof String) {
-            String classname = (String) obj;
-            cls = ClassUtils.forName(classname, true, classLoader);
-            if (cls == null) {
-                throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, classname));
-            }
-        } else if (obj instanceof Class) {
-            cls = (Class) obj;
-        } else {
-            throw new UnsupportedOperationException(obj.getClass().getName());
+        Class<?> cls = ClassUtils.forName(classname, true, classLoader);
+        if (cls == null) {
+            throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, classname));
         }
 
         try {

@@ -2,6 +2,7 @@ package icu.etl.util;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 
@@ -185,6 +186,10 @@ public class ClassUtilsTest {
     interface G2<E, F, G> {
     }
 
+    enum Testenum {
+        A1, A2
+    }
+
     abstract class GenericTest implements G1<String>, G2<String, Long, Integer> {
     }
 
@@ -197,6 +202,11 @@ public class ClassUtilsTest {
         Assert.assertTrue(G2.class.isAssignableFrom(GenericTest.class));
         Assert.assertTrue(G2.class.isAssignableFrom(GenericABCTest.class));
         Assert.assertTrue(GenericTest.class.isAssignableFrom(GenericABCTest.class));
+        Assert.assertTrue(Modifier.isAbstract(GenericTest.class.getModifiers()));
+        Assert.assertTrue(Modifier.isAbstract(G2.class.getModifiers()));
+        Assert.assertFalse(Modifier.isAbstract(Testenum.class.getModifiers()));
+        Assert.assertFalse(Modifier.isAbstract(Testenum.A1.getClass().getModifiers()));
+        Assert.assertFalse(Modifier.isAbstract(GenericABCTest.class.getModifiers()));
     }
 
 //    @Test

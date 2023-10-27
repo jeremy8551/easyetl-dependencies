@@ -850,25 +850,6 @@ public class ClassUtils {
     }
 
     /**
-     * 判断参数 {@code cls} 是否是参数 {@code interfacecls} 的子类
-     *
-     * @param cls          类信息
-     * @param interfaceCls 类信息
-     * @return 返回true表示类 {@code cls} 与 {@code interfacecls} 类相等或是他的父类
-     */
-    public static boolean isExtendClass(Class<?> cls, Class<?> interfaceCls) {
-        Class<?> superclass = cls;
-        while (superclass != null) {
-            if (ClassUtils.equals(superclass, interfaceCls)) {
-                return true;
-            } else {
-                superclass = superclass.getSuperclass();
-            }
-        }
-        return false;
-    }
-
-    /**
      * 返回类实现的所有接口，包括所有子类上的接口，以及接口继承的所有接口
      *
      * @param cls    类信息

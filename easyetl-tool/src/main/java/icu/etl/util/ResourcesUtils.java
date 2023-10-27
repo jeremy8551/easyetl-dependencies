@@ -433,4 +433,9 @@ public class ResourcesUtils {
         return ResourcesUtils.getMessage(name, args);
     }
 
+    public static String getScriptMessage(int no, Object... args) {
+        String name = "script.standard.output.msg" + toNumber(no, 3);
+        return ResourcesUtils.getMessage(name, args);
+    }
+
 }

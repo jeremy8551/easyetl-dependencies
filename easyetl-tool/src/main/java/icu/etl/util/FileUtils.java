@@ -13,6 +13,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -726,17 +727,26 @@ public final class FileUtils {
     }
 
     /**
-     * 在 JVM 临时文件目录 java.io.tmpdir 下按照类信息所在包名结构建立临时目录
+     * 创建一个临时文件
      *
-     * @param cls 类信息（按JAVA类的包名层级建立目录）
-     * @return
+     * @param cls   在 JVM 临时文件目录 java.io.tmpdir 下按照类信息所在包名结构建立临时目录
+     * @param array 文件名
+     * @return 文件
+     * @throws IOException 创建文件失败
      */
-    public static File getTempFile(Class<?> cls) {
-        if (cls == null) {
-            throw new NullPointerException();
+    public static File createTempfile(Class<?> cls, String ext, String... array) throws IOException {
+        if (array.length > 1) {
+            throw new IllegalArgumentException(Arrays.asList(array).toString());
+        }
+
+        File dir = FileUtils.getTempDir(cls);
+        String filename = array.length == 0 || StringUtils.isBlank(array[0]) ? StringUtils.toRandomUUID() : array[0];
+        File tempfile = new File(dir, filename + "." + ext);
+        if (FileUtils.delete(tempfile)) {
+            tempfile.createNewFile();
+            return tempfile;
         } else {
-            String[] names = StringUtils.split(cls.getPackage().getName(), '.');
-            return FileUtils.getTempDir(StringUtils.removeBlank(names));
+            throw new IOException(tempfile.getAbsolutePath());
         }
     }
 

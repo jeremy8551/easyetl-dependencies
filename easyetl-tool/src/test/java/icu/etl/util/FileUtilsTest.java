@@ -1079,8 +1079,13 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void test101() {
+    public void testcreateTempfile() throws IOException {
+        File tempfile = FileUtils.createTempfile(String.class, "txt", "testfile");
+        System.out.println(tempfile.getAbsolutePath());
+        Assert.assertTrue(tempfile.exists());
 
+        // 重复创建同一个文件来测试
+        FileUtils.createTempfile(String.class, "txt", "testfile");
     }
 
 }

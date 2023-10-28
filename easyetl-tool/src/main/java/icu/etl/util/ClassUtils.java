@@ -809,47 +809,6 @@ public class ClassUtils {
     }
 
     /**
-     * 判断参数 {@code cls} 中是否包含接口 {@code interfacecls}
-     *
-     * @param cls          类信息
-     * @param interfaceCls 接口的类信息
-     * @return 返回true表示类 {@code cls} 已实现接口 {@code interfacecls}
-     */
-    public static boolean isInterfacePresent(Class<?> cls, Class<?> interfaceCls) {
-        if (cls == null) {
-            throw new NullPointerException();
-        }
-        if (interfaceCls == null) {
-            throw new NullPointerException();
-        }
-
-        Class<?>[] array = cls.getInterfaces();
-        if (array != null && array.length > 0) {
-            for (Class<?> c : array) { // 判断是否有重复接口
-                if (equals(interfaceCls, c)) {
-                    return true;
-                }
-            }
-
-            for (Class<?> c : array) {
-                if (isInterfacePresent(c, interfaceCls)) {
-                    return true;
-                }
-            }
-        }
-
-        // 查询父类上的接口
-        Class<?> supcls = cls.getSuperclass();
-        while (supcls != null) {
-            if (isInterfacePresent(supcls, interfaceCls)) {
-                return true;
-            }
-            supcls = supcls.getSuperclass();
-        }
-        return false;
-    }
-
-    /**
      * 返回类实现的所有接口，包括所有子类上的接口，以及接口继承的所有接口
      *
      * @param cls    类信息

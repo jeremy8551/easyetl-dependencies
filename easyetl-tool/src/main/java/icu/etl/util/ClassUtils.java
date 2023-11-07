@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -872,8 +874,6 @@ public class ClassUtils {
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType) type;
-//                System.out.println(pt.getActualTypeArguments().length);
-//                System.out.println(pt.getTypeName() + " ---------> " + pt.getActualTypeArguments()[0].getTypeName());
                 if (pt.getTypeName().startsWith(interfacecls.getName())) { // 判断接口名是否匹配
                     Type[] actualTypeArguments = pt.getActualTypeArguments();
                     String[] array = new String[actualTypeArguments.length];
@@ -929,4 +929,126 @@ public class ClassUtils {
         }
         return false;
     }
+
+    /**
+     * 在类路径classpath下查找包名最短的类（如果有多个，则只返回第一个）
+     *
+     * @param classLoader 类加载器
+     * @param classpath   类路径
+     * @return 包名最短的类信息，可能是null
+     */
+    public static Set<String> findShortPackage(ClassLoader classLoader, String classpath) {
+        if (StringUtils.isBlank(classpath)) {
+            throw new IllegalArgumentException(classpath);
+        }
+        if (classLoader == null) {
+            throw new NullPointerException();
+        }
+
+        File dir = new File(classpath);
+        return ClassUtils.findShortPackage(classLoader, classpath, dir);
+    }
+
+    /**
+     * 在类路径classpath下查找包名最短的类（如果有多个，则只返回第一个）
+     *
+     * @param classLoader 类加载器
+     * @param classpath   类路径
+     * @param dir         目录
+     * @return 包名最短的类信息，可能是null
+     */
+    private static Set<String> findShortPackage(ClassLoader classLoader, String classpath, File dir) {
+        File[] files = FileUtils.array(dir.listFiles());
+
+        Class<?> cls = findFirstClass(classLoader, classpath, files);
+        if (cls != null) {
+            Set<String> list = new HashSet<String>();
+            list.add(cls.getPackage().getName());
+            return list;
+        }
+
+        // 遍历目录
+        Set<String> list = new HashSet<String>();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                list.addAll(ClassUtils.findShortPackage(classLoader, classpath, file));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 在文件数组中查找第一个类信息
+     *
+     * @param classLoader 类加载器
+     * @param classpath   类路径
+     * @param files       文件数组
+     * @return 类信息
+     */
+    private static Class<?> findFirstClass(ClassLoader classLoader, String classpath, File[] files) {
+        for (File file : files) {
+            if (file.isFile() && file.getName().endsWith(".class")) {
+                if (file.getAbsolutePath().startsWith(classpath)) {
+                    String lastfix = file.getAbsolutePath().substring(classpath.length());
+                    String str = FileUtils.replaceFolderSeparator(StringUtils.ltrim(lastfix, '/', '\\'), '.');
+                    String className = str.substring(0, str.length() - ".class".length());
+                    Class<?> cls = ClassUtils.forName(className, false, classLoader);
+                    if (cls != null) {
+                        return cls;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 合并集合中的包名（去除重复包名，去除子包名）
+     *
+     * @param packageNames 包名集合
+     * @return 合并后的集合
+     */
+    public static List<String> mergePackage(List<String> packageNames) {
+        Set<String> set = new HashSet<String>(packageNames);
+        List<String> list = new ArrayList<String>(set);
+        Collections.sort(list, new Comparator<String>() {
+            public int compare(String o1, String o2) {
+                String[] a1 = o1.split("\\.");
+                String[] a2 = o2.split("\\.");
+                if (a1.length == a2.length) {
+                    for (int i = 0; i < a1.length; i++) {
+                        String p1 = a1[i];
+                        String p2 = a2[i];
+                        int pv = p1.compareTo(p2);
+                        if (pv == 0) {
+                            continue;
+                        } else {
+                            return pv;
+                        }
+                    }
+                    return 0;
+                } else {
+                    return a1.length - a2.length;
+                }
+            }
+        });
+
+        List<String> result = new ArrayList<String>();
+        Iterator<String> it = list.iterator();
+        while (it.hasNext()) {
+            String name = it.next();
+            boolean a = true;
+            for (String n : result) {
+                if (name.startsWith(n)) {
+                    a = false;
+                    break;
+                }
+            }
+            if (a) {
+                result.add(name);
+            }
+        }
+        return result;
+    }
+
 }

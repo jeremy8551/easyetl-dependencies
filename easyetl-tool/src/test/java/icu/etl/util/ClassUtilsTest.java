@@ -3,8 +3,11 @@ package icu.etl.util;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import icu.etl.collection.ArrayDeque;
 import org.junit.Assert;
@@ -17,6 +20,29 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ClassUtilsTest {
+
+    @Test
+    public void test1() {
+        List<String> names = new ArrayList<String>(Arrays.asList("icu,etl", "a.b.c", "a.b.c.d.e.f", "icu,etl", "cn", "icu", "icu,etl", "org.apache", "icu,etl", "org", "icu.etl.util", "com.bank", "com"));
+        List<String> list = ClassUtils.mergePackage(names);
+        System.out.println(list);
+        Assert.assertEquals("[cn, com, icu, org, a.b.c]", list.toString());
+    }
+
+    @Test
+    public void test() {
+        String[] array = ClassUtils.getJavaClassPath();
+        for (String path : array) {
+            if (FileUtils.isDirectory(path)) {
+                Set<String> names = ClassUtils.findShortPackage(ClassUtils.getDefaultClassLoader(), path);
+                if (names.isEmpty()) {
+                    Assert.fail(path);
+                }
+
+                System.out.println(path + ", short package Name: " + names);
+            }
+        }
+    }
 
     @Test
     public void testInArray() {

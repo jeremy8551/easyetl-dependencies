@@ -3443,6 +3443,24 @@ public class StringUtils {
     }
 
     /**
+     * 将字符数组转为字符串数组
+     *
+     * @param chars 字符数组
+     * @return 字符串数组
+     */
+    public static String[] toStringArray(char... chars) {
+        if (chars == null) {
+            return null;
+        }
+
+        String[] array = new String[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            array[i] = String.valueOf(chars[i]);
+        }
+        return array;
+    }
+
+    /**
      * 将字节数组转为参数radix进制字符串
      *
      * @param bytes 字节数组
@@ -4036,6 +4054,20 @@ public class StringUtils {
         }
 
         return buf.toString();
+    }
+
+    /**
+     * 在字符串数组 {@code array} 右侧追加字符串 {@code elements}
+     *
+     * @param array    字符串数组
+     * @param elements 要添加的字符串信息
+     * @return 一个新的字符串数组
+     */
+    public static String[] append(String[] array, String... elements) {
+        String[] result = new String[array.length + elements.length];
+        System.arraycopy(array, 0, result, 0, array.length);
+        System.arraycopy(elements, 0, result, array.length, elements.length);
+        return result;
     }
 
     /**

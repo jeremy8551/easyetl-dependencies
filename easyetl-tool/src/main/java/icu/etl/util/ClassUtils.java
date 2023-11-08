@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1003,52 +1004,19 @@ public class ClassUtils {
     }
 
     /**
-     * 合并集合中的包名（去除重复包名，去除子包名）
+     * 加载SPI机制的服务
      *
-     * @param packageNames 包名集合
-     * @return 合并后的集合
+     * @param classLoader 类加载器
+     * @param cls         服务的类信息
+     * @return 服务集合
      */
-    public static List<String> mergePackage(List<String> packageNames) {
-        Set<String> set = new HashSet<String>(packageNames);
-        List<String> list = new ArrayList<String>(set);
-        Collections.sort(list, new Comparator<String>() {
-            public int compare(String o1, String o2) {
-                String[] a1 = o1.split("\\.");
-                String[] a2 = o2.split("\\.");
-                if (a1.length == a2.length) {
-                    for (int i = 0; i < a1.length; i++) {
-                        String p1 = a1[i];
-                        String p2 = a2[i];
-                        int pv = p1.compareTo(p2);
-                        if (pv == 0) {
-                            continue;
-                        } else {
-                            return pv;
-                        }
-                    }
-                    return 0;
-                } else {
-                    return a1.length - a2.length;
-                }
-            }
-        });
-
-        List<String> result = new ArrayList<String>();
-        Iterator<String> it = list.iterator();
-        while (it.hasNext()) {
-            String name = it.next();
-            boolean a = true;
-            for (String n : result) {
-                if (name.startsWith(n)) {
-                    a = false;
-                    break;
-                }
-            }
-            if (a) {
-                result.add(name);
-            }
+    public static <E> List<E> getSpiServices(ClassLoader classLoader, Class<E> cls) {
+        List<E> list = new ArrayList<E>();
+        ServiceLoader<E> serviceLoader = ServiceLoader.load(cls, classLoader);
+        for (E rule : serviceLoader) {
+            list.add(rule);
         }
-        return result;
+        return list;
     }
 
 }

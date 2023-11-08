@@ -1894,4 +1894,26 @@ public class StringUtilsTest {
         assertTrue(StringUtils.maxlength("123", "1234", "1") == 4);
     }
 
+    @Test
+    public void testtoStringArray() {
+        char[] chars = "1234".toCharArray();
+        String[] sa = StringUtils.toStringArray(chars);
+        assertEquals("1", sa[0]);
+        assertEquals("4", sa[3]);
+    }
+
+    @Test
+    public void testappend() {
+        String[] a = {};
+        String[] sa = StringUtils.append(a, "a", "bc");
+        assertEquals("a", sa[0]);
+        assertEquals("bc", sa[1]);
+
+        String[] b = {"1"};
+        sa = StringUtils.append(b, "a", "bc");
+        assertEquals("1", sa[0]);
+        assertEquals("a", sa[1]);
+        assertEquals("bc", sa[2]);
+    }
+
 }

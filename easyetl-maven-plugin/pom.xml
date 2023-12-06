@@ -17,7 +17,7 @@
     <description>maven easyetl compile plugin</description>
 
     <dependencies>
-        <!-- easyetl工具 -->
+        <!-- 工具包 -->
         <dependency>
             <groupId>icu.etl</groupId>
             <artifactId>easyetl-tool</artifactId>

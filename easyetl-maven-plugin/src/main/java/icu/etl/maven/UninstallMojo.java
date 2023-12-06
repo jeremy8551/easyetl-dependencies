@@ -7,8 +7,6 @@ import java.util.Iterator;
 import icu.etl.util.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -18,8 +16,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author jeremy8551@qq.com
  * @createtime 2023-11-04
  */
-@Mojo(name = "uninstall", defaultPhase = LifecyclePhase.CLEAN)
-@Execute(phase = LifecyclePhase.CLEAN)
+@Mojo(name = "uninstall")
 public class UninstallMojo extends AbstractMojo {
 
     /**

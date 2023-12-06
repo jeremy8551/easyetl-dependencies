@@ -6,12 +6,12 @@
     <!-- 属性（子模块可以继承直接使用） -->
     <properties>
         <!-- easyetl项目的统一版本号 -->
-        <revision>2.0.5</revision>
+        <revision>2.0.6</revision>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 源代码字符集 -->
         <maven.compiler.charset>UTF-8</maven.compiler.charset> <!-- 源文件和资源文件的字符集，easyetl-maven-plugin 插件使用的字符集 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.5</maven.compiler.source>
+        <maven.compiler.target>1.5</maven.compiler.target>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.source.version>3.2.1</maven.source.version> <!-- 源文件插件版本号-->
         <maven.jar.version>2.4</maven.jar.version>
@@ -183,6 +183,13 @@
 
             <dependency>
                 <groupId>icu.etl</groupId>
+                <artifactId>easyetl-printer</artifactId>
+                <version>${revision}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>icu.etl</groupId>
                 <artifactId>easyetl-ioc</artifactId>
                 <version>${revision}</version>
                 <scope>provided</scope>
@@ -261,6 +268,13 @@
             <dependency>
                 <groupId>icu.etl</groupId>
                 <artifactId>easyetl-compress</artifactId>
+                <version>${revision}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>icu.etl</groupId>
+                <artifactId>easyetl-crypto</artifactId>
                 <version>${revision}</version>
                 <scope>provided</scope>
             </dependency>

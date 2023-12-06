@@ -9,11 +9,11 @@ import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
 /**
- * 使用自然方式访问数据<br>
- * 特点如下：<br>
- * 固定长度的集合 （添加数据元到List 不会自动扩展容量，需要调用 {@linkplain #expandCapacity(int)}} 方法分配大小）<br>
- * 添加值时自动从 1 开始 （而不是0）; <br>
- * 访问值时自动从 1 开始 （而不是0）; <br>
+ * 自然方式访问数据
+ * 特点如下：
+ * 固定长度的集合 （添加数据元到List 不会自动扩展容量，需要调用 {@linkplain #expandCapacity(int)}} 方法分配大小）
+ * 添加值时自动从 1 开始 （而不是0）;
+ * 访问值时自动从 1 开始 （而不是0）;
  *
  * @param <E>
  * @author jeremy8551@qq.com
@@ -266,7 +266,7 @@ public class NatureRandomList<E> extends RandomAccessList<E> implements List<E>,
 }
 
 /**
- * 固定长度的 List <br>
+ * 固定长度的 List
  * 添加数据元到List 不会自动扩展容量，需要调用 ensureCapacity(length) 方法分配大小
  *
  * @param <E>

@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -15,10 +14,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import icu.etl.util.CharsetName;
 import icu.etl.util.CollectionUtils;
 
 /**
- * 不可修改的 Properties 集合 <br>
+ * 不可修改的Properties
  *
  * @author jeremy8551@qq.com
  */
@@ -165,7 +165,7 @@ public class UnmodifiableProperties extends Properties implements Cloneable {
     }
 
     public void store(Writer writer, String comments) throws IOException {
-        obj.store(new PropertiesWriter(writer, StandardCharsets.UTF_8.name()), comments);
+        obj.store(new PropertiesWriter(writer, CharsetName.UTF_8), comments);
     }
 
     class PropertiesWriter extends OutputStream {

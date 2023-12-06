@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * 英文字母大小写不敏感集合 <br>
+ * 英文字母大小写不敏感集合
  * 集合内部统一使用英文字母大写作为集合元素
  *
  * @author jeremy8551@qq.com

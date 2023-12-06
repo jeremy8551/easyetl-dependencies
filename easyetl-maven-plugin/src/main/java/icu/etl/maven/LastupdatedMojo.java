@@ -5,8 +5,6 @@ import java.io.File;
 import icu.etl.util.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -16,8 +14,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author jeremy8551@qq.com
  * @createtime 2023/11/4
  */
-@Mojo(name = "lastupdated", defaultPhase = LifecyclePhase.CLEAN)
-@Execute(phase = LifecyclePhase.CLEAN)
+@Mojo(name = "lastupdated", requiresProject = false, aggregator = true)
 public class LastupdatedMojo extends AbstractMojo {
 
     /**
@@ -26,7 +23,6 @@ public class LastupdatedMojo extends AbstractMojo {
     @Parameter(defaultValue = "${settings.localRepository}")
     private File localRepository;
 
-    @Override
     public void execute() throws MojoExecutionException {
         if (this.localRepository != null && this.localRepository.exists() && this.localRepository.isDirectory()) {
             this.clear(this.localRepository);

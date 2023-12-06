@@ -7,12 +7,10 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -150,16 +148,16 @@ public class NetUtils {
         }
 
         /**
-         * IPv6地址为128位长，但通常写作8组，每组为四个十六进制数的形式。 <br>
-         * 如果四个数字都是零，可以被省略 <br>
-         * 同时前导的零可以省略 <br>
-         * 遵从这些规则，如果因为省略而出现了两个以上的冒号的话，可以压缩为一个，但这种零压缩在地址中只能出现一次。<br>
+         * IPv6地址为128位长，但通常写作8组，每组为四个十六进制数的形式。
+         * 如果四个数字都是零，可以被省略
+         * 同时前导的零可以省略
+         * 遵从这些规则，如果因为省略而出现了两个以上的冒号的话，可以压缩为一个，但这种零压缩在地址中只能出现一次。
          *
-         * 2001:0DB8:0000:0000:0000:0000:1428:57ab <br>
-         * 2001:0DB8:0000:0000:0000::1428:57ab <br>
-         * 2001:0DB8:0:0:0:0:1428:57ab <br>
-         * 2001:0DB8:0::0:1428:57ab <br>
-         * 2001:0DB8::1428:57ab <br>
+         * 2001:0DB8:0000:0000:0000:0000:1428:57ab
+         * 2001:0DB8:0000:0000:0000::1428:57ab
+         * 2001:0DB8:0:0:0:0:1428:57ab
+         * 2001:0DB8:0::0:1428:57ab
+         * 2001:0DB8::1428:57ab
          */
         for (String group : groups) {
             if (group.length() > 4) { // 只能是0-4之间的位数
@@ -236,7 +234,7 @@ public class NetUtils {
     /**
      * 解析 content_type 值中的字符集信息
      *
-     * @param contentType text/html;charset=GB2312 <Br>
+     * @param contentType text/html;charset=GB2312
      *                    application/soap+xml; charset=UTF-8
      * @return
      */
@@ -319,7 +317,7 @@ public class NetUtils {
     /**
      * 在 uri 后面添加参数
      *
-     * @param uri   定位符, http://x.x.x.x:xx/uri
+     * @param uri   定位符, {@literal http://x.x.x.x:xx/uri }
      * @param param 参数, key=value
      * @return
      */
@@ -413,11 +411,11 @@ public class NetUtils {
         }
 
         String header = request.getHeader("User-Agent");
-        if (header == null || header.toLowerCase().indexOf("msie") != -1) {
-            return URLEncoder.encode(filename, StandardCharsets.UTF_8.name());
+        if (header == null || header.toLowerCase().contains("msie")) {
+            return URLEncoder.encode(filename, CharsetName.UTF_8);
         } else {
             byte[] array = StringUtils.toBytes(StringUtils.removeBlank(filename), StringUtils.CHARSET);
-            return StringUtils.toString(array, StandardCharsets.ISO_8859_1.name());
+            return StringUtils.toString(array, CharsetName.ISO_8859_1);
         }
     }
 

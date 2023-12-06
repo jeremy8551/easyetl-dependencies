@@ -424,7 +424,6 @@ public class Matrix<E> implements Cloneable {
         CharTable table = new CharTable(charsetName);
 
         // 添加标题栏
-        table.setTitleVisible(titles != null);
         for (int i = 0; i < this.col; i++) {
             String colAlign = (aligns == null) ? CharTable.ALIGN_MIDDLE : StringUtils.defaultString(aligns.get(i), CharTable.ALIGN_MIDDLE);
             String colName = (titles == null) ? ("L" + String.valueOf(i + 1)) : titles.get(i);
@@ -438,7 +437,7 @@ public class Matrix<E> implements Cloneable {
             }
         }
 
-        return table.toStandardShape().toString();
+        return table.toString(CharTable.Style.standard);
     }
 
 }

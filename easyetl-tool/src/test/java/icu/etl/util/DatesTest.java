@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,10 +20,29 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class DateUtilsTest {
+public class DatesTest {
 
     @Before
     public void setUp() {
+    }
+
+    @Test
+    public void testTimeUnit() {
+        Assert.assertEquals("0", this.remove(Dates.format(0, TimeUnit.SECONDS, true)));
+        Assert.assertEquals("11", this.remove(Dates.format(61, TimeUnit.SECONDS, true))); // (61) == 1 分 1 秒
+        Assert.assertEquals("11", this.remove(Dates.format(3660, TimeUnit.SECONDS, true))); // (3660) == 1 小时 1 分
+        Assert.assertEquals("2774640", this.remove(Dates.format(1000000, TimeUnit.SECONDS, true))); // (1000000) == 277 小时 46 分 40 秒
+    }
+
+    private String remove(CharSequence cs) {
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < cs.length(); i++) {
+            char c = cs.charAt(i);
+            if (StringUtils.isNumber(c)) {
+                buf.append(c);
+            }
+        }
+        return buf.toString();
     }
 
     @Test
@@ -102,7 +122,7 @@ public class DateUtilsTest {
         assertEquals("20171230", Dates.format08(Dates.parse(" 二零一七年 十二月三十号 ")));
         assertEquals("20171231", Dates.format08(Dates.parse(" 二零一七年 十二月三十一号 ")));
         assertEquals("20171031", Dates.format08(Dates.parse(" 二零一七年 十月三十一号 ")));
-        // System.out.println(DT.format02(DT.format(" 二零一七年 十月十一号 ")));
+        // System.out.println(Dates.format02(Dates.format(" 二零一七年 十月十一号 ")));
         assertEquals("20171011", Dates.format08(Dates.parse(" 二零一七年 十月十一号 ")));
         assertEquals("20170911", Dates.format08(Dates.parse(" 二零一七年 九月十一号 ")));
         assertEquals("20171001", Dates.format08(Dates.parse(" 二零一七年十月一号 ")));
@@ -779,20 +799,20 @@ public class DateUtilsTest {
 
     @Test
     public void testGreater() {
-//		assertTrue(DT.greater(DT.format("2017-01-01"), DT.format("2017-01-01")) == false);
-//		assertTrue(DT.greater(DT.format("2017-01-02"), DT.format("2017-01-01")) == true);
-//		assertTrue(DT.greater(DT.format("2017-01-02"), null) == true);
-//		assertTrue(DT.greater(null, DT.format("2017-01-01")) == false);
-//		assertTrue(DT.greater(null, null) == false);
+//		assertTrue(Dates.greater(Dates.format("2017-01-01"), Dates.format("2017-01-01")) == false);
+//		assertTrue(Dates.greater(Dates.format("2017-01-02"), Dates.format("2017-01-01")) == true);
+//		assertTrue(Dates.greater(Dates.format("2017-01-02"), null) == true);
+//		assertTrue(Dates.greater(null, Dates.format("2017-01-01")) == false);
+//		assertTrue(Dates.greater(null, null) == false);
     }
 
     @Test
     public void testLess() {
-//		assertTrue(DT.less(DT.format("2017-01-01"), DT.format("2017-01-01")) == false);
-//		assertTrue(DT.less(DT.format("2017-01-01"), DT.format("2017-01-02")) == true);
-//		assertTrue(DT.less(DT.format("2017-01-01"), null) == false);
-//		assertTrue(DT.less(null, DT.format("2017-01-01")) == true);
-//		assertTrue(DT.less(null, null) == false);
+//		assertTrue(Dates.less(Dates.format("2017-01-01"), Dates.format("2017-01-01")) == false);
+//		assertTrue(Dates.less(Dates.format("2017-01-01"), Dates.format("2017-01-02")) == true);
+//		assertTrue(Dates.less(Dates.format("2017-01-01"), null) == false);
+//		assertTrue(Dates.less(null, Dates.format("2017-01-01")) == true);
+//		assertTrue(Dates.less(null, null) == false);
     }
 
     @Test
@@ -865,19 +885,19 @@ public class DateUtilsTest {
 
     @Test
     public void testEqualsDateDate() {
-//		assertTrue(DT.equals(DT.format("2020-01-01"), DT.format("2020-01-01")));
-//		assertTrue(!DT.equals(DT.format("2020-01-01"), DT.format("2020-01-02")));
+//		assertTrue(Dates.equals(Dates.format("2020-01-01"), Dates.format("2020-01-01")));
+//		assertTrue(!Dates.equals(Dates.format("2020-01-01"), Dates.format("2020-01-02")));
     }
 
     @Test
     public void testEqualsIgnoreDay() {
-//		assertTrue(DT.equalsIgnoreDay(null, null));
-//		assertTrue(DT.equalsIgnoreDay(DT.format("2017-01-01"), null) == false);
-//		assertTrue(DT.equalsIgnoreDay(null, DT.format("2017-01-01")) == false);
-//		assertTrue(DT.equalsIgnoreDay(DT.format("2017-01-01"), DT.format("2017-01-01")));
-//		assertTrue(DT.equalsIgnoreDay(DT.format("2017-01-01"), DT.format("2017-02-01")) == false);
-//		assertTrue(DT.equalsIgnoreDay(DT.format("2017-01-01"), DT.format("2016-01-01")) == false);
-//		assertTrue(DT.equalsIgnoreDay(DT.format("2017-01-01"), DT.format("2016-11-01")) == false);
+//		assertTrue(Dates.equalsIgnoreDay(null, null));
+//		assertTrue(Dates.equalsIgnoreDay(Dates.format("2017-01-01"), null) == false);
+//		assertTrue(Dates.equalsIgnoreDay(null, Dates.format("2017-01-01")) == false);
+//		assertTrue(Dates.equalsIgnoreDay(Dates.format("2017-01-01"), Dates.format("2017-01-01")));
+//		assertTrue(Dates.equalsIgnoreDay(Dates.format("2017-01-01"), Dates.format("2017-02-01")) == false);
+//		assertTrue(Dates.equalsIgnoreDay(Dates.format("2017-01-01"), Dates.format("2016-01-01")) == false);
+//		assertTrue(Dates.equalsIgnoreDay(Dates.format("2017-01-01"), Dates.format("2016-11-01")) == false);
     }
 
     @Test

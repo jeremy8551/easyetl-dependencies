@@ -15,7 +15,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -26,8 +25,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author jeremy8551@qq.com
  * @createtime 2023-10-01
  */
-@Mojo(name = "jdk", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-@Execute(phase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "jdk")
 public class JdkMojo extends AbstractMojo {
 
     /**
@@ -89,9 +87,13 @@ public class JdkMojo extends AbstractMojo {
         File[] impls = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 File file = new File(dir, name);
-                return file.isFile() && isJDK(name);
+                return file.isFile() && isJDK(name, ".txt");
             }
         });
+
+        if (impls == null) {
+            impls = new File[0];
+        }
 
         // 按版本号排序
         Arrays.sort(impls, new Comparator<File>() {
@@ -148,7 +150,7 @@ public class JdkMojo extends AbstractMojo {
      * @param dir   主要源文件的目录, src/main/java
      * @param files JDK适配器方言接口实现类
      * @param log   日志输出接口
-     * @return
+     * @return 复制后的文件集合
      * @throws MojoFailureException 发生错误
      */
     private List<File> copyfiles(File dir, File[] files, Log log) throws MojoFailureException, IOException {
@@ -157,28 +159,25 @@ public class JdkMojo extends AbstractMojo {
 
         List<File> list = new ArrayList<File>(files.length);
         for (File file : files) {
+            String packageName = JdkMojoUtils.readPackageName(file, this.sourceEncoding);
+            if (packageName == null) {
+                log.warn("读取Java源文件 " + file.getAbsolutePath() + " 中的包名失败！" + this.sourceEncoding);
+                continue;
+            }
+
+            File newfile = new File(dir, packageName.replace('.', '/') + "/" + FileUtils.changeFilenameExt(file.getName(), "java"));
+            if (newfile.exists() && !newfile.isFile()) {
+                throw new MojoFailureException("JDK适配的方言实现类的目标错误: " + newfile.getAbsolutePath() + " 不是一个有效文件!");
+            }
+
             int version = parseVersion(file.getName());
             if (version <= major) {
                 log.info(file.getAbsolutePath() + ", 对应JDK的大版本号是: " + version);
-
-                String packageName = JdkMojoUtils.readPackageName(file, this.sourceEncoding);
-                if (packageName == null) {
-                    log.warn("读取Java源文件 " + file.getAbsolutePath() + " 中的包名失败！" + this.sourceEncoding);
-                    continue;
-                }
-
-                File newfile = new File(dir, packageName.replace('.', '/') + "/" + FileUtils.changeFilenameExt(file.getName(), "java"));
-                if (newfile.exists() && !newfile.isFile()) {
-                    throw new MojoFailureException("JDK适配的方言实现类的目标错误: " + newfile.getAbsolutePath() + " 不是一个有效文件!");
-                }
-
                 if (newfile.exists()) {
-                    /**
-                     * 如果在源代码中JDK适配器方言接口实现类已经存在了
-                     * 就判断一下是否有变化：
-                     * 如果最近修改了 resources 目录下的类，则用 resources 目录下的类覆盖到源代码中
-                     * 如果最近修改了源代码目录下的类信息，则用源代码中的类，覆盖到 resources 目录下
-                     */
+                    // 如果在源代码中JDK适配器方言接口实现类已经存在了
+                    // 就判断一下是否有变化：
+                    // 如果最近修改了 resources 目录下的类，则用 resources 目录下的类覆盖到源代码中
+                    // 如果最近修改了源代码目录下的类信息，则用源代码中的类，覆盖到 resources 目录下
                     if (newfile.length() != file.length()) {
                         if (newfile.lastModified() >= file.lastModified()) {
                             copyfile(newfile, file, log);
@@ -187,10 +186,16 @@ public class JdkMojo extends AbstractMojo {
                         }
                     }
                 } else {
-                    newfile.createNewFile();
+                    if (!newfile.createNewFile()) {
+                        throw new IOException("创建文件 " + newfile.getAbsolutePath() + " 失败!");
+                    }
                     copyfile(file, newfile, log);
                 }
                 list.add(newfile);
+            } else {
+                if (newfile.exists()) {
+                    log.info("删除Java源文件 " + newfile.getAbsolutePath() + (newfile.delete() ? "[成功]" : "[失败]"));
+                }
             }
         }
         return list;
@@ -227,12 +232,13 @@ public class JdkMojo extends AbstractMojo {
      * 判断字符串参数 {@code name} 是否是一个JDK适配器方言类名
      *
      * @param name 字符串
+     * @param ext  文件扩展名
      * @return true表示是JDK适配器方言类的类名
      */
-    public static boolean isJDK(String name) {
+    public static boolean isJDK(String name, String ext) {
         return name.startsWith("JDK") //
-                && name.endsWith(".txt") //
-                && StringUtils.isNumber(name.substring("JDK".length(), name.length() - ".txt".length()) //
+                && name.endsWith(ext) //
+                && StringUtils.isNumber(name.substring("JDK".length(), name.length() - ext.length()) //
         );
     }
 

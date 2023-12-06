@@ -25,8 +25,8 @@ public class CollectionUtils {
     }
 
     /**
-     * 判断是否为空 <br>
-     * isEmpty(null) == true <br>
+     * 判断是否为空
+     * isEmpty(null) == true
      *
      * @param map key, value对象
      * @return true表示为 null 或 array.isEmpty()
@@ -36,10 +36,10 @@ public class CollectionUtils {
     }
 
     /**
-     * 集合为null或空时返回true <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 集合为null或空时返回true
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param c 数组
      * @return true表示为 null 或 list.length == 0
@@ -99,8 +99,8 @@ public class CollectionUtils {
     }
 
     /**
-     * 把二个数组拼成一个HashMap对象，规则：<br>
-     * 参数 args1 数组作为Map 集合的关键字 <br>
+     * 把二个数组拼成一个HashMap对象，规则：
+     * 参数 args1 数组作为Map 集合的关键字
      * 参数 args2 数组作为 Map 集合的数值
      *
      * @param <E>
@@ -166,7 +166,7 @@ public class CollectionUtils {
     }
 
     /**
-     * 集合中只能有一个元素, 并返回该元素 <br>
+     * 集合中只能有一个元素, 并返回该元素
      * 如果集合中没有元素或超过一个元素就直接抛出异常信息
      *
      * @param <E>
@@ -229,8 +229,8 @@ public class CollectionUtils {
     }
 
     /**
-     * 返回属性值不同的属性名（key） <br>
-     * 属性名必须是在2个集合中都存在的属性 <br>
+     * 返回属性值不同的属性名（key）
+     * 属性名必须是在2个集合中都存在的属性
      *
      * @param map1 集合1
      * @param map2 集合2

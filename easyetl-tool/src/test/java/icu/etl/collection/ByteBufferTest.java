@@ -297,7 +297,7 @@ public class ByteBufferTest {
     public void testToStringString() throws IOException {
         ByteBuffer b = new ByteBuffer(10, 2, "GBK");
         b.append("0123456789中文");
-        assertEquals("0123456789中文", b.toString("gbk"));
+        assertEquals("0123456789中文", b.toString("GBK"));
     }
 
     @Test

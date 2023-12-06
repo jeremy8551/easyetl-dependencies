@@ -81,7 +81,6 @@ public class IOTest {
     @Test
     public void testFlush() {
         IO.flushQuietly(new Flushable() {
-            @Override
             public void flush() throws IOException {
                 Assert.assertTrue(true);
             }
@@ -91,7 +90,6 @@ public class IOTest {
     @Test
     public void testFlushQuietly() {
         IO.flush(new Flushable() {
-            @Override
             public void flush() throws IOException {
                 Assert.assertTrue(true);
             }
@@ -151,7 +149,6 @@ public class IOTest {
     @Test
     public void testCloseQuietlyCloseable() {
         IO.closeQuietly(new Closeable() {
-            @Override
             public void close() throws IOException {
                 Assert.assertTrue(true);
             }

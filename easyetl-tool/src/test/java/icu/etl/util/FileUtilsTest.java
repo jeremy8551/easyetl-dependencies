@@ -935,7 +935,7 @@ public class FileUtilsTest {
         }
 
         FileUtils.clearDirectory(root);
-        File file = new File(root, "test.del");
+        final File file = new File(root, "test.del");
         FileUtils.write(file, "utf-8", false, "testset");
         Thread t = new Thread() {
             public void run() {

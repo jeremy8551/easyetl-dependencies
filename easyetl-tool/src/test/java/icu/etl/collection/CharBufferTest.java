@@ -1,6 +1,7 @@
 package icu.etl.collection;
 
 import icu.etl.util.StringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +39,10 @@ public class CharBufferTest {
         assertTrue(cb.append("012345", 0, 6).toString().equals("012345001012345"));
         assertEquals(cb.append("012345", 0, 7).toString(), "012345001012345012345");
         assertEquals(cb.append("012345", 0, 10).toString(), "012345001012345012345012345");
+
+        Assert.assertTrue(cb.contains('5'));
+        Assert.assertFalse(cb.contains('l'));
+
 //        assertEquals(cb.rtrim('5').toString(), "01234500101234501234501234");
 //        assertEquals(cb.rtrim('3', '4').toString(), "012345001012345012345012");
 //        assertEquals(cb.rtrim('1').toString(), "012345001012345012345012");

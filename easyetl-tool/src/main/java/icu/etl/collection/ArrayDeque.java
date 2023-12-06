@@ -11,18 +11,18 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
- * Deque接口的可调整大小的数组实现。阵列设备没有容量限制；<br>
- * 它们根据需要增长以支持使用。它们不是线程安全的；<br>
- * 在没有外部同步的情况下，它们不支持多线程并发访问。<br>
- * 禁止使用空元素。当用作堆栈时，此类可能比堆栈快，当用作队列时，此类可能比LinkedList快。 <br>
- * 大多数ArrayDeque操作在摊销的固定时间内运行。<br>
- * 例外情况包括 remove、removeFirstOccurrence、RemoveAsToccurrence、contains、iterator.remove（）和批量操作，所有这些操作都在线性时间内运行。 <br>
- * 这个类的迭代器方法返回的迭代器是快速失效的：如果在迭代器创建之后的任何时候，以迭代器自己的remove方法以外的任何方式修改了deque，迭代器通常会抛出ConcurrentModificationException。<br>
- * 因此，在面对并发修改时，迭代器会快速、干净地失败，而不是在将来的不确定时间冒着任意、不确定行为的风险。 <br>
- * 请注意，无法保证迭代器的快速失效行为，因为一般来说，在存在非同步并发修改的情况下，不可能做出任何硬保证。<br>
- * 快速失败迭代器会尽最大努力抛出ConcurrentModificationException。<br>
- * 因此，编写依赖于此异常的正确性的程序是错误的：迭代器的快速失败行为应该只用于检测bug。 <br>
- * 此类及其迭代器实现集合和迭代器接口的所有可选方法。 <br>
+ * Deque接口的可调整大小的数组实现。阵列设备没有容量限制；
+ * 它们根据需要增长以支持使用。它们不是线程安全的；
+ * 在没有外部同步的情况下，它们不支持多线程并发访问。
+ * 禁止使用空元素。当用作堆栈时，此类可能比堆栈快，当用作队列时，此类可能比LinkedList快。
+ * 大多数ArrayDeque操作在摊销的固定时间内运行。
+ * 例外情况包括 remove、removeFirstOccurrence、RemoveAsToccurrence、contains、iterator.remove（）和批量操作，所有这些操作都在线性时间内运行。
+ * 这个类的迭代器方法返回的迭代器是快速失效的：如果在迭代器创建之后的任何时候，以迭代器自己的remove方法以外的任何方式修改了deque，迭代器通常会抛出ConcurrentModificationException。
+ * 因此，在面对并发修改时，迭代器会快速、干净地失败，而不是在将来的不确定时间冒着任意、不确定行为的风险。
+ * 请注意，无法保证迭代器的快速失效行为，因为一般来说，在存在非同步并发修改的情况下，不可能做出任何硬保证。
+ * 快速失败迭代器会尽最大努力抛出ConcurrentModificationException。
+ * 因此，编写依赖于此异常的正确性的程序是错误的：迭代器的快速失败行为应该只用于检测bug。
+ * 此类及其迭代器实现集合和迭代器接口的所有可选方法。
  * 此类是Java集合框架的成员。
  *
  * @param <E>
@@ -33,8 +33,8 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     private final static long serialVersionUID = 1L;
 
     /**
-     * 存储队列元素的数组。deque的容量是这个数组的长度，它总是2的幂。<br>
-     * 数组永远不允许变满，除非在addX方法中，数组在变满后立即调整大小（请参见doubleCapacity），从而避免头部和尾部缠绕以彼此相等。<br>
+     * 存储队列元素的数组。deque的容量是这个数组的长度，它总是2的幂。
+     * 数组永远不允许变满，除非在addX方法中，数组在变满后立即调整大小（请参见doubleCapacity），从而避免头部和尾部缠绕以彼此相等。
      * 我们还保证所有不包含deque元素的数组单元始终为空。
      */
     private transient Object[] elements;
@@ -109,7 +109,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 按顺序（从deque中的第一个元素到最后一个元素）将元素从元素数组复制到指定的数组中。<br>
+     * 按顺序（从deque中的第一个元素到最后一个元素）将元素从元素数组复制到指定的数组中。
      * 假设数组足够大，可以容纳deque中的所有元素。
      *
      * @return its 元素数组
@@ -142,7 +142,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 按照集合迭代器返回的顺序构造包含指定集合元素的队列。<br>
+     * 按照集合迭代器返回的顺序构造包含指定集合元素的队列。
      * （集合的迭代器返回的第一个元素将成为第一个元素，或队列的前面。）
      *
      * @param c 要将其元素放置到队列中的集合
@@ -307,9 +307,9 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 删除此队列中指定元素的第一个匹配项（从头到尾遍历队列时）。<br>
-     * 如果队列不包含该元素，则该元素将保持不变。<br>
-     * 更正式地说，删除第一个元素e，使得o等于（e）（如果存在这样的元素）。<br>
+     * 删除此队列中指定元素的第一个匹配项（从头到尾遍历队列时）。
+     * 如果队列不包含该元素，则该元素将保持不变。
+     * 更正式地说，删除第一个元素e，使得o等于（e）（如果存在这样的元素）。
      * 如果此队列包含指定的元素，则返回true（或者如果此队列因调用而更改，则返回等效值）。
      *
      * @param o 从该队列中删除的元素（如果存在）
@@ -334,8 +334,8 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 删除此 队列 中指定元素的最后一个匹配项（从头到尾遍历 队列 时）。<br>
-     * 如果 队列 不包含该元素，则该元素将保持不变。更正式地说，删除最后一个元素e，使o等于（e）（如果存在这样的元素）。<br>
+     * 删除此 队列 中指定元素的最后一个匹配项（从头到尾遍历 队列 时）。
+     * 如果 队列 不包含该元素，则该元素将保持不变。更正式地说，删除最后一个元素e，使o等于（e）（如果存在这样的元素）。
      * 如果此 队列 包含指定的元素，则返回 true（或者如果此 队列 因调用而更改，则返回等效值）。
      *
      * @param o 从中删除的元素（如果存在）
@@ -414,7 +414,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 检索但不删除此队列表示的队列头。<br>
+     * 检索但不删除此队列表示的队列头。
      * 此方法与peek的不同之处在于，如果此队列为空，则会引发异常。
      *
      * <p>
@@ -428,7 +428,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 检索但不删除此队列表示的队列头，如果此队列为空，则返回null。<br>
+     * 检索但不删除此队列表示的队列头，如果此队列为空，则返回null。
      * 此方法相当于 {@link #peekFirst}.
      *
      * @return 此队列表示的队列头，如果此队列为空，则为null
@@ -470,7 +470,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 在元素数组中的指定位置删除元素，并根据需要调整头部和尾部。这可能导致元素在数组中前后移动。<br>
+     * 在元素数组中的指定位置删除元素，并根据需要调整头部和尾部。这可能导致元素在数组中前后移动。
      * 此方法称为delete而不是remove，以强调其语义不同于 List.remove(int）的语义。
      *
      * @return
@@ -582,7 +582,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 如果此数据包含指定的元素，则返回true。<br>
+     * 如果此数据包含指定的元素，则返回true。
      * 更正式地说，当且仅当此队列至少包含一个元素e，使得o.equals（e）时，返回true。
      *
      * @param o 要检查此队列中是否包含的对象
@@ -606,9 +606,9 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 从此数据集中删除指定元素的单个实例。<br>
-     * 如果队列不包含该元素，则该元素将保持不变。<br>
-     * 更正式地说，删除第一个元素e，使得o等于（e）（如果存在这样的元素）。<br>
+     * 从此数据集中删除指定元素的单个实例。
+     * 如果队列不包含该元素，则该元素将保持不变。
+     * 更正式地说，删除第一个元素e，使得o等于（e）（如果存在这样的元素）。
      * 如果此队列包含指定的元素，则返回true（或者如果此队列因调用而更改，则返回等效值）。
      *
      * <p>
@@ -639,10 +639,10 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 返回一个数组，该数组按正确顺序（从第一个元素到最后一个元素）包含此数据集中的所有元素。<br>
-     * 返回的数组将是 “安全的”，因为此队列不维护对它的引用。（换句话说，此方法必须分配一个新数组）。<br>
-     * 因此，调用者可以自由修改返回的数组。<br>
-     * 此方法充当基于阵列和基于集合的API之间的桥梁。<br>
+     * 返回一个数组，该数组按正确顺序（从第一个元素到最后一个元素）包含此数据集中的所有元素。
+     * 返回的数组将是 “安全的”，因为此队列不维护对它的引用。（换句话说，此方法必须分配一个新数组）。
+     * 因此，调用者可以自由修改返回的数组。
+     * 此方法充当基于阵列和基于集合的API之间的桥梁。
      *
      * @return 当前队列中所有元素的数组
      */
@@ -651,12 +651,12 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     }
 
     /**
-     * 返回一个数组，该数组按正确顺序（从第一个元素到最后一个元素）包含此数据集中的所有元素；<br>
-     * 返回数组的运行时类型是指定数组的运行时类型。如果队列适合指定的数组，则返回该数组。<br>
-     * 否则，将使用指定数组的运行时类型和此队列的大小分配一个新数组。<br>
-     * 如果此队列适合具有空闲空间的指定数组（即，该数组的元素数多于此队列），则紧跟在队列末尾的数组中的元素将设置为null。<br>
-     * 与toArray（）方法一样，此方法充当基于数组和基于集合的API之间的桥梁。此外，此方法允许对输出数组的运行时类型进行精确控制，并且在某些情况下可用于节省分配成本。<br>
-     * 假设x是已知只包含字符串的队列。以下代码可用于将队列转储到新分配的字符串数组中：<br>
+     * 返回一个数组，该数组按正确顺序（从第一个元素到最后一个元素）包含此数据集中的所有元素；
+     * 返回数组的运行时类型是指定数组的运行时类型。如果队列适合指定的数组，则返回该数组。
+     * 否则，将使用指定数组的运行时类型和此队列的大小分配一个新数组。
+     * 如果此队列适合具有空闲空间的指定数组（即，该数组的元素数多于此队列），则紧跟在队列末尾的数组中的元素将设置为null。
+     * 与toArray（）方法一样，此方法充当基于数组和基于集合的API之间的桥梁。此外，此方法允许对输出数组的运行时类型进行精确控制，并且在某些情况下可用于节省分配成本。
+     * 假设x是已知只包含字符串的队列。以下代码可用于将队列转储到新分配的字符串数组中：
      *
      * <pre>
      * {

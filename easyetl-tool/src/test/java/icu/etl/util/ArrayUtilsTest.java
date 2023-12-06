@@ -1,6 +1,7 @@
 package icu.etl.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 import org.junit.Assert;
@@ -15,9 +16,8 @@ import static org.junit.Assert.assertTrue;
 public class ArrayUtilsTest {
 
     @Test
-    public void testindexOf() throws Exception {
+    public void testindexOf() {
         Comparator<String> c = new Comparator<String>() {
-            @Override
             public int compare(String o1, String o2) {
                 return 0;
             }
@@ -33,7 +33,15 @@ public class ArrayUtilsTest {
 
     @Test
     public void testRemoveDuplicatDataListOfTComparatorOfT() {
-        assertTrue(true);
+        Assert.assertTrue(Arrays.equals(new int[]{}, ArrayUtils.removeDuplicat(new int[]{})));
+        Assert.assertTrue(Arrays.equals(new int[]{0}, ArrayUtils.removeDuplicat(new int[]{0})));
+        Assert.assertTrue(Arrays.equals(new int[]{0}, ArrayUtils.removeDuplicat(new int[]{0, 0, 0})));
+        Assert.assertTrue(Arrays.equals(new int[]{0, 1, 2}, ArrayUtils.removeDuplicat(new int[]{0, 1, 2})));
+        Assert.assertTrue(Arrays.equals(new int[]{0, 1, 2}, ArrayUtils.removeDuplicat(new int[]{0, 1, 2, 1, 0, 2})));
+
+        Assert.assertFalse(Arrays.equals(new int[]{0}, ArrayUtils.removeDuplicat(new int[]{1})));
+        Assert.assertFalse(Arrays.equals(new int[]{0, 1, 2}, ArrayUtils.removeDuplicat(new int[]{0, 1, 2, 1, 0, 4})));
+        Assert.assertFalse(Arrays.equals(new int[]{0, 1, 2}, ArrayUtils.removeDuplicat(new int[]{0, 1, 3})));
     }
 
     @Test
@@ -53,6 +61,8 @@ public class ArrayUtilsTest {
 
         array = ArrayUtils.remove(new String[]{"", "1", "2"}, "3");
         assertTrue(array.length == 3 && array[0].equals("") && array[1].equals("1") && array[2].equals("2"));
+
+        Assert.assertEquals(new String[]{"1"}, ArrayUtils.remove(new String[]{null, "1", null}, null));
 
         array = ArrayUtils.remove(new String[]{"", "1", "2"}, "");
         assertTrue(array.length == 2 && array[0].equals("1") && array[1].equals("2"));
@@ -262,7 +272,7 @@ public class ArrayUtilsTest {
 
     @Test
     public void testSetLastElement() {
-        assertTrue(true);
+        
     }
 
     @Test
@@ -375,6 +385,7 @@ public class ArrayUtilsTest {
         Assert.assertEquals(3, ArrayUtils.indexOf(array, 0, null));
         Assert.assertEquals(5, ArrayUtils.indexOf(array, 4, null));
         Assert.assertEquals(1, ArrayUtils.indexOf(array, 0, "str"));
+        Assert.assertEquals(-1, ArrayUtils.indexOf(array, 0, "obj"));
     }
 
     @Test

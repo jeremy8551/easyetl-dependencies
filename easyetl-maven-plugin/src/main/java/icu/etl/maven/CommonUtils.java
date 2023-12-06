@@ -3,6 +3,7 @@ package icu.etl.maven;
 import java.util.Iterator;
 import java.util.Map;
 
+import icu.etl.util.Settings;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -16,7 +17,7 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 public class CommonUtils {
 
     public static String getPuginName(AbstractMojo mojo) {
-        String name = "easyetl-maven-plugin";
+        String name = Settings.getApplicationName() + "-maven-plugin";
         try {
             Map map = mojo.getPluginContext();
             PluginDescriptor pluginDescriptor = (PluginDescriptor) map.get("pluginDescriptor");

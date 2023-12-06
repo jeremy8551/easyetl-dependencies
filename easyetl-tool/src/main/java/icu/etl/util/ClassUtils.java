@@ -18,10 +18,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 类信息工具
@@ -30,9 +27,6 @@ import java.util.logging.Logger;
  * @createtime 2011-05-24
  */
 public class ClassUtils {
-
-    /** JDK日志输出接口 */
-    private final static Logger log = Logger.getLogger(ClassUtils.class.getName());
 
     /** 设置脚本引擎默认 classpath 绝对路径 */
     public final static String PROPERTY_CLASSPATH = ClassUtils.class.getPackage().getName().split("\\.")[0] + "." + ClassUtils.class.getPackage().getName().split("\\.")[1] + ".classpath";
@@ -44,16 +38,16 @@ public class ClassUtils {
     }
 
     /**
-     * 确定对象是否是JAVA的基本类型：<br>
-     * String<br>
-     * int<br>
-     * byte<br>
-     * short<br>
-     * long<br>
-     * float<br>
-     * double<br>
-     * char<br>
-     * boolean<br>
+     * 确定对象是否是JAVA的基本类型：
+     * String
+     * int
+     * byte
+     * short
+     * long
+     * float
+     * double
+     * char
+     * boolean
      *
      * @param obj 对象
      * @return 返回true表示参数是JAVA的基本类型
@@ -86,10 +80,8 @@ public class ClassUtils {
         if (obj instanceof Character) {
             return true;
         }
-        if (obj instanceof Boolean) {
-            return true;
-        }
-        return false;
+
+        return obj instanceof Boolean;
     }
 
     /**
@@ -105,14 +97,13 @@ public class ClassUtils {
         }
 
         if (cls == null) {
-            for (Iterator<?> it = c.iterator(); it.hasNext(); ) {
-                if (it.next() == null) {
+            for (Object o : c) {
+                if (o == null) {
                     return true;
                 }
             }
         } else {
-            for (Iterator<?> it = c.iterator(); it.hasNext(); ) {
-                Object obj = it.next();
+            for (Object obj : c) {
                 if (obj == null) {
                     continue;
                 } else {
@@ -295,13 +286,42 @@ public class ClassUtils {
     }
 
     /**
-     * 读取并解析 java.class.path 类路径参数 <br>
-     * <br>
-     * /Users/etl/git/repository-atom/atom/target/classes <br>
-     * /Users/etl/git/repository-atom/atom/lib/db2java.jar <br>
-     * /Users/etl/git/repository-atom/atom/lib/db2jcc_license_cisuz.jar <br>
-     * /Users/etl/git/repository-atom/atom/lib/db2jcc_license_cu.jar <br>
-     * /Users/etl/git/repository-atom/atom/lib/db2jcc.jar <br>
+     * 修改实例对象中的静态字段值
+     *
+     * @param obj        实例对象
+     * @param fieldRegex 匹配字段名的正则表达式
+     * @param fieldClass 字段类型
+     * @param newValue   新值
+     */
+    public static <E> void setField(Object obj, String fieldRegex, Class<E> fieldClass, E newValue) {
+        Field[] list = obj.getClass().getDeclaredFields();
+        for (Field field : list) {
+            String name = field.getName();
+            if (name.matches(fieldRegex) && field.getType().equals(fieldClass)) {
+                try {
+                    JUL.debug("change Class: " + obj.getClass().getName() + ", Field: " + name + ", Type: " + field.getType().getName());
+
+                    field.setAccessible(true);
+                    Field modifiers = Field.class.getDeclaredField("modifiers");
+                    modifiers.setAccessible(true);
+                    modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+                    field.set(obj, newValue);
+//                    modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL); // 再把final修饰符给加回来
+                } catch (Throwable e) {
+                    JUL.warn(obj.getClass().getName(), e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 读取并解析 java.class.path 类路径参数
+     * <p>
+     * /Users/etl/git/repository-atom/atom/target/classes
+     * /Users/etl/git/repository-atom/atom/lib/db2java.jar
+     * /Users/etl/git/repository-atom/atom/lib/db2jcc_license_cisuz.jar
+     * /Users/etl/git/repository-atom/atom/lib/db2jcc_license_cu.jar
+     * /Users/etl/git/repository-atom/atom/lib/db2jcc.jar
      * /Users/etl/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
      *
      * @return 类路径数组（数组中没有空值）
@@ -329,8 +349,8 @@ public class ClassUtils {
 
         // 优先检查用户自定义的 CLASSPATH
         if (ClassUtils.CLASSPATH != null) {
-            if (log.isLoggable(Level.CONFIG)) {
-                log.log(Level.CONFIG, ResourcesUtils.getCommonMessage(8, cls.getName(), ClassUtils.CLASSPATH));
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getCommonMessage(8, cls.getName(), ClassUtils.CLASSPATH));
             }
 
             if (ClassUtils.isClasspath0(ClassUtils.CLASSPATH, cls)) {
@@ -341,8 +361,8 @@ public class ClassUtils {
         // 查询根路径下的 CLASSPATH, 使用场景如: WebContainer
         String classpath0 = StringUtils.decodeJvmUtf8HexString(cls.getResource("/").getFile());
         if (classpath0 != null) {
-            if (log.isLoggable(Level.CONFIG)) {
-                log.log(Level.CONFIG, ResourcesUtils.getCommonMessage(9, cls.getName(), classpath0));
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getCommonMessage(9, cls.getName(), classpath0));
             }
 
             if (ClassUtils.isClasspath0(classpath0, cls)) {
@@ -353,8 +373,8 @@ public class ClassUtils {
         // 查询类信息当前路径下的 CLASSPATH, 使用场景如: WebSphere
         String classpath1 = StringUtils.decodeJvmUtf8HexString(cls.getResource("").getPath());
         if (classpath1 != null) {
-            if (log.isLoggable(Level.CONFIG)) {
-                log.log(Level.CONFIG, ResourcesUtils.getCommonMessage(10, cls.getName(), classpath1));
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getCommonMessage(10, cls.getName(), classpath1));
             }
 
             if (ClassUtils.isClasspath1(classpath1)) {
@@ -380,16 +400,16 @@ public class ClassUtils {
                 classpaths.add(file.getAbsolutePath());
                 String classPackageName = cls.getPackage().getName().replace('.', File.separatorChar);
                 String classfilepath = FileUtils.joinFilepath(file.getAbsolutePath(), classPackageName);
-                if (log.isLoggable(Level.CONFIG)) {
-                    log.log(Level.CONFIG, ResourcesUtils.getCommonMessage(12, cls.getName(), classfilepath));
+                if (JUL.isDebugEnabled()) {
+                    JUL.debug(ResourcesUtils.getCommonMessage(12, cls.getName(), classfilepath));
                 }
 
                 if (ClassUtils.isClasspath1(classfilepath)) {
                     return file.getAbsolutePath();
                 }
             } else {
-                if (log.isLoggable(Level.WARNING)) {
-                    log.log(Level.WARNING, ResourcesUtils.getCommonMessage(13, cls.getName(), file.getAbsolutePath())); // 类路径不合法
+                if (JUL.isWarnEnabled()) {
+                    JUL.warn(ResourcesUtils.getCommonMessage(13, cls.getName(), file.getAbsolutePath())); // 类路径不合法
                 }
             }
         }
@@ -397,8 +417,8 @@ public class ClassUtils {
         // 查询类信息所在 jar 文件的绝对路径
         String jarfilepath = ClassUtils.getJarPath(cls);
         if (jarfilepath != null) {
-            if (log.isLoggable(Level.CONFIG)) {
-                log.log(Level.CONFIG, ResourcesUtils.getCommonMessage(11, cls.getName(), jarfilepath)); // 类路径不合法
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getCommonMessage(11, cls.getName(), jarfilepath)); // 类路径不合法
             }
 
             return new File(jarfilepath).getAbsolutePath();
@@ -488,7 +508,7 @@ public class ClassUtils {
     }
 
     /**
-     * 返回类文件（*.class）所在jar文件的绝对路径, 如果是多层jar包嵌套，则返回第一层jar所在路径 <br>
+     * 返回类文件（*.class）所在jar文件的绝对路径, 如果是多层jar包嵌套，则返回第一层jar所在路径
      *
      * @param cls 类信息
      * @return 如果类信息参数不在 jar 包中时返回 null
@@ -529,14 +549,14 @@ public class ClassUtils {
     /**
      * 查找资源
      *
-     * @param name  给定资源名称, <br>
-     *              例如: /jdbc.properties <br>
-     *              /images/show.gif <br>
+     * @param name  给定资源名称,
+     *              例如: /jdbc.properties
+     *              /images/show.gif
      * @param array 参数对象数组，最多只能设置一个元素
      * @return
      */
     public static InputStream getResourceAsStream(String name, Object... array) {
-        Object obj = Ensure.onlyone(array);
+        Object obj = Ensure.onlyOne(array);
         if (obj == null) {
             obj = new ClassUtils();
         }
@@ -587,6 +607,50 @@ public class ClassUtils {
     }
 
     /**
+     * 返回class信息的包名 <br>
+     * getPackageName({@link ClassUtils}, 1) 返回字符串 icu <br>
+     * getPackageName({@link ClassUtils}, 2) 返回字符串 icu.etl <br>
+     *
+     * @param packageName 类名或包名
+     * @param level       显示包名的级别
+     *                    0表示显示原包名
+     *                    -1表示从右向左边显示包名
+     *                    1表示从左向右边显示包名
+     * @return
+     */
+    public static String getPackageName(String packageName, int level) {
+        if (packageName == null || level == 0) {
+            return packageName;
+        }
+
+        String[] array = StringUtils.split(packageName, '.');
+        StringBuilder buf = new StringBuilder(packageName.length());
+
+        if (level < 0) { // 从右向左边截取
+            int i = array.length - (-level);
+            if (i < 0) {
+                i = 0;
+            }
+
+            for (; i >= 0 && i < array.length; ) {
+                buf.append(array[i]);
+                if (++i < array.length) {
+                    buf.append('.');
+                }
+            }
+        } else { // level > 0 从左向右边截取
+            for (int i = 0, length = Math.min(level, array.length); i < length; ) {
+                buf.append(array[i]);
+                if (++i < length) {
+                    buf.append('.');
+                }
+            }
+        }
+
+        return buf.toString();
+    }
+
+    /**
      * 返回 Class 信息的部分包名
      *
      * @param cls   类信息
@@ -631,7 +695,7 @@ public class ClassUtils {
     }
 
     /**
-     * 判断字符串参数 className 对应的Java类是否存在 <br>
+     * 判断字符串参数 className 对应的Java类是否存在
      * 不存在时会返回 null
      *
      * @param <E>        类信息
@@ -659,6 +723,23 @@ public class ClassUtils {
     public static <E> Class<E> loadClass(String className) {
         try {
             return (Class<E>) Class.forName(className);
+        } catch (Throwable e) {
+            throw new RuntimeException(className, e);
+        }
+    }
+
+    /**
+     * 判断字符串参数className对应的Java类是否存在
+     *
+     * @param className  类名
+     * @param initialize 是否初始化
+     * @param loader     类加载器
+     * @return 类信息
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> Class<E> loadClass(String className, boolean initialize, ClassLoader loader) {
+        try {
+            return (Class<E>) Class.forName(className, initialize, loader);
         } catch (Throwable e) {
             throw new RuntimeException(className, e);
         }
@@ -788,7 +869,7 @@ public class ClassUtils {
             }
         }
 
-        return table.toStandardShape().ltrim().toString();
+        return table.toString(CharTable.Style.standard);
     }
 
     /**
@@ -864,22 +945,26 @@ public class ClassUtils {
     }
 
     /**
-     * 返回类信息 {@code cls} 上指定接口 {@code interfacecls} 的范型
+     * 返回类信息 {@code cls} 上指定接口 {@code interfacecls} 的泛型
      *
      * @param cls          类信息
      * @param interfacecls 类 {@code cls} 上实现的接口
      * @return 范型类型
      */
     public static String[] getInterfaceGenerics(Class<?> cls, Class<?> interfacecls) {
-        Type[] types = cls.getGenericInterfaces(); // TODO 只支持 jdk8
+        Type[] types = cls.getGenericInterfaces();
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
-                ParameterizedType pt = (ParameterizedType) type;
-                if (pt.getTypeName().startsWith(interfacecls.getName())) { // 判断接口名是否匹配
-                    Type[] actualTypeArguments = pt.getActualTypeArguments();
+                ParameterizedType ptype = (ParameterizedType) type;
+                // pt.getTypeName().startsWith(interfacecls.getName())
+                if (ptype.toString().startsWith(interfacecls.getName())) { // 判断接口名是否匹配
+                    Type[] actualTypeArguments = ptype.getActualTypeArguments();
                     String[] array = new String[actualTypeArguments.length];
                     for (int i = 0; i < array.length; i++) {
-                        array[i] = actualTypeArguments[i].getTypeName();
+                        // array[i] = actualTypeArguments[i].getTypeName();
+                        String str = actualTypeArguments[i].toString();
+                        String[] split = str.split("\\s+");
+                        array[i] = split.length >= 2 ? split[1] : str;
                     }
                     return array;
                 }
@@ -1001,22 +1086,6 @@ public class ClassUtils {
             }
         }
         return null;
-    }
-
-    /**
-     * 加载SPI机制的服务
-     *
-     * @param classLoader 类加载器
-     * @param cls         服务的类信息
-     * @return 服务集合
-     */
-    public static <E> List<E> getSpiServices(ClassLoader classLoader, Class<E> cls) {
-        List<E> list = new ArrayList<E>();
-        ServiceLoader<E> serviceLoader = ServiceLoader.load(cls, classLoader);
-        for (E rule : serviceLoader) {
-            list.add(rule);
-        }
-        return list;
     }
 
 }

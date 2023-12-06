@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 文件帮助类
@@ -31,9 +28,6 @@ import java.util.logging.Logger;
  * @createtime 2009-12-19 18:00:54
  */
 public final class FileUtils {
-
-    /** JDK日志输出接口 */
-    private final static Logger log = Logger.getLogger(FileUtils.class.getName());
 
     /** 文件系统文件路径的分隔符集合 */
     public final static List<String> pathSeparators = java.util.Collections.unmodifiableList(ArrayUtils.asList("/", "\\"));
@@ -205,7 +199,7 @@ public final class FileUtils {
     }
 
     /**
-     * 按文件的绝对路径参数 filepath 创建文件，并检查文件是否具有权限值 mode。 <br>
+     * 按文件的绝对路径参数 filepath 创建文件，并检查文件是否具有权限值 mode。
      * 如果权限值不够则自动在当前用户根目录下按目录结构参数 dirNames 创建目录与文件。
      *
      * @param filepath 文件绝对路径
@@ -273,7 +267,7 @@ public final class FileUtils {
     }
 
     /**
-     * 创建目录及父目录 <br>
+     * 创建目录及父目录
      * 如果目录已经存在返回 true
      *
      * @param file 文件绝对路径
@@ -284,7 +278,7 @@ public final class FileUtils {
     }
 
     /**
-     * 创建目录及父目录 <br>
+     * 创建目录及父目录
      * 如果目录已经存在返回 true
      *
      * @param file  文件
@@ -356,7 +350,7 @@ public final class FileUtils {
      * @param file        文本文件
      * @param charsetName 文本文件的字符集编码
      * @return 返回 true 表示转换成功
-     * @throws IOException
+     * @throws IOException 文件错误
      */
     public static boolean dos2unix(File file, String charsetName) throws IOException {
         if (file == null || !file.isFile()) {
@@ -390,8 +384,8 @@ public final class FileUtils {
         }
 
         // 删除原有文件，将临时文件改名
-        if (log.isLoggable(Level.CONFIG)) {
-            log.log(Level.CONFIG, ResourcesUtils.getFilesMessage(1, tmpfile, file));
+        if (JUL.isDebugEnabled()) {
+            JUL.debug(ResourcesUtils.getFilesMessage(1, tmpfile, file));
         }
         return FileUtils.deleteFile(file) && tmpfile.renameTo(file);
     }
@@ -423,14 +417,14 @@ public final class FileUtils {
     }
 
     /**
-     * 删除文件 file <br>
+     * 删除文件 file
      * 参数 file 只能是文件不能删除目录
      *
      * @param file 文件
      * @return false表示删除失败
      */
     public static boolean deleteFile(File file) {
-        return (file != null && file.exists()) ? (file.isFile() && file.delete()) : true;
+        return file == null || !file.exists() || (file.isFile() && file.delete());
     }
 
     /**
@@ -452,7 +446,7 @@ public final class FileUtils {
     }
 
     /**
-     * 从文件路径中解析文件名(包含扩展名)<br>
+     * 从文件路径中解析文件名(包含扩展名)
      * "mypath/myfile.txt" == "myfile.txt".
      *
      * @param filepath 文件绝对路径
@@ -470,7 +464,7 @@ public final class FileUtils {
     }
 
     /**
-     * 从文件路径中解析文件名(不含扩展名)<br>
+     * 从文件路径中解析文件名(不含扩展名)
      * "mypath/myfile.txt" == "myfile"
      *
      * @param filepath 文件绝对路径
@@ -496,7 +490,7 @@ public final class FileUtils {
     }
 
     /**
-     * 从文件路径中解析文件名(不含后缀 .txt.gz)<br>
+     * 从文件路径中解析文件名(不含后缀 .txt.gz)
      * "mypath/myfile.txt.gz" == "myfile"
      *
      * @param filepath 文件绝对路径
@@ -521,7 +515,7 @@ public final class FileUtils {
     }
 
     /**
-     * 从文件路径中返回文件扩展名<br>
+     * 从文件路径中返回文件扩展名
      * "mypath/myfile.bak.txt" == "txt"
      *
      * @param filepath 文件绝对路径
@@ -543,7 +537,7 @@ public final class FileUtils {
     }
 
     /**
-     * 从文件路径中返回文件名后缀<br>
+     * 从文件路径中返回文件名后缀
      * "mypath/myfile.txt.gz" == "txt.gz"
      *
      * @param filepath 文件绝对路径
@@ -590,7 +584,7 @@ public final class FileUtils {
     }
 
     /**
-     * 在目录下生成一个不重复的文件 filename <br>
+     * 在目录下生成一个不重复的文件 filename
      * 如果文件已经存在，自动在文件名与文件扩展名之间增加时间戳作字符串用以区分
      *
      * @param parent   目录
@@ -629,9 +623,9 @@ public final class FileUtils {
      * 返回文件路径的父目录
      *
      * @param filepath 文件路径
-     * @param level    第几层目录，从1开始 <br>
-     *                 等于 0 时表示返回参数 filepath 本身 <br>
-     *                 等于 1 时表示上一级目录 <br>
+     * @param level    第几层目录，从1开始
+     *                 等于 0 时表示返回参数 filepath 本身
+     *                 等于 1 时表示上一级目录
      *                 等于 2 时表示上一级目录的父目录
      * @return
      */
@@ -718,17 +712,18 @@ public final class FileUtils {
     public static File getTempDir(Class<?> cls) {
         if (cls == null) {
             throw new NullPointerException();
-        } else {
-            String[] names = StringUtils.split(cls.getPackage().getName(), '.');
-            return FileUtils.getTempDir(StringUtils.removeBlank(names));
         }
+
+        String[] names = StringUtils.split(cls.getPackage().getName(), '.');
+        return FileUtils.getTempDir(StringUtils.removeBlank(names));
     }
 
     /**
      * 创建一个临时文件
      *
      * @param cls   在 JVM 临时文件目录 java.io.tmpdir 下按照类信息所在包名结构建立临时目录
-     * @param array 文件名
+     * @param ext   文件扩展名（不包含半角点）
+     * @param array 文件名（虽然是数组，但是只有第一个参数作为文件名）
      * @return 文件
      * @throws IOException 创建文件失败
      */
@@ -874,26 +869,26 @@ public final class FileUtils {
     public static boolean moveFileToRecycle(File file) throws IOException {
         if (file == null || !file.exists()) {
             return false;
-        } else {
-            String newName = FileUtils.getFilenameNoExt(file.getName()) + "_" + Dates.format17(new Date()) + Numbers.getRandom() + "." + FileUtils.getFilenameExt(file.getName());
-            File newFile = new File(file.getParentFile(), newName);
-            File recycle = FileUtils.getRecyDir();
-            if (file.renameTo(newFile) && FileUtils.moveFile(newFile, recycle)) {
-                if (log.isLoggable(Level.CONFIG)) {
-                    log.log(Level.CONFIG, ResourcesUtils.getFilesMessage(2, file, recycle));
-                }
-                return true;
-            } else {
-                if (log.isLoggable(Level.WARNING)) {
-                    log.log(Level.WARNING, ResourcesUtils.getFilesMessage(2, file, recycle));
-                }
-                return false;
+        }
+
+        String newName = FileUtils.getFilenameNoExt(file.getName()) + "_" + Dates.format17(new Date()) + Numbers.getRandom() + "." + FileUtils.getFilenameExt(file.getName());
+        File newFile = new File(file.getParentFile(), newName);
+        File recycle = FileUtils.getRecyDir();
+        if (file.renameTo(newFile) && FileUtils.moveFile(newFile, recycle)) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getFilesMessage(2, file, recycle));
             }
+            return true;
+        } else {
+            if (JUL.isWarnEnabled()) {
+                JUL.warn(ResourcesUtils.getFilesMessage(2, file, recycle));
+            }
+            return false;
         }
     }
 
     /**
-     * 去掉文件扩展名<br>
+     * 去掉文件扩展名
      * "mypath/myfile.txt" == "mypath/myfile"
      *
      * @param filepath 文件路径
@@ -944,7 +939,7 @@ public final class FileUtils {
     }
 
     /**
-     * 将文件参数 file 重命名为文件参数 newFile <br>
+     * 将文件参数 file 重命名为文件参数 newFile
      *
      * @param file    文件
      * @param newfile 重命名后文件
@@ -953,12 +948,12 @@ public final class FileUtils {
         if (file.renameTo(newfile)) {
             return true;
         } else {
-            throw new UnsupportedOperationException("rename(" + file + ", " + newfile + ")");
+            throw new UnsupportedOperationException("rename " + file + " to " + newfile);
         }
     }
 
     /**
-     * 删除文件路径参数 path 最后一位的目录分隔符 <br>
+     * 删除文件路径参数 path 最后一位的目录分隔符
      * 如果文件路径 path 最后一个字符不是目录分隔符则不作处理
      *
      * @param filepath 文件路径
@@ -1061,13 +1056,16 @@ public final class FileUtils {
         if (number < -1) {
             throw new IllegalArgumentException(String.valueOf(number));
         }
+        if (StringUtils.isBlank(charsetName)) {
+            charsetName = StringUtils.CHARSET;
+        }
 
         // 读取最后一行
         if (number == -1) {
-            BufferedReader in = IO.getBufferedReader(file, StringUtils.defaultString(charsetName, StringUtils.CHARSET));
+            BufferedReader in = IO.getBufferedReader(file, charsetName);
             try {
                 String last = null;
-                String line = null;
+                String line;
                 while ((line = in.readLine()) != null) {
                     last = line;
                 }
@@ -1093,7 +1091,7 @@ public final class FileUtils {
 
         // 读取指定行
         else {
-            BufferedReader in = IO.getBufferedReader(file, StringUtils.defaultString(charsetName, StringUtils.CHARSET));
+            BufferedReader in = IO.getBufferedReader(file, charsetName);
             try {
                 String line = null;
                 int lineno = 0;
@@ -1180,9 +1178,9 @@ public final class FileUtils {
     }
 
     /**
-     * 修改文件路径中的扩展名<br>
-     * 如：changeFilenameExt("/home/test/file.txt", "enc") 返回值: /home/test/file.enc <br>
-     * 如：changeFilenameExt("file.txt", "enc") 返回值: file.enc <br>
+     * 修改文件路径中的扩展名
+     * 如：changeFilenameExt("/home/test/file.txt", "enc") 返回值: /home/test/file.enc
+     * 如：changeFilenameExt("file.txt", "enc") 返回值: file.enc
      *
      * @param filepath   文件绝对路径
      * @param lastPrefix 文件扩展名 enc txt
@@ -1254,8 +1252,8 @@ public final class FileUtils {
 
         // 不支持的文件类型
         else {
-            if (log.isLoggable(Level.SEVERE)) {
-                log.log(Level.SEVERE, ResourcesUtils.getFilesMessage(3, file));
+            if (JUL.isErrorEnabled()) {
+                JUL.error(ResourcesUtils.getFilesMessage(3, file));
             }
             return false;
         }
@@ -1286,7 +1284,7 @@ public final class FileUtils {
         StringBuilder buf = new StringBuilder((int) file.length());
 
         // 读取p对象中的参数值并替换到资源文件file中同名参数值
-        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.ISO_8859_1.name()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), CharsetName.ISO_8859_1));
         try {
             String line;
             while ((line = in.readLine()) != null) {
@@ -1329,7 +1327,7 @@ public final class FileUtils {
             buf.append(FileUtils.lineSeparatorUnix).append(key).append("=").append(value).append(FileUtils.lineSeparatorUnix);
         }
 
-        FileUtils.write(file, StandardCharsets.UTF_8.name(), false, buf.toString());
+        FileUtils.write(file, CharsetName.UTF_8, false, buf.toString());
         return file;
     }
 
@@ -1508,20 +1506,20 @@ public final class FileUtils {
      * 判断路径是否存在
      *
      * @param filepath 文件路径
-     * @return
+     * @return 返回true表示文件存在
      */
     public static boolean exists(String filepath) {
         return StringUtils.isNotBlank(filepath) && new File(filepath).exists();
     }
 
     /**
-     * 返回true 表示二个文件按字节比对相等
+     * 返回 true 表示两个文件按字节比对相等
      *
      * @param file1      文件
      * @param file2      文件
      * @param bufferSize 读取文件时的字节缓冲区大小; 小于等于零自动赋默认值 8192
-     * @return
-     * @throws IOException
+     * @return 返回true表示相等
+     * @throws IOException 访问文件错误
      */
     public static boolean equals(File file1, File file2, int bufferSize) throws IOException {
         if (file1 == null && file2 == null) {
@@ -1573,8 +1571,8 @@ public final class FileUtils {
      * @param file2        文本文件
      * @param charsetName2 文本文件字符集; 空白表示使用默认值
      * @param bufferSize   读文件时缓冲区大小; 小于等于零自动赋默认值 8192
-     * @return
-     * @throws IOException
+     * @return 返回不等的行号
+     * @throws IOException 访问文件错误
      */
     public static long equalsIgnoreLineSeperator(File file1, String charsetName1, File file2, String charsetName2, int bufferSize) throws IOException {
         if (file1 == null && file2 == null) {
@@ -1639,7 +1637,6 @@ public final class FileUtils {
      * 搜索文件
      *
      * @param dir 目录
-     * @return
      */
     private static void findfile0(File dir, String name, List<File> list) {
         if (dir.getName().equals(name) || dir.getName().matches(name)) {
@@ -1670,7 +1667,7 @@ public final class FileUtils {
      * @return true表示没有发生变化 false表示发生了变化
      */
     public static List<File> isWriting(File dir, long time, FilenameFilter... filters) {
-        FilenameFilter filter = Ensure.onlyone(filters);
+        FilenameFilter filter = Ensure.onlyOne(filters);
         if (filter == null) {
             filter = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
@@ -1680,14 +1677,14 @@ public final class FileUtils {
         }
 
         Map<File, Long> files = new HashMap<File, Long>();
-        listfiles(dir, filter, files); // 读取所有文件的最后修改时间
+        FileUtils.listfiles(dir, filter, files); // 读取所有文件的最后修改时间
 
         long begin = System.currentTimeMillis();
         try {
             Thread.sleep(time); // 等待指定时间
         } catch (Throwable e) {
-            if (log.isLoggable(Level.CONFIG)) {
-                log.log(Level.CONFIG, ResourcesUtils.getFilesMessage(4, dir.getAbsolutePath(), time), e);
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(ResourcesUtils.getFilesMessage(4, dir.getAbsolutePath(), time), e);
             }
         } finally {
             while ((System.currentTimeMillis() - begin) <= time) {

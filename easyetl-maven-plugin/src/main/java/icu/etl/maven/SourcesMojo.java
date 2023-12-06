@@ -6,18 +6,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import icu.etl.util.CharTable;
+import icu.etl.util.CharsetName;
 import icu.etl.util.FileUtils;
 import icu.etl.util.IO;
 import icu.etl.util.StringUtils;
 import icu.etl.util.XMLUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.w3c.dom.Element;
@@ -30,8 +28,7 @@ import org.w3c.dom.NodeList;
  * @author jeremy8551@qq.com
  * @createtime 2023-10-01
  */
-@Mojo(name = "sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-@Execute(phase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "sources")
 public class SourcesMojo extends AbstractMojo {
 
     /**
@@ -51,10 +48,10 @@ public class SourcesMojo extends AbstractMojo {
         ct.addTitle("name").addTitle("value");
 
         if (StringUtils.isBlank(this.sourceEncoding)) {
-            this.sourceEncoding = StandardCharsets.UTF_8.name();
+            this.sourceEncoding = CharsetName.UTF_8;
             ct.addCell("设置属性 ${maven.compiler.charset} 的默认值:").addCell(this.sourceEncoding);
         } else {
-            this.sourceEncoding = StandardCharsets.UTF_8.name();
+            this.sourceEncoding = CharsetName.UTF_8;
             ct.addCell("使用pom中设置的属性 ${maven.compiler.charset} 值:").addCell(this.sourceEncoding);
         }
 
@@ -62,7 +59,8 @@ public class SourcesMojo extends AbstractMojo {
             try {
                 this.run(ct, this.project);
             } finally { // 如果发生异常，则先打印日志，再处理异常
-                for (Iterator<String> it = ct.toSimpleShape().iterator(); it.hasNext(); ) {
+                ct.toString(CharTable.Style.simple);
+                for (Iterator<String> it = ct.iterator(); it.hasNext(); ) {
                     getLog().info(it.next());
                 }
             }

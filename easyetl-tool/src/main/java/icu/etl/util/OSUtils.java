@@ -1,7 +1,7 @@
 package icu.etl.util;
 
 /**
- * 操作系统帮助类
+ * 操作系统工具
  *
  * @author jeremy8551@qq.com
  * @createtime 2023-09-27
@@ -9,9 +9,9 @@ package icu.etl.util;
 public class OSUtils {
 
     /**
-     * os名 <br>
-     * <br>
-     * return System.getProperty("os.name"); <br>
+     * os名
+     * <p>
+     * return System.getProperty("os.name");
      * Windows XP
      *
      * @return

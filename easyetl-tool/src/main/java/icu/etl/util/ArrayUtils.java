@@ -22,18 +22,18 @@ public class ArrayUtils {
      * @param <E>    元素类型
      * @param array  数组
      * @param cls    目标类信息（可以是接口或抽象类）
-     * @param offset 搜索数组的起始位置, 从 0 开始 <br>
-     *               如果参数值 cls 是一个具体的类，则返回数组中第一个类信息相等的对象 <br>
+     * @param offset 搜索数组的起始位置, 从 0 开始
+     *               如果参数值 cls 是一个具体的类，则返回数组中第一个类信息相等的对象
      *               如果参数值 cls 是一个接口或抽象类，则返回接口或抽象类的子类
-     * @return
+     * @return 搜索匹配的对象
      */
     @SuppressWarnings("unchecked")
     public static <E> E indexOf(Object[] array, Class<E> cls, int offset) {
         if (array == null) {
-            throw new NullPointerException(String.valueOf(array));
+            throw new NullPointerException();
         }
         if (cls == null) {
-            throw new NullPointerException(String.valueOf(cls));
+            throw new NullPointerException();
         }
         if (offset < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
@@ -58,7 +58,7 @@ public class ArrayUtils {
      */
     public static int indexOf(Object[] array, int offset, Object value) {
         if (array == null) {
-            throw new NullPointerException(String.valueOf(array));
+            throw new NullPointerException();
         }
         if (offset < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
@@ -107,7 +107,7 @@ public class ArrayUtils {
     }
 
     /**
-     * 从字符串数组参数array中的删除字符串参数str
+     * 从字符串数组参数 {@code array} 中删除字符串参数 {@code str}
      *
      * @param array 字符串数组
      * @param str   字符串
@@ -118,21 +118,24 @@ public class ArrayUtils {
             return array;
         }
 
-        int length = 0;
+        int size = 0;
         String[] newarray = new String[array.length];
-        for (int i = 0; i < array.length; i++) {
-            String element = array[i];
-            if (str != null && str.equals(element)) {
-                continue;
+        if (str == null) {
+            for (int i = 0; i < array.length; i++) {
+                String value = array[i];
+                if (value != null) {
+                    newarray[size++] = value;
+                }
             }
-
-            if (str == null && element == null) {
-                continue;
-            } else {
-                newarray[length++] = element;
+        } else {
+            for (int i = 0; i < array.length; i++) {
+                String value = array[i];
+                if (!str.equals(value)) {
+                    newarray[size++] = value;
+                }
             }
         }
-        return ArrayUtils.subarray(newarray, 0, length);
+        return ArrayUtils.subarray(newarray, 0, size);
     }
 
     /**
@@ -172,9 +175,9 @@ public class ArrayUtils {
      *
      * @param <E> 元素类型
      * @param ite 集合
-     * @param obj
-     * @param c   比对对象
-     * @return
+     * @param obj 比对对象
+     * @param c   比对规则
+     * @return 返回true表示集合中包含对象 {@code obj}
      */
     private static <E> boolean contain(Iterable<E> ite, E obj, Comparator<E> c) {
         for (Iterator<E> it = ite.iterator(); it.hasNext(); ) {
@@ -189,7 +192,7 @@ public class ArrayUtils {
      * 删除数组中的重复数据
      *
      * @param array 数组
-     * @return
+     * @return 去重后的数组副本
      */
     public static int[] removeDuplicat(int... array) {
         int length = 0;
@@ -217,10 +220,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -230,10 +233,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -243,10 +246,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -256,10 +259,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -269,10 +272,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -282,10 +285,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -295,10 +298,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -308,10 +311,10 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组是否为空 <br>
-     * isEmpty(null) == true <br>
-     * isEmpty({}) == true <br>
-     * isEmpty({1,2,3}) == false; <br>
+     * 判断数组是否为空
+     * isEmpty(null) == true
+     * isEmpty({}) == true
+     * isEmpty({1,2,3}) == false;
      *
      * @param array 数组
      * @return true表示为 null 或 array.length == 0
@@ -327,7 +330,6 @@ public class ArrayUtils {
      * @param array 数组
      * @return ArrayList集合
      */
-    @SuppressWarnings("unchecked")
     public static <E> ArrayList<E> asList(E... array) {
         if (array == null) {
             return null;
@@ -392,12 +394,18 @@ public class ArrayUtils {
      * 设置数组最后一个元素
      *
      * @param array 数组
-     * @param val   参数值
+     * @param value 值
      * @param <E>   元素类型
+     * @return 返回替换之前的数值
      */
-    public static <E> void setLastElement(E[] array, E val) {
+    public static <E> E setLastElement(E[] array, E value) {
         if (array != null && array.length > 0) {
-            array[array.length - 1] = val;
+            int position = array.length - 1;
+            E last = array[position];
+            array[position] = value;
+            return last;
+        } else {
+            return null;
         }
     }
 
@@ -420,7 +428,6 @@ public class ArrayUtils {
      * @param array 数组
      * @return ArrayList集合
      */
-    @SuppressWarnings("unchecked")
     public static <E> List<E> join(E[]... array) {
         ArrayList<E> list = new ArrayList<E>();
         for (int i = 0; i < array.length; i++) {
@@ -511,10 +518,23 @@ public class ArrayUtils {
     }
 
     /**
-     * 判断数组元素是否逐位相等(equals 函数) <br>
-     * equalsElement(null, {}) = true <br>
-     * equalsElement(null, null) = true <br>
-     * equalsElement({}, {}) = true <br>
+     * 返回数组副本，为了兼容JDK5
+     *
+     * @param original  数组
+     * @param newLength 复制长度
+     * @return 数组副本
+     */
+    public static int[] copyOf(int[] original, int newLength) {
+        int[] copy = new int[newLength];
+        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+        return copy;
+    }
+
+    /**
+     * 判断数组元素是否逐位相等(equals 函数)
+     * equalsElement(null, {}) = true
+     * equalsElement(null, null) = true
+     * equalsElement({}, {}) = true
      *
      * @param <E> 元素类型
      * @param a1  数组1

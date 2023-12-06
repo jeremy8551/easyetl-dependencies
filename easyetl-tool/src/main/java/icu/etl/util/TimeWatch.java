@@ -1,5 +1,7 @@
 package icu.etl.util;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 计时器
  *
@@ -22,8 +24,8 @@ public class TimeWatch {
     }
 
     /**
-     * 开始计时/重新开始计时 <br>
-     * <br>
+     * 开始计时/重新开始计时
+     * <p>
      * 这个方法会把计时器所有参数重置为初始状态
      */
     public boolean start() {
@@ -48,9 +50,9 @@ public class TimeWatch {
     }
 
     /**
-     * 返回计时器用时时间（单位：毫秒） <br>
-     * <br>
-     * 计时器用时计算公式: 当前时间 - 开始时间 - 暂停时间 <br>
+     * 返回计时器用时时间（单位：毫秒）
+     * <p>
+     * 计时器用时计算公式: 当前时间 - 开始时间 - 暂停时间
      *
      * @return
      */
@@ -70,14 +72,16 @@ public class TimeWatch {
     /**
      * 返回计时器用时时间
      *
-     * @return 格式详见 {@linkplain Dates#format(long, boolean)}
+     * @return 格式详见 {@linkplain Dates#format(long, TimeUnit, boolean)}
      */
     public String useTime() {
-        return Dates.format(this.useSeconds(), true).toString();
+        return Dates.format(this.useMillis(), TimeUnit.MILLISECONDS, true).toString();
     }
 
     /**
-     * 返回计时器用时时间(单位：毫秒)
+     * 返回开始计时的时间戳
+     *
+     * @return 时间戳
      */
     public long getStartMillis() {
         return this.startMillis;
@@ -86,7 +90,7 @@ public class TimeWatch {
     /**
      * 计时器暂停类
      */
-    private class PauseTime {
+    private static class PauseTime {
 
         /** 暂停用时(单位：毫秒) */
         private long pauseMillis;
@@ -107,11 +111,10 @@ public class TimeWatch {
         /**
          * 重置所有参数,恢复到初始状态
          */
-        public PauseTime reset() {
+        public void reset() {
             this.isStart = false;
             this.beginPauseMills = 0;
             this.pauseMillis = 0;
-            return this;
         }
 
         /**
@@ -124,20 +127,18 @@ public class TimeWatch {
         /**
          * 开始暂停
          */
-        public long start() {
+        public void start() {
             this.isStart = true;
             this.beginPauseMills = System.currentTimeMillis();
-            return this.beginPauseMills;
         }
 
         /**
          * 结束暂停
          */
-        public long stop() {
+        public void stop() {
             this.isStart = false;
             long mills = System.currentTimeMillis() - this.beginPauseMills;
             this.pauseMillis += mills;
-            return this.pauseMillis;
         }
 
         /**

@@ -440,6 +440,21 @@ public class CharBuffer implements Appendable, CharSequence {
         return this.substring(start, end);
     }
 
+    /**
+     * 判断是否包含字符数组中的任何一个字符
+     *
+     * @param array 字符数组
+     * @return 返回true表示存在字符
+     */
+    public boolean contains(char... array) {
+        for (int i = 0, len = this.length(); i < len; i++) {
+            if (StringUtils.inArray(this.value[i], array)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String toString() {
         return new String(this.value, 0, this.count);
     }

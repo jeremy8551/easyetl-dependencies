@@ -1,7 +1,9 @@
 package icu.etl.util;
 
+import java.util.Arrays;
+
 /**
- * 断言工具类
+ * 断言工具
  *
  * @author jeremy8551@qq.com
  * @createtime 2023-09-15
@@ -9,17 +11,18 @@ package icu.etl.util;
 public class Ensure {
 
     /**
-     * 断言参数 {@code cs} 不能为空白
+     * 参数不能是空白的字符序列
      *
-     * @param cs 字符串
+     * @param value 字符串
      */
-    @SuppressWarnings("unchecked")
-    public static <T> T notBlank(CharSequence cs) {
-        if (StringUtils.isBlank(cs)) {
-            throw new UnsupportedOperationException(String.valueOf(cs));
-        } else {
-            return (T) cs;
+    public static <T> T notBlank(T value) {
+        if (!(value instanceof CharSequence)) {
+            throw new IllegalArgumentException(value.getClass().getName());
         }
+        if (StringUtils.isBlank((CharSequence) value)) {
+            throw new IllegalArgumentException(String.valueOf(value));
+        }
+        return value;
     }
 
     /**
@@ -33,7 +36,7 @@ public class Ensure {
         if (value) {
             return value;
         } else {
-            throw new IllegalArgumentException(array.length == 0 ? String.valueOf(value) : StringUtils.toString(array));
+            throw new IllegalArgumentException(array.length == 0 ? "" : Arrays.toString(array));
         }
     }
 
@@ -63,23 +66,23 @@ public class Ensure {
         if (b1 && b2) {
             return;
         } else if (b1 || b2) {
-            throw new RuntimeException(StringUtils.toString(value1) + " != " + StringUtils.toString(value2));
+            throw new IllegalArgumentException(value1 + " != " + value2);
         } else if (value1 == value2 || value1.equals(value2)) {
             return;
         } else {
-            throw new RuntimeException(StringUtils.toString(value1) + " != " + StringUtils.toString(value2));
+            throw new IllegalArgumentException(value1 + " != " + value2);
         }
     }
 
     /**
-     * 检查参数是否相等
+     * 检查参数 {@code value} 是否在数组 {@code array} 中
      *
      * @param value 字符串
      * @param array 字符串数组
      */
     public static void exists(String value, String... array) {
         if (value == null || array == null || array.length == 0 || !StringUtils.inArrayIgnoreCase(value, array)) {
-            throw new RuntimeException(StringUtils.toString(value) + " != " + StringUtils.toString(array));
+            throw new IllegalArgumentException(StringUtils.toString(value) + " != " + Arrays.toString(array));
         }
     }
 
@@ -88,42 +91,63 @@ public class Ensure {
      *
      * @param value 整数
      */
-    public static long isPosition(long value) {
+    public static long isFromZero(long value) {
         if (value < 0) {
             throw new IllegalArgumentException(String.valueOf(value));
-        } else {
-            return value;
         }
+        return value;
+    }
+
+    /**
+     * 检查参数是否为大于等于零的正整数
+     *
+     * @param value 整数
+     */
+    public static int isFromZero(int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException(String.valueOf(value));
+        }
+        return value;
     }
 
     /**
      * 检查参数是否为大于零的正整数
      *
-     * @param value
-     * @return
+     * @param value 数值
+     * @return 数值
      */
-    public static long isIndex(long value) {
+    public static long isFromOne(long value) {
         if (value <= 0) {
             throw new IllegalArgumentException(String.valueOf(value));
-        } else {
-            return value;
         }
+        return value;
+    }
+
+    /**
+     * 检查参数是否为大于零的正整数
+     *
+     * @param value 数值
+     * @return 数值
+     */
+    public static int isFromOne(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException(String.valueOf(value));
+        }
+        return value;
     }
 
     /**
      * 检查参数是否为null
      *
-     * @param <E>
-     * @param obj
-     * @param array 异常信息
-     * @return
+     * @param <E> 类型
+     * @param obj 对象
+     * @return 对象
      */
-    public static <E> E notnull(E obj, Object... array) {
+    public static <E> E notNull(E obj) {
         if (obj == null) {
-            throw new NullPointerException(StringUtils.toString(array.length == 0 ? obj : array));
-        } else {
-            return obj;
+            throw new NullPointerException();
         }
+        return obj;
     }
 
     /**
@@ -133,9 +157,9 @@ public class Ensure {
      * @param <E>   元素类型
      * @return 数组
      */
-    public static <E> E[] notempty(E[] array) {
+    public static <E> E[] notEmpty(E[] array) {
         if (array == null || array.length == 0) {
-            throw new IllegalArgumentException(String.valueOf(array));
+            throw new IllegalArgumentException(Arrays.toString(array));
         } else {
             return array;
         }
@@ -148,7 +172,7 @@ public class Ensure {
      * @param <E>   元素类型
      * @return 第一个元素
      */
-    public static <E> E onlyone(E[] array) {
+    public static <E> E onlyOne(E[] array) {
         if (array == null) {
             throw new NullPointerException();
         }

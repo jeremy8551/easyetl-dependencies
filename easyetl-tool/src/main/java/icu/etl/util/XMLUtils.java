@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * XML 解析工具
+ * XML工具
  *
  * @author jeremy8551@qq.com
  * @createtime 2017-02-04
@@ -247,10 +246,10 @@ public class XMLUtils {
     }
 
     /**
-     * 转义xml中特殊字符<br>
-     * {@literal 1010 < 1020 == 1010 \&lt; 1020 } <br>
-     * {@literal 1010 > 1020 == 1010 \&gt; 1020 } <br>
-     * {@literal "string" == &quot;string&quot; } <br>
+     * 转义xml中特殊字符
+     * {@literal 1010 < 1020 == 1010 \&lt; 1020 }
+     * {@literal 1010 > 1020 == 1010 \&gt; 1020 }
+     * {@literal "string" == &quot;string&quot; }
      *
      * @param str 字符串
      * @return
@@ -293,11 +292,11 @@ public class XMLUtils {
     }
 
     /**
-     * 反转义xml中特殊字符<br>
-     * {@literal &nb == &amp;nb } <br>
-     * {@literal 1010 &lt; 1020 == 1010 < 1020 } <br>
-     * {@literal 1010 &gt; 1020 == 1010 > 1020 } <br>
-     * {@literal &quot;string&quot; == "string" } <br>
+     * 反转义xml中特殊字符
+     * {@literal &nb == &amp;nb }
+     * {@literal 1010 &lt; 1020 == 1010 < 1020 }
+     * {@literal 1010 &gt; 1020 == 1010 > 1020 }
+     * {@literal &quot;string&quot; == "string" }
      *
      * @param str 字符串
      * @return
@@ -408,7 +407,7 @@ public class XMLUtils {
         }
 
         try {
-            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, StandardCharsets.UTF_8.name()));
+            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, CharsetName.UTF_8));
             if (StringUtils.isNotBlank(charsetName)) {
                 return charsetName;
             }
@@ -416,7 +415,7 @@ public class XMLUtils {
         }
 
         try {
-            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, "GBK"));
+            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, CharsetName.GBK));
             if (StringUtils.isNotBlank(charsetName)) {
                 return charsetName;
             }
@@ -424,7 +423,7 @@ public class XMLUtils {
         }
 
         try {
-            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, StandardCharsets.ISO_8859_1.name()));
+            String charsetName = XMLUtils.getXmlHeadEncoding(new String(array, CharsetName.ISO_8859_1));
             if (StringUtils.isNotBlank(charsetName)) {
                 return charsetName;
             }
@@ -451,7 +450,7 @@ public class XMLUtils {
     }
 
     /**
-     * 分隔XML中的属性信息, 保存属性名与属性值到集合list <br>
+     * 分隔XML中的属性信息, 保存属性名与属性值到集合list
      *
      * @param xml XML属性信息, 如: version =\"1.0\" encoding = \"UTF-8\" name=\"名字\" v1 = 1 v2= v3=3 v4= 4"
      */
@@ -462,7 +461,7 @@ public class XMLUtils {
     }
 
     /**
-     * 分隔XML中的属性信息, 保存属性名与属性值到集合list <br>
+     * 分隔XML中的属性信息, 保存属性名与属性值到集合list
      *
      * @param xml  XML属性信息, 如: version =\"1.0\" encoding = \"UTF-8\" name=\"名字\" v1 = 1 v2= v3=3 v4= 4"
      * @param list XML属性集合，用于存储解析后的所有字段
@@ -633,7 +632,7 @@ public class XMLUtils {
     }
 
     /**
-     * 从指定位置开始搜索xml查找属性值结束位置 <br>
+     * 从指定位置开始搜索xml查找属性值结束位置
      * v1=1 v2 = v3 = 3" v4 = 4' v5=
      *
      * @param str  xml内容

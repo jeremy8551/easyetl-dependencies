@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 日期工具类
@@ -102,6 +103,31 @@ public final class Dates {
     public static char[] DATE_DELIMITER = {'-', '/', '|', '\\', '_', ':', '：', '.', '。'};
 
     public Dates() {
+    }
+
+    /**
+     * 使当前线程进入休眠
+     *
+     * @param millis 毫秒数
+     * @return 返回异常信息, 返回null表示没有发生错误
+     */
+    public static Throwable sleep(long millis) {
+        long start = System.currentTimeMillis();
+        try {
+            Thread.sleep(millis);
+            return null;
+        } catch (Throwable e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
+
+            do {
+                if ((System.currentTimeMillis() - start) >= millis) {
+                    break;
+                }
+            } while (true);
+            return e;
+        }
     }
 
     /**
@@ -342,7 +368,7 @@ public final class Dates {
     }
 
     /**
-     * 将数组中的元素转为日期 <br>
+     * 将数组中的元素转为日期
      *
      * @param array 数组, 支持的格式详见: {@linkplain #parse(Object)}
      * @return
@@ -360,36 +386,36 @@ public final class Dates {
     }
 
     /**
-     * 将输入参数转为 {@link Date} <br>
-     * <Br>
-     * Support date format: <br>
-     * y+.*MM.*dd <br>
-     * <br>
-     * yyyy-MM-dd, e.g: 2017-01-01 || 2017/01/01 || 2017.01.01, the separator between year and month can be "- / | \\ _ : ： . 。"<br>
-     * <br>
-     * MM/dd/yyyy <br>
-     * <br>
-     * yyyy-M-d, e.g: 2017-1-1 <br>
-     * <br>
-     * yyyyMMdd <br>
-     * yyyyMMddHH <br>
-     * yyyyMMddHHmm <br>
-     * yyyyMMddHHmmss <br>
-     * yyyyMMddHHmmssSSS <br>
-     * <br>
-     * yyyy-MM-dd hh <br>
-     * yyyy-MM-dd hh:mm <br>
-     * yyyy-MM-dd hh:mm:ss <br>
-     * yyyy-MM-dd hh:mm:ss:SSS <br>
-     * <br>
-     * Sun Oct 11 00:00:00 GMT+08:00 1998 <br>
-     * Sun Oct 11 00:00:00:000 GMT+08:00 1998 <br>
-     * <br>
-     * 二零一七年十二月二十三 <br>
-     * 1998年10月11日 <br>
-     * <br>
-     * 31 december 2017 at 08:38 <br>
-     * 31 dec 2017 <br>
+     * 将输入参数转为 {@link Date}
+     * <p>
+     * Support date format:
+     * y+.*MM.*dd
+     * <p>
+     * yyyy-MM-dd, e.g: 2017-01-01 || 2017/01/01 || 2017.01.01, the separator between year and month can be "- / | \\ _ : ： . 。"
+     * <p>
+     * MM/dd/yyyy
+     * <p>
+     * yyyy-M-d, e.g: 2017-1-1
+     * <p>
+     * yyyyMMdd
+     * yyyyMMddHH
+     * yyyyMMddHHmm
+     * yyyyMMddHHmmss
+     * yyyyMMddHHmmssSSS
+     * <p>
+     * yyyy-MM-dd hh
+     * yyyy-MM-dd hh:mm
+     * yyyy-MM-dd hh:mm:ss
+     * yyyy-MM-dd hh:mm:ss:SSS
+     * <p>
+     * Sun Oct 11 00:00:00 GMT+08:00 1998
+     * Sun Oct 11 00:00:00:000 GMT+08:00 1998
+     * <p>
+     * 二零一七年十二月二十三
+     * 1998年10月11日
+     * <p>
+     * 31 december 2017 at 08:38
+     * 31 dec 2017
      *
      * @param obj 日期信息
      * @return
@@ -603,7 +629,7 @@ public final class Dates {
     }
 
     /**
-     * 将中文日期信息转为日期 <br>
+     * 将中文日期信息转为日期
      * e.g: 二零一七年一月十二日
      *
      * @param str      中文日期信息
@@ -737,8 +763,8 @@ public final class Dates {
     }
 
     /**
-     * 将中文数字替换为阿拉伯数字 <br>
-     * 中文字符范围包括： 零壹贰叁肆伍陆柒捌玖 零一二三四五六七八九 <Br>
+     * 将中文数字替换为阿拉伯数字
+     * 中文字符范围包括： 零壹贰叁肆伍陆柒捌玖 零一二三四五六七八九
      *
      * @param c 字符
      * @return
@@ -753,15 +779,15 @@ public final class Dates {
     }
 
     /**
-     * 解析周信息 <br>
-     * <br>
-     * 支持周格式: <br>
-     * Mon<br>
-     * Monday<br>
-     * Tuesday<br>
-     * Wednesday<br>
-     * 星期一<br>
-     * 星期1 <br>
+     * 解析周信息
+     * <p>
+     * 支持周格式:
+     * Mon
+     * Monday
+     * Tuesday
+     * Wednesday
+     * 星期一
+     * 星期1
      *
      * @param str 字符串，格式：周一、或 monday 或 星期一 或 星期1
      * @return 数字: 1-7
@@ -798,12 +824,12 @@ public final class Dates {
     }
 
     /**
-     * 解析月份 <br>
-     * 支持的月份格式: <br>
-     * January <br>
-     * 1月 <br>
-     * 一月 <br>
-     * Jan <br>
+     * 解析月份
+     * 支持的月份格式:
+     * January
+     * 1月
+     * 一月
+     * Jan
      *
      * @param str 字符串：格式：一月 或 Jan 或 January 或 1月
      * @return 月份: 1-12
@@ -855,25 +881,25 @@ public final class Dates {
     }
 
     /**
-     * 解析时间表达式 <br>
-     * <br>
-     * 支持的时间表达式格式: <br>
-     * hh <br>
-     * hh:mm <br>
-     * hh:mm:ss <br>
-     * hh:mm:ss:SS <br>
+     * 解析时间表达式
+     * <p>
+     * 支持的时间表达式格式:
+     * hh
+     * hh:mm
+     * hh:mm:ss
+     * hh:mm:ss:SS
      * 时间表达中的分隔符详见 {@linkplain #isTime(String)}
      *
      * @param str      字符串
-     * @param datetime 数组用于存储日期与时间 <br>
-     *                 第一个位置是年份 （2015）<br>
-     *                 第二个位置是月份（1-12） <br>
-     *                 第三个位置是月份中的日期（1-31） <br>
-     *                 第四个位置上的是小时（0-23） <br>
-     *                 第五个位置上的是分钟 （0-59）<br>
-     *                 第六个位置上的是秒钟 （0-59）<br>
-     *                 第七个位置上的是毫秒 （0-999）<br>
-     *                 第八个位置上的是周中的日期（1-7） <br>
+     * @param datetime 数组用于存储日期与时间
+     *                 第一个位置是年份 （2015）
+     *                 第二个位置是月份（1-12）
+     *                 第三个位置是月份中的日期（1-31）
+     *                 第四个位置上的是小时（0-23）
+     *                 第五个位置上的是分钟 （0-59）
+     *                 第六个位置上的是秒钟 （0-59）
+     *                 第七个位置上的是毫秒 （0-999）
+     *                 第八个位置上的是周中的日期（1-7）
      */
     protected static void parseTime(String str, int[] datetime) {
         List<String> list = new ArrayList<String>();
@@ -898,8 +924,8 @@ public final class Dates {
     }
 
     /**
-     * 将日期转为指定格式的字符串 <br>
-     * formateString(null, "yyyyMMddHHmmss") == null <br>
+     * 将日期转为指定格式的字符串
+     * formateString(null, "yyyyMMddHHmmss") == null
      * formateString(date, "yyyyMMddHHmmss") == 20120301121212
      *
      * @param date    日期信息
@@ -919,8 +945,8 @@ public final class Dates {
     }
 
     /**
-     * 将日期转为指定格式的字符串 <br>
-     * formateString(null, "yyyyMMddHHmmss") == null <br>
+     * 将日期转为指定格式的字符串
+     * formateString(null, "yyyyMMddHHmmss") == null
      * formateString(date, "yyyyMMddHHmmss") == 20120301121212
      *
      * @param date    日期信息
@@ -1113,7 +1139,7 @@ public final class Dates {
         int hour = cr.get(Calendar.HOUR_OF_DAY);
         int minute = cr.get(Calendar.MINUTE);
         int second = cr.get(Calendar.SECOND);
-        int millse = cr.get(Calendar.MILLISECOND);
+        int mills = cr.get(Calendar.MILLISECOND);
 
         StringBuilder buf = new StringBuilder(12);
         if (hour <= 9) {
@@ -1134,12 +1160,12 @@ public final class Dates {
         buf.append(second);
         buf.append(':');
 
-        if (millse <= 9) {
+        if (mills <= 9) {
             buf.append("00");
-        } else if (millse <= 99) {
+        } else if (mills <= 99) {
             buf.append('0');
         }
-        buf.append(millse);
+        buf.append(mills);
         return buf.toString();
     }
 
@@ -1434,51 +1460,58 @@ public final class Dates {
     }
 
     /**
-     * 把秒转为中文常见时间说明, 格式: xx小时 xx 分 xx 秒 <br>
-     * {@linkplain #format(long, boolean)} (1000000) == 277 小时 46 分 40 秒 <br>
-     * {@linkplain #format(long, boolean)} (61) == 1 分 1 秒 <br>
-     * {@linkplain #format(long, boolean)} (3660) == 1 小时 1 分 <br>
+     * 把秒转为中文常见时间说明, 格式: xx小时 xx 分 xx 秒
+     * (1000000) == 277 小时 46 分 40 秒
+     * (61) == 1 分 1 秒
+     * (3660) == 1 小时 1 分
      *
-     * @param seconds       秒数
+     * @param value         时间
+     * @param unit          时间单位
      * @param displaySecond true表示返回值中显示秒数
      *                      false表示返回值中不显示秒数
      * @return 字符串, 格式: xx 小时 xx 分 xx 秒 或 xx 小时 xx 分
      */
-    public static StringBuilder format(long seconds, boolean displaySecond) {
-        if (seconds < 0) {
-            throw new IllegalArgumentException(String.valueOf(seconds));
+    public static StringBuilder format(long value, TimeUnit unit, boolean displaySecond) {
+        if (value < 0) {
+            throw new IllegalArgumentException(String.valueOf(value));
+        }
+        if (unit == null) {
+            throw new NullPointerException(String.valueOf(unit));
         }
 
         StringBuilder buf = new StringBuilder(20);
-        long h = seconds / 3600;
-        if (h > 0) {
-            buf.append(h);
+        long seconds = unit.toSeconds(value);
+        long hour = seconds / 3600;
+        if (hour > 0) {
+            buf.append(hour);
             buf.append(ResourcesUtils.getDateMessage(1));
+
             long i = (seconds % 3600);
-            long m = i / 60;
-            if (m > 0) {
+            long minute = i / 60;
+            if (minute > 0) {
                 buf.append(' ');
-                buf.append(m);
+                buf.append(minute);
                 buf.append(ResourcesUtils.getDateMessage(2));
             }
-            long s = i % 60;
-            if (s > 0 && displaySecond) {
+
+            long second = i % 60;
+            if (second > 0 && displaySecond) {
                 buf.append(' ');
-                buf.append(s);
+                buf.append(second);
                 buf.append(ResourcesUtils.getDateMessage(3));
             }
             return buf;
         }
 
-        long m = seconds / 60;
-        if (m > 0) {
-            buf.append(m);
+        long minute = seconds / 60;
+        if (minute > 0) {
+            buf.append(minute);
             buf.append(ResourcesUtils.getDateMessage(2));
 
-            long s = seconds % 60;
-            if (s > 0 && displaySecond) {
+            long second = seconds % 60;
+            if (second > 0 && displaySecond) {
                 buf.append(' ');
-                buf.append(s);
+                buf.append(second);
                 buf.append(ResourcesUtils.getDateMessage(3));
             }
             return buf;
@@ -1490,7 +1523,7 @@ public final class Dates {
         }
         return buf;
     }
-
+    
     /**
      * 以月为单位计算日期
      *
@@ -1510,9 +1543,9 @@ public final class Dates {
     }
 
     /**
-     * 计算2个日期间的月数; 如果2个日期的年月相同则返回0; <br>
-     * calcMonth(DT.parse("2017-07-01"), DT.parse("2017-07-01")) == 0 <br>
-     * calcMonth(DT.parse("2017-07-01"), DT.parse("2017-08-01")) == 1 <br>
+     * 计算2个日期间的月数; 如果2个日期的年月相同则返回0;
+     * calcMonth(Dates.parse("2017-07-01"), Dates.parse("2017-07-01")) == 0
+     * calcMonth(Dates.parse("2017-07-01"), Dates.parse("2017-08-01")) == 1
      *
      * @param start 起始日
      * @param end   结算日
@@ -1621,14 +1654,14 @@ public final class Dates {
      * 计算时间
      *
      * @param date  日期
-     * @param type  操作类型 <br>
-     *              {@linkplain Calendar#HOUR} <br>
-     *              {@linkplain Calendar#MINUTE} <br>
-     *              {@linkplain Calendar#SECOND} <br>
-     *              {@linkplain Calendar#MILLISECOND} <br>
-     *              {@linkplain Calendar#DAY_OF_MONTH} <br>
-     *              {@linkplain Calendar#MONTH} <br>
-     *              {@linkplain Calendar#YEAR} <br>
+     * @param type  操作类型
+     *              {@linkplain Calendar#HOUR}
+     *              {@linkplain Calendar#MINUTE}
+     *              {@linkplain Calendar#SECOND}
+     *              {@linkplain Calendar#MILLISECOND}
+     *              {@linkplain Calendar#DAY_OF_MONTH}
+     *              {@linkplain Calendar#MONTH}
+     *              {@linkplain Calendar#YEAR}
      * @param value 操作数, 负数表示减法，整数表示加法
      * @return
      */
@@ -1898,11 +1931,11 @@ public final class Dates {
     }
 
     /**
-     * 支持字符数组需要按如下时间格式排列 <br>
-     * <br>
-     * HHmmss <br>
-     * HHmmssSS <br>
-     * HHmmssSSS <br>
+     * 支持字符数组需要按如下时间格式排列
+     * <p>
+     * HHmmss
+     * HHmmssSS
+     * HHmmssSSS
      * <p>
      *
      * @param array 每个字符含义：
@@ -1953,7 +1986,7 @@ public final class Dates {
     }
 
     /**
-     * 判断字符串是否为标准时间字符串（支持的格式: hh 或 hh:mm 或 hh:mm:ss 或 hh:mm:ss:SS） <br>
+     * 判断字符串是否为标准时间字符串（支持的格式: hh 或 hh:mm 或 hh:mm:ss 或 hh:mm:ss:SS）
      * 时间的分隔符要与方法 {@linkplain #parseTime(String, int[])} 中保持一致
      *
      * @param str 字符串
@@ -2318,7 +2351,7 @@ public final class Dates {
     }
 
     /**
-     * 判断日期参数date是否是双休日（周六、周日） <br>
+     * 判断日期参数date是否是双休日（周六、周日）
      * 忽略法定补休日
      *
      * @param date 日期

@@ -3,7 +3,7 @@ package icu.etl.util;
 import java.io.File;
 
 /**
- * 输出当前JVM的所有配置信息 包括: JVM参数，环境变量
+ * JVM参数工具
  *
  * @author jeremy8551@qq.com
  * @createtime 2011-08-20
@@ -14,11 +14,11 @@ public final class Settings {
     }
 
     /**
-     * 返回java虚拟机当前的文件字符集 <br>
-     * <br>
-     * return System.getProperty("file.encoding"); <br>
+     * 返回java虚拟机当前的文件字符集
+     * <p>
+     * return System.getProperty("file.encoding");
      *
-     * @return
+     * @return 属性值
      */
     public static String getFileEncoding() {
         return System.getProperty("file.encoding");
@@ -27,52 +27,52 @@ public final class Settings {
     /**
      * 影响文件名字符集
      *
-     * @return
+     * @return 属性值
      */
     public static String getFilenameEncoding() {
         return System.getProperty("sun.jnu.encoding");
     }
 
     /**
-     * jvm版本 <br>
-     * <br>
-     * return System.getProperty("java.vm.version"); <br>
+     * jvm版本
+     * <p>
+     * return System.getProperty("java.vm.version");
      * 1.5.0_22-b03
      *
-     * @return
+     * @return 属性值
      */
     public static String getJavaVmVersion() {
         return System.getProperty("java.vm.version");
     }
 
     /**
-     * jvm供应商 <br>
-     * <br>
-     * return System.getProperty("java.vm.vendor"); <br>
+     * jvm供应商
+     * <p>
+     * return System.getProperty("java.vm.vendor");
      * Sun Microsystems Inc.
      *
-     * @return
+     * @return 属性值
      */
     public static String getJavaVmVendor() {
         return System.getProperty("java.vm.vendor");
     }
 
     /**
-     * jvm名 <br>
-     * <br>
-     * return System.getProperty("java.vm.name"); <br>
+     * jvm名
+     * <p>
+     * return System.getProperty("java.vm.name");
      * Java HotSpot(TM) Client VM
      *
-     * @return
+     * @return 属性值
      */
     public static String getJavaVmName() {
         return System.getProperty("java.vm.name");
     }
 
     /**
-     * jvm默认使用的字符集的类包 <br>
-     * <br>
-     * return System.getProperty("file.encoding.pkg"); <br>
+     * jvm默认使用的字符集的类包
+     * <p>
+     * return System.getProperty("file.encoding.pkg");
      *
      * @return 返回字符串 sun.io
      */
@@ -81,48 +81,48 @@ public final class Settings {
     }
 
     /**
-     * 国家代码 <br>
-     * <br>
-     * return System.getProperty("user.country"); <br>
+     * 国家代码
+     * <p>
+     * return System.getProperty("user.country");
      * CN
      *
-     * @return
+     * @return 属性值
      */
     public static String getUserCountry() {
         return System.getProperty("user.country");
     }
 
     /**
-     * 语言代码 <br>
-     * <br>
-     * return System.getProperty("user.language"); <br>
+     * 语言代码
+     * <p>
+     * return System.getProperty("user.language");
      * zh
      *
-     * @return
+     * @return 属性值
      */
     public static String getUserLanguage() {
         return System.getProperty("user.language");
     }
 
     /**
-     * 时区 <br>
-     * <br>
-     * return System.getProperty("user.timezone"); <br>
+     * 时区
+     * <p>
+     * return System.getProperty("user.timezone");
      * / Asia/Shanghai
      *
-     * @return
+     * @return 属性值
      */
     public static String getUserTimezone() {
         return System.getProperty("user.timezone");
     }
 
     /**
-     * JAVA_HOME 参数值 <br>
-     * <br>
-     * return System.getProperty("java.home"); <br>
+     * JAVA_HOME 参数值
+     * <p>
+     * return System.getProperty("java.home");
      * C:\Program Files (x86)\Java\jdk1.5.0_22\jre
      *
-     * @return
+     * @return 属性值
      */
     public static File getJavaHome() {
         return new File(System.getProperty("java.home"));
@@ -131,29 +131,29 @@ public final class Settings {
     /**
      * 返回运行 java 命令的目录
      *
-     * @return
+     * @return 属性值
      */
     public static File getUserDir() {
         return new File(System.getProperty("user.dir"));
     }
 
     /**
-     * user.home 参数值 <br>
-     * <br>
-     * return System.getProperty("user.home"); <br>
+     * user.home 参数值
+     * <p>
+     * return System.getProperty("user.home");
      * C:\Users\etl
      *
-     * @return
+     * @return 属性值
      */
     public static File getUserHome() {
         return new File(System.getProperty("user.home"));
     }
 
     /**
-     * user.name 参数值 <br>
+     * user.name 参数值
      * JVM虚拟机所在操作系统用户名
      *
-     * @return
+     * @return 属性值
      */
     public static String getUserName() {
         return System.getProperty("user.name");
@@ -162,7 +162,7 @@ public final class Settings {
     /**
      * zh_CN
      *
-     * @return
+     * @return 属性值
      */
     public static String getLang() {
         StringBuilder buf = new StringBuilder(10);
@@ -176,10 +176,10 @@ public final class Settings {
     }
 
     /**
-     * 返回当前Java虚拟机启动命令 <br>
+     * 返回当前Java虚拟机启动命令
      * com.ibm.wsspi.bootstrap.WSPreLauncher -nosplash -application com.ibm.ws.bootstrap.WSLauncher com.ibm.ws.runtime.WsServer /was/IBM/WebSphere/AppServer/profiles/AppSrv01/config LocalhostNode01Cell LocalhostNode01 server1
      *
-     * @return
+     * @return 属性值
      */
     public static String getJavaCommand() {
         String value = System.getProperty("sun.java.command");
@@ -202,6 +202,15 @@ public final class Settings {
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * 返回当前的应用程序名
+     *
+     * @return 应用名
+     */
+    public static String getApplicationName() {
+        return ResourcesUtils.getMessage("project.name");
     }
 
 }

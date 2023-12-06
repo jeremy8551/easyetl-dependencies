@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.text.Format;
@@ -23,23 +23,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * 字符串工具
- * <p>
- * 后续开始时需要注意基础工具类中不能依赖其他工具类，只基于JDK API 编写方法
  *
  * @author jeremy8551@qq.com
  * @createtime 2010-01-08 2:27:49
  */
 public class StringUtils {
-
-    /** JDK日志输出接口 */
-    private final static Logger log = Logger.getLogger(StringUtils.class.getName());
 
     /** 全角空白字符 */
     public final static String FULLWIDTH_BLANK = "　";
@@ -56,7 +49,7 @@ public class StringUtils {
     /**
      * 返回默认字符集
      *
-     * @return
+     * @return 字符集
      */
     public static String getCharset() {
         if (CHARSET == null) {
@@ -76,9 +69,9 @@ public class StringUtils {
      * @param name 字符集名(如: UTF-8)
      * @return 返回 null 表示字符串参数 name错误
      */
-    public static java.nio.charset.Charset lookupCharset(String name) {
+    public static Charset lookupCharset(String name) {
         try {
-            return java.nio.charset.Charset.forName(name);
+            return Charset.forName(name);
         } catch (Throwable x) {
             return null;
         }
@@ -118,7 +111,7 @@ public class StringUtils {
      * 字符串数组中最长字符串的长度（按char计算）
      *
      * @param array 字符串数组
-     * @return
+     * @return 长度
      */
     public static int maxlength(String... array) {
         if (array == null || array.length == 0) {
@@ -256,11 +249,11 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串参数str是否为空白字符串(为null或全是空白字符)<br>
-     * isBlank("") == true <br>
-     * isBlank("12") == false <br>
-     * isBlank(" ") == true <br>
-     * isBlank(null) == true <br>
+     * 判断字符串参数str是否为空白字符串(为null或全是空白字符)
+     * isBlank("") == true
+     * isBlank("12") == false
+     * isBlank(" ") == true
+     * isBlank(null) == true
      *
      * @param str 字符串
      * @return
@@ -277,8 +270,8 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串数组参数array中是否全部为空白字符串 <br>
-     * ST.isBlank(null) == true <br>
+     * 判断字符串数组参数array中是否全部为空白字符串
+     * ST.isBlank(null) == true
      *
      * @param array 字符串数组
      * @return
@@ -295,11 +288,11 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串参数str是否为非空白字符串<br>
-     * isNotBlank("") == false <br>
-     * isNotBlank("12") == true <br>
-     * isNotBlank(" ") == false <br>
-     * isNotBlank(null) == false <br>
+     * 判断字符串参数str是否为非空白字符串
+     * isNotBlank("") == false
+     * isNotBlank("12") == true
+     * isNotBlank(" ") == false
+     * isNotBlank(null) == false
      *
      * @param str 字符串
      * @return
@@ -319,10 +312,10 @@ public class StringUtils {
     }
 
     /**
-     * 删除字符串参数str左右二端的半角空格字符 <br>
-     * ST.trim(null) == null <br>
-     * ST.trim(" 123 ") == "123" <br>
-     * ST.trim(" 123") == "123" <br>
+     * 删除字符串参数str左右二端的半角空格字符
+     * ST.trim(null) == null
+     * ST.trim(" 123 ") == "123"
+     * ST.trim(" 123") == "123"
      *
      * @param str 字符串
      * @return
@@ -495,11 +488,11 @@ public class StringUtils {
     }
 
     /**
-     * 删除字符串参数str右端的半角空格字符<br>
-     * <br>
-     * rTrim(" 1234 ") == " 1234" <br>
-     * rTrim(" ") == "" <br>
-     * rTrim(null) == null <br>
+     * 删除字符串参数str右端的半角空格字符
+     * <p>
+     * rTrim(" 1234 ") == " 1234"
+     * rTrim(" ") == ""
+     * rTrim(null) == null
      *
      * @param str 字符串
      * @return
@@ -539,10 +532,10 @@ public class StringUtils {
     }
 
     /**
-     * 将参数obj转为字符串并删除字符串右端的空白字符与 {@code  array} 数组中的字符 <br>
-     * rtrimBlank(" 1234 ") == " 1234" <br>
-     * rtrimBlank(" ") == "" <br>
-     * rtrimBlank(null) == null <br>
+     * 将参数obj转为字符串并删除字符串右端的空白字符与 {@code  array} 数组中的字符
+     * rtrimBlank(" 1234 ") == " 1234"
+     * rtrimBlank(" ") == ""
+     * rtrimBlank(null) == null
      *
      * @param obj   字符串
      * @param array 待删除字符
@@ -567,12 +560,12 @@ public class StringUtils {
     }
 
     /**
-     * 删除字符串参数str左端的半角空白字符 <br>
-     * ltrim(null) == null <br>
-     * ltrim(" ") == "" <br>
-     * ltrim(" 12345") == "12345" <br>
-     * ltrim(" 12345 ") == "12345 " <br>
-     * ltrim("12345") == "12345" <br>
+     * 删除字符串参数str左端的半角空白字符
+     * ltrim(null) == null
+     * ltrim(" ") == ""
+     * ltrim(" 12345") == "12345"
+     * ltrim(" 12345 ") == "12345 "
+     * ltrim("12345") == "12345"
      *
      * @param str 字符串
      * @return
@@ -614,12 +607,12 @@ public class StringUtils {
     }
 
     /**
-     * 将参数obj转为字符串并删除字符串左端的空白字符 <br>
-     * ltrim(null) == null <br>
-     * ltrim(" ") == "" <br>
-     * ltrim(" 12345") == "12345" <br>
-     * ltrim(" 12345 ") == "12345 " <br>
-     * ltrim("12345") == "12345" <br>
+     * 将参数obj转为字符串并删除字符串左端的空白字符
+     * ltrim(null) == null
+     * ltrim(" ") == ""
+     * ltrim(" 12345") == "12345"
+     * ltrim(" 12345 ") == "12345 "
+     * ltrim("12345") == "12345"
      *
      * @param obj   字符串
      * @param array 待删除字符
@@ -645,11 +638,11 @@ public class StringUtils {
     }
 
     /**
-     * 把一个参数对象obj转成字符串（字符串的内容跟toString()方法有关）,并且删除右端空格 <br>
-     * 如：<br>
-     * objToStr(" 12345 ") = " 12345"<br>
-     * objToStr(43000) = "43000"<br>
-     * objToStr(null) = ""<br>
+     * 把一个参数对象obj转成字符串（字符串的内容跟toString()方法有关）,并且删除右端空格
+     * 如：
+     * objToStr(" 12345 ") = " 12345"
+     * objToStr(43000) = "43000"
+     * objToStr(null) = ""
      *
      * @param obj 参数对象
      * @return
@@ -693,8 +686,8 @@ public class StringUtils {
     }
 
     /**
-     * 使用字符串参数newStr替换字符串参数str中从左端开始搜索到的第一个字符串参数oldStr <br>
-     * <br>
+     * 使用字符串参数newStr替换字符串参数str中从左端开始搜索到的第一个字符串参数oldStr
+     * <p>
      * replaceFirst("asasas","s","t") = "atasas"
      *
      * @param str    字符串
@@ -748,8 +741,8 @@ public class StringUtils {
     }
 
     /**
-     * 使用字符串参数newStr替换字符串参数str中从右端向左搜索到的第一个字符串参数oldStr<br>
-     * <br>
+     * 使用字符串参数newStr替换字符串参数str中从右端向左搜索到的第一个字符串参数oldStr
+     * <p>
      * replaceLast("asasas","s","t") = "asasat"
      *
      * @param str    字符串
@@ -788,7 +781,7 @@ public class StringUtils {
     }
 
     /**
-     * 使用环境变量替换字符串参数str中的shell型变量 <br>
+     * 使用环境变量替换字符串参数str中的shell型变量
      * replaceEnvironmentVariable("mkdir ${HOME}/f/k/adb", ) == "mkdir /home/xxx/f/k/adb"
      *
      * @param str 字符串
@@ -832,9 +825,9 @@ public class StringUtils {
     }
 
     /**
-     * 替换字符串中的变量 <br>
-     * Map == first=99 second=2 <br>
-     * replaceVariable("${first} + ${second}", map) == "99 + 2" <br>
+     * 替换字符串中的变量
+     * Map == first=99 second=2
+     * replaceVariable("${first} + ${second}", map) == "99 + 2"
      *
      * @param str     字符串
      * @param map     变量名变量值映射的集合
@@ -897,9 +890,9 @@ public class StringUtils {
     }
 
     /**
-     * 使用Map中的变量替换字符串参数str中的shell型变量 <br>
-     * Map == first=99 second=2 <br>
-     * replaceVariable("${first} + ${second}", map) == "99 + 2" <br>
+     * 使用Map中的变量替换字符串参数str中的shell型变量
+     * Map == first=99 second=2
+     * replaceVariable("${first} + ${second}", map) == "99 + 2"
      *
      * @param str 字符串
      * @param map 变量集合
@@ -914,8 +907,8 @@ public class StringUtils {
     }
 
     /**
-     * 使用字符串value替换字符串参数str中的字符串参数name <br>
-     * Map == first=99 second=2 <br>
+     * 使用字符串value替换字符串参数str中的字符串参数name
+     * Map == first=99 second=2
      * <p>
      * replaceVariable("${first} + 2", "first", "99") == "99 + 2"
      *
@@ -932,7 +925,7 @@ public class StringUtils {
     }
 
     /**
-     * 替换字符串中 ${name} 变量 <br>
+     * 替换字符串中 ${name} 变量
      * 替换嵌套变量, 如: ${${name}}
      *
      * @param str   字符串
@@ -974,7 +967,7 @@ public class StringUtils {
     }
 
     /**
-     * 替换字符串中 ${name} 变量 <br>
+     * 替换字符串中 ${name} 变量
      * 替换嵌套变量, 如: ${${name}}
      *
      * @param str   字符串
@@ -1033,7 +1026,7 @@ public class StringUtils {
     }
 
     /**
-     * 替换字符串中 ${name} 变量 <br>
+     * 替换字符串中 ${name} 变量
      * 替换嵌套变量, 如: ${${name}}
      *
      * @param str   字符串
@@ -1237,11 +1230,11 @@ public class StringUtils {
     }
 
     /**
-     * 从字符串str的左面截取length长度的字符串,如： <br>
-     * <br>
-     * left("12345", 4) = "1234"<br>
-     * left("12", 4) = "12"<br>
-     * left(null, 4) = null<br>
+     * 从字符串str的左面截取length长度的字符串,如：
+     * <p>
+     * left("12345", 4) = "1234"
+     * left("12", 4) = "12"
+     * left(null, 4) = null
      *
      * @param obj    字符串
      * @param length 截取长度,单位字符
@@ -1263,11 +1256,11 @@ public class StringUtils {
     }
 
     /**
-     * 从参数 obj 左边开始向右截取 length 个字符长度, 如果不够 length 个字符长度默认用半角空格填充最右端<br>
-     * <br>
-     * leftFormat("123", 5) = "123__"<br>
-     * leftFormat("1234567", 5) = "12345"<br>
-     * leftFormat(null, 5) = null <br>
+     * 从参数 obj 左边开始向右截取 length 个字符长度, 如果不够 length 个字符长度默认用半角空格填充最右端
+     * <p>
+     * leftFormat("123", 5) = "123__"
+     * leftFormat("1234567", 5) = "12345"
+     * leftFormat(null, 5) = null
      *
      * @param obj    参数对象
      * @param length 截取长度,单位字符
@@ -1304,18 +1297,18 @@ public class StringUtils {
      * 从左面截取字符串, 截取字符串时如果超长则自动忽略字符串最后的半个双字节字符
      *
      * @param obj         字符串
-     * @param length      显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
+     * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集
      * @return
      */
-    public static String left(Object obj, int length, String charsetName) {
+    public static String left(Object obj, int width, String charsetName) {
         if (obj == null) {
             return null;
         }
-        if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
+        if (width < 0) {
+            throw new IllegalArgumentException(String.valueOf(width));
         }
-        if (length == 0) {
+        if (width == 0) {
             return "";
         }
         if (StringUtils.isBlank(charsetName)) {
@@ -1323,18 +1316,18 @@ public class StringUtils {
         }
 
         String str = obj.toString();
-        int bytes = StringUtils.width(str, charsetName); // 显示宽度
-        if (bytes <= length) {
+        int actualWidth = StringUtils.width(str, charsetName); // 显示宽度
+        if (actualWidth <= width) {
             return str;
         } else {
             StringBuilder buf = new StringBuilder(str.length());
-            for (int i = 0, width = 0; i < str.length(); i++) {
+            for (int i = 0, total = 0; i < str.length(); i++) {
                 char c = str.charAt(i);
-                width += StringUtils.width(c, charsetName);
-                if (width == length) {
+                total += StringUtils.width(c, charsetName);
+                if (total == width) {
                     buf.append(c);
                     return buf.toString();
-                } else if (width > length) {
+                } else if (total > width) {
                     return buf.toString();
                 } else {
                     buf.append(c);
@@ -1348,19 +1341,19 @@ public class StringUtils {
      * 从字符串左侧截取length长度的字节如果不足长度自动在右侧补齐半角空白字符
      *
      * @param obj         字符串
-     * @param length      显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
+     * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集
      * @param d           默认填充字符
-     * @return
+     * @return 字符串
      */
-    public static String left(Object obj, int length, String charsetName, char d) {
+    public static String left(Object obj, int width, String charsetName, char d) {
         if (obj == null) {
             return null;
         }
-        if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
+        if (width < 0) {
+            throw new IllegalArgumentException(String.valueOf(width));
         }
-        if (length == 0) {
+        if (width == 0) {
             return "";
         }
         if (StringUtils.isBlank(charsetName)) {
@@ -1368,29 +1361,29 @@ public class StringUtils {
         }
 
         String str = obj.toString();
-        int size = StringUtils.width(str, charsetName); // 显示宽度
-        if (size == length) {
+        int actualWidth = StringUtils.width(str, charsetName); // 显示宽度
+        if (actualWidth == width) {
             return str;
-        } else if (size < length) {
-            StringBuilder buf = new StringBuilder(str.length() + length - size).append(str);
+        } else if (actualWidth < width) {
+            StringBuilder buf = new StringBuilder(str.length() + width - actualWidth).append(str);
             do {
                 buf.append(d);
-            } while ((size = StringUtils.width(buf, charsetName)) < length);
+            } while ((actualWidth = StringUtils.width(buf, charsetName)) < width);
 
-            if (size == length) {
+            if (actualWidth == width) {
                 return buf.toString();
             } else {
                 throw new IllegalArgumentException(String.valueOf(d));
             }
         } else {
             StringBuilder buf = new StringBuilder(str.length());
-            for (int i = 0, width = 0; i < str.length(); i++) {
+            for (int i = 0, total = 0; i < str.length(); i++) {
                 char c = str.charAt(i);
-                width += StringUtils.width(c, charsetName);
-                if (width == length) {
+                total += StringUtils.width(c, charsetName);
+                if (total == width) {
                     buf.append(c);
                     return buf.toString();
-                } else if (width > length) {
+                } else if (total > width) {
                     return buf.append(d).toString();
                 } else {
                     buf.append(c);
@@ -1423,7 +1416,7 @@ public class StringUtils {
     }
 
     /**
-     * 将 obj 转为字符串并从右端开始向左截取length个字符长度，如果长度不够用字符参数 c 填充 <br>
+     * 将 obj 转为字符串并从右端开始向左截取length个字符长度，如果长度不够用字符参数 c 填充
      *
      * @param obj    参数对象
      * @param length 截取长度,单位字符
@@ -1456,21 +1449,21 @@ public class StringUtils {
     }
 
     /**
-     * 将 obj 转为字符串并从右端开始向左截取length个字节长度 <br>
+     * 将 obj 转为字符串并从右端开始向左截取length个字节长度
      *
      * @param obj         参数对象
-     * @param length      显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
+     * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集（为空自动使用默认值）
      * @return
      */
-    public static String right(Object obj, int length, String charsetName) {
+    public static String right(Object obj, int width, String charsetName) {
         if (obj == null) {
             return null;
         }
-        if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
+        if (width < 0) {
+            throw new IllegalArgumentException(String.valueOf(width));
         }
-        if (length == 0) {
+        if (width == 0) {
             return "";
         }
         if (StringUtils.isBlank(charsetName)) {
@@ -1478,19 +1471,19 @@ public class StringUtils {
         }
 
         String str = obj.toString();
-        int width = StringUtils.width(str, charsetName);
-        if (width <= length) {
+        int actualWidth = StringUtils.width(str, charsetName);
+        if (actualWidth <= width) {
             return str;
         } else {
-            width = 0;
+            actualWidth = 0;
             StringBuilder buf = new StringBuilder(str.length());
             for (int i = str.length() - 1; i >= 0; i--) {
                 char c = str.charAt(i);
-                width += StringUtils.width(c, charsetName);
-                if (width == length) {
+                actualWidth += StringUtils.width(c, charsetName);
+                if (actualWidth == width) {
                     buf.append(c);
                     return buf.reverse().toString();
-                } else if (width > length) {
+                } else if (actualWidth > width) {
                     return buf.reverse().toString();
                 } else {
                     buf.append(c);
@@ -1501,22 +1494,22 @@ public class StringUtils {
     }
 
     /**
-     * 将 obj 转为字符串并从右端开始向左截取length个显示长度，如果长度不够用字符参数 d 填充 <br>
+     * 将 obj 转为字符串并从右端开始向左截取length个显示长度，如果长度不够用字符参数 d 填充
      *
      * @param obj         参数对象
-     * @param length      显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
+     * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集（为空自动使用默认值）
      * @param d           填充字符
      * @return
      */
-    public static String right(Object obj, int length, String charsetName, char d) {
+    public static String right(Object obj, int width, String charsetName, char d) {
         if (obj == null) {
             return null;
         }
-        if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
+        if (width < 0) {
+            throw new IllegalArgumentException(String.valueOf(width));
         }
-        if (length == 0) {
+        if (width == 0) {
             return "";
         }
         if (StringUtils.isBlank(charsetName)) {
@@ -1524,29 +1517,29 @@ public class StringUtils {
         }
 
         String str = obj.toString();
-        int size = StringUtils.width(str, charsetName); // 显示宽度
-        if (size == length) {
+        int actualWidth = StringUtils.width(str, charsetName); // 显示宽度
+        if (actualWidth == width) {
             return str;
-        } else if (size < length) {
-            StringBuilder buf = new StringBuilder(str.length() + length - size).append(str);
+        } else if (actualWidth < width) {
+            StringBuilder buf = new StringBuilder(str.length() + width - actualWidth).append(str);
             do {
                 buf.insert(0, d);
-            } while ((size = StringUtils.width(buf, charsetName)) < length);
+            } while ((actualWidth = StringUtils.width(buf, charsetName)) < width);
 
-            if (size == length) {
+            if (actualWidth == width) {
                 return buf.toString();
             } else {
                 throw new IllegalArgumentException(String.valueOf(d));
             }
         } else {
             StringBuilder buf = new StringBuilder(str.length());
-            for (int i = str.length() - 1, width = 0; i >= 0; i--) {
+            for (int i = str.length() - 1, total = 0; i >= 0; i--) {
                 char c = str.charAt(i);
-                width += StringUtils.width(c, charsetName);
-                if (width == length) {
+                total += StringUtils.width(c, charsetName);
+                if (total == width) {
                     buf.append(c);
                     return buf.reverse().toString();
-                } else if (width > length) {
+                } else if (total > width) {
                     return buf.append(d).reverse().toString();
                 } else {
                     buf.append(c);
@@ -1560,19 +1553,19 @@ public class StringUtils {
      * 对象居中对齐
      *
      * @param obj         参数对象
-     * @param length      显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
+     * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集（为空自动使用默认值）
      * @param d           做补齐时使用的字节
      * @return 字符串
      */
-    public static String middle(Object obj, int length, String charsetName, char d) {
+    public static String middle(Object obj, int width, String charsetName, char d) {
         if (obj == null) {
             return null;
         }
-        if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
+        if (width < 0) {
+            throw new IllegalArgumentException(String.valueOf(width));
         }
-        if (length == 0) {
+        if (width == 0) {
             return "";
         }
         if (StringUtils.isBlank(charsetName)) {
@@ -1580,24 +1573,24 @@ public class StringUtils {
         }
 
         String str = obj.toString();
-        int width = StringUtils.width(str, charsetName);
-        if (width == length) {
+        int actualWidth = StringUtils.width(str, charsetName);
+        if (actualWidth == width) {
             return str;
-        } else if (width > length) {
-            return StringUtils.left(str, length, charsetName, d);
+        } else if (actualWidth > width) {
+            return StringUtils.left(str, width, charsetName, d);
         } else {
             StringBuilder buf = new StringBuilder(str.length()).append(str);
-            for (int i = 0, cz = length - width; i < cz; i++) {
+            for (int i = 0, cz = width - actualWidth; i < cz; i++) {
                 if (i % 2 == 0) { // 在右侧填充字符
                     buf.append(d);
                 } else { // 在左侧填充字符
                     buf.insert(0, d);
                 }
 
-                width = StringUtils.width(buf, charsetName);
-                if (width == length) {
+                actualWidth = StringUtils.width(buf, charsetName);
+                if (actualWidth == width) {
                     return buf.toString();
-                } else if (width > length) {
+                } else if (actualWidth > width) {
                     throw new IllegalArgumentException(String.valueOf(d)); // 填充字符错误
                 }
             }
@@ -1696,13 +1689,13 @@ public class StringUtils {
     }
 
     /**
-     * 转换字符串<b>str</b>中的转义字符（Escape Sequence）<br>
-     * 把字符串：<br>
-     * \t \r \n \b \f \\ \' \" <br>
-     * 转成对应的转义字符 <br>
-     * <br>
-     * 把\\uXXXX格式的字符串转成unicode码 <br>
-     * 如: <br>
+     * 转换字符串<b>str</b>中的转义字符（Escape Sequence）
+     * 把字符串：
+     * \t \r \n \b \f \\ \' \"
+     * 转成对应的转义字符
+     * <p>
+     * 把\\uXXXX格式的字符串转成unicode码
+     * 如:
      * \\u002E 转成 点'.'
      *
      * @param str 字符串
@@ -1784,10 +1777,10 @@ public class StringUtils {
     }
 
     /**
-     * 在字符串二端加单引号<br>
-     * quote("adb") = "'abc'"<br>
-     * quote(" bcd ") = "' bcd '"<br>
-     * quote(null) = null<br>
+     * 在字符串二端加单引号
+     * quote("adb") = "'abc'"
+     * quote(" bcd ") = "' bcd '"
+     * quote(null) = null
      *
      * @param str 字符串
      * @return
@@ -2366,7 +2359,7 @@ public class StringUtils {
     }
 
     /**
-     * 在字符串数组参数array中的每个字符串的左右端添加单引号，按顺序逐个遍历数组中的字符串并在每个元素后面添加一个半角逗号分分隔符 <br>
+     * 在字符串数组参数array中的每个字符串的左右端添加单引号，按顺序逐个遍历数组中的字符串并在每个元素后面添加一个半角逗号分分隔符
      *
      * @param array 字符串数组
      * @return
@@ -2387,7 +2380,7 @@ public class StringUtils {
     }
 
     /**
-     * 把字符串src数组用间隔符sep连接起来<br>
+     * 把字符串src数组用间隔符sep连接起来
      * join({this,is,my,program}, " ") == this is my program
      *
      * @param array     数组
@@ -3104,7 +3097,7 @@ public class StringUtils {
     }
 
     /**
-     * 使用空白作为字段分隔符解析提取字符串参数str中的字段, 返回字段数组 <br>
+     * 使用空白作为字段分隔符解析提取字符串参数str中的字段, 返回字段数组
      *
      * @param str 字符串
      * @return
@@ -3131,12 +3124,12 @@ public class StringUtils {
     }
 
     /**
-     * 将输入参数 obj 或参数中的字符串进行大小写转换 <br>
-     * 如果输入参数 obj 是字符串则将字符串大小写转换 <br>
+     * 将输入参数 obj 或参数中的字符串进行大小写转换
+     * 如果输入参数 obj 是字符串则将字符串大小写转换
      * 如果输入参数 obj 是集合且集合中元素为String类型，将集合中所有字符串进行大小写转行
      *
      * @param <E>
-     * @param obj    字符串或集合 <br>
+     * @param obj    字符串或集合
      *               支持的类及数据结构: String, List&lt;String&gt;, Set&lt;String&gt;, Map&lt;String&gt;, char[]
      * @param lower  true表示转为小写字母; false表示转为大写字母
      * @param locale 环境信息
@@ -3256,7 +3249,7 @@ public class StringUtils {
         try {
             return array == null ? null : new String(array, charsetName);
         } catch (Throwable e) {
-            throw new RuntimeException(StringUtils.toBinaryString(array) + ", " + charsetName, e);
+            throw new IllegalArgumentException(StringUtils.toBinaryString(array) + ", " + charsetName, e);
         }
     }
 
@@ -3272,10 +3265,10 @@ public class StringUtils {
         }
 
         /**
-         * yyyy-MM-dd <br>
-         * yyyy-MM-dd hh:mm <br>
-         * yyyy-MM-dd hh:mm:ss <br>
-         * yyyy-MM-dd hh:mm:ss:SSS <br>
+         * yyyy-MM-dd 
+         * yyyy-MM-dd hh:mm 
+         * yyyy-MM-dd hh:mm:ss 
+         * yyyy-MM-dd hh:mm:ss:SSS 
          */
         if (obj instanceof Date) {
             Date date = (Date) obj;
@@ -3298,15 +3291,7 @@ public class StringUtils {
             Throwable e = (Throwable) obj;
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             PrintStream stream = new PrintStream(out);
-            try {
-                e.printStackTrace(stream);
-            } finally {
-                try {
-                    stream.close();
-                } catch (Exception ex) {
-                    log.log(Level.CONFIG, e.getLocalizedMessage(), e);
-                }
-            }
+            e.printStackTrace(stream);
 
             StringBuilder buf = new StringBuilder(out.toString());
             if (e instanceof SQLException) {
@@ -3378,7 +3363,7 @@ public class StringUtils {
         }
 
         /**
-         * int[1, 2, ...] <br>
+         * int[1, 2, ...] 
          * String[1, 2, ...]
          */
         else if (obj.getClass().isArray()) {
@@ -3522,11 +3507,11 @@ public class StringUtils {
     }
 
     /**
-     * 将十进制整数转为36进制字符串 <br>
-     * 36进制字符串：0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ <br>
-     * 如果length等于2，返回从0到99之间的数值，超出从9A开始到ZZ结束 <br>
-     *
-     * <br>
+     * 将十进制整数转为36进制字符串
+     * 36进制字符串：0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * 如果length等于2，返回从0到99之间的数值，超出从9A开始到ZZ结束
+     * <p>
+     * <p>
      * 将36进制字符串转为整数详见方法：{@linkplain #parseHexadecimal(CharSequence)}
      *
      * @param value  大于等于零的十进制整数
@@ -3540,7 +3525,7 @@ public class StringUtils {
 
         int number = Integer.parseInt(StringUtils.left("", length, '9'));
         if (value <= number) {
-            return StringUtils.right(value, length, StandardCharsets.ISO_8859_1.name(), '0');
+            return StringUtils.right(value, length, CharsetName.ISO_8859_1, '0');
         } else {
             int val = value - number; // 差额
             int zs = 0; // 整数
@@ -3571,7 +3556,7 @@ public class StringUtils {
                 throw new IllegalArgumentException(value + ", " + length);
             }
 
-            return StringUtils.right(result, length, StandardCharsets.ISO_8859_1.name(), '9');
+            return StringUtils.right(result, length, CharsetName.ISO_8859_1, '9');
         }
     }
 
@@ -3944,7 +3929,7 @@ public class StringUtils {
      * @return
      */
     public static String encodeGBKtoUTF8(CharSequence cs) {
-        return StringUtils.encodeCharset(cs, "GBK", StandardCharsets.UTF_8.name());
+        return StringUtils.encodeCharset(cs, CharsetName.GBK, CharsetName.UTF_8);
     }
 
     /**
@@ -3954,7 +3939,7 @@ public class StringUtils {
      * @return
      */
     public static String encodeUTF8toGBK(CharSequence cs) {
-        return StringUtils.encodeCharset(cs, StandardCharsets.UTF_8.name(), "GBK");
+        return StringUtils.encodeCharset(cs, CharsetName.UTF_8, CharsetName.GBK);
     }
 
     /**
@@ -3992,7 +3977,7 @@ public class StringUtils {
     }
 
     protected static String encodeJvmUtf8HexWord(String str) {
-        byte[] bytes = StringUtils.toBytes(str, StandardCharsets.UTF_8.name());
+        byte[] bytes = StringUtils.toBytes(str, CharsetName.UTF_8);
         String hexStr = new BigInteger(1, bytes).toString(16).toLowerCase(); // 将字节数组转为16进制字符串
         if (hexStr.length() % 2 != 0) {
             throw new RuntimeException(str);
@@ -4040,7 +4025,7 @@ public class StringUtils {
             } else {
                 if (cb.length() > 0) {
                     byte[] array = StringUtils.parseHexString(cb.toString());
-                    buf.append(StringUtils.toString(array, StandardCharsets.UTF_8.name()));
+                    buf.append(StringUtils.toString(array, CharsetName.UTF_8));
                     cb.setLength(0);
                 }
                 buf.append(c);
@@ -4049,7 +4034,7 @@ public class StringUtils {
 
         if (cb.length() > 0) {
             byte[] array = StringUtils.parseHexString(cb.toString());
-            buf.append(StringUtils.toString(array, StandardCharsets.UTF_8.name()));
+            buf.append(StringUtils.toString(array, CharsetName.UTF_8));
             cb.setLength(0);
         }
 
@@ -4206,7 +4191,7 @@ public class StringUtils {
     }
 
     /**
-     * 删除字符串参数str左端的一个字符 <br>
+     * 删除字符串参数str左端的一个字符
      * null或空字符返回输入字符串本身
      *
      * @param str 字符串
@@ -4245,7 +4230,7 @@ public class StringUtils {
     }
 
     /**
-     * 删除字符串参数str右端的一个字符 <br>
+     * 删除字符串参数str右端的一个字符
      * 输入参数为null时返回null, 输入参数为空字符串时返回空字符
      *
      * @param str 字符串
@@ -4320,7 +4305,7 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符参数c是否为26个英文字母之一(包括大写与小写) <br>
+     * 判断字符参数c是否为26个英文字母之一(包括大写与小写)
      * 判断字符数组参数array是否全部为数字（0,1,2,3,4,5,6,7,8,9）
      *
      * @param str 字符
@@ -4386,6 +4371,29 @@ public class StringUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * 判断是否包含字符数组中的任何一个字符
+     *
+     * @param str   字符串
+     * @param array 字符数组
+     * @return 返回true表示存在字符
+     */
+    public static boolean contains(CharSequence str, char... array) {
+        if (str == null) {
+            return false;
+        }
+
+        for (int i = 0, length = str.length(); i < length; i++) {
+            char c = str.charAt(i);
+            for (char ac : array) {
+                if (ac == c) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -4512,50 +4520,50 @@ public class StringUtils {
      */
     public static void testEncoding(CharSequence chars) {
         if (chars == null) {
-            log.log(Level.INFO, "null");
+            System.out.println("null");
             return;
         }
 
         String str = chars.toString();
 
         try {
-            log.log(Level.INFO, StringUtils.left("original value ", 20, ' ') + " = " + str);
+            System.out.println(StringUtils.left("original value ", 20, ' ') + " = " + str);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("GBK -> UTF8 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, "GBK", StandardCharsets.UTF_8.name()));
+            System.out.println(StringUtils.left("GBK -> UTF8 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.GBK, CharsetName.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("UTF8 -> GBK = ", 20, ' ') + " = " + StringUtils.encodeCharset(str, StandardCharsets.UTF_8.name(), "GBK"));
+            System.out.println(StringUtils.left("UTF8 -> GBK = ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.UTF_8, CharsetName.GBK));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("ISO8859-1 -> GBK ", 20, ' ') + " = " + StringUtils.encodeCharset(str, StandardCharsets.ISO_8859_1.name(), "GBK"));
+            System.out.println(StringUtils.left("ISO8859-1 -> GBK ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.ISO_8859_1, CharsetName.GBK));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("GBK -> ISO8859-1 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, "GBK", StandardCharsets.ISO_8859_1.name()));
+            System.out.println(StringUtils.left("GBK -> ISO8859-1 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.GBK, CharsetName.ISO_8859_1));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("ISO8859-1 -> UTF8 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, StandardCharsets.ISO_8859_1.name(), StandardCharsets.UTF_8.name()));
+            System.out.println(StringUtils.left("ISO8859-1 -> UTF8 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.ISO_8859_1, CharsetName.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            log.log(Level.INFO, StringUtils.left("UTF8 -> ISO8859-1 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, StandardCharsets.UTF_8.name(), StandardCharsets.ISO_8859_1.name()));
+            System.out.println(StringUtils.left("UTF8 -> ISO8859-1 ", 20, ' ') + " = " + StringUtils.encodeCharset(str, CharsetName.UTF_8, CharsetName.ISO_8859_1));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -4595,8 +4603,8 @@ public class StringUtils {
     }
 
     /**
-     * 将36进制字符串转为整数 <br>
-     * <br>
+     * 将36进制字符串转为整数
+     * <p>
      * 将整数转为36进制字符串详见方法：{@linkplain #toHexadecimalString(int, int)}
      *
      * @param str 字符串

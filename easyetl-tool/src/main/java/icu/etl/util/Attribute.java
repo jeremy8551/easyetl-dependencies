@@ -13,7 +13,7 @@ public interface Attribute<E> {
      * 判断是否存在属性
      *
      * @param key 属性名（大小写不敏感）
-     * @return
+     * @return 返回true表示属性存在 false表示不存在
      */
     boolean contains(String key);
 
@@ -29,7 +29,7 @@ public interface Attribute<E> {
      * 返回属性值
      *
      * @param key 属性名（大小写不敏感）
-     * @return
+     * @return 属性值
      */
     E getAttribute(String key);
 

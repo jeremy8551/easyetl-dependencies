@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.util.Formatter;
 import java.util.Locale;
 
-import icu.etl.util.Charset;
+import icu.etl.util.CharsetName;
 import icu.etl.util.StringUtils;
 
 /**
@@ -16,7 +16,7 @@ import icu.etl.util.StringUtils;
  * @author jeremy8551@qq.com
  * @createtime 2011-10-07
  */
-public class ByteBuffer implements Appendable, Charset {
+public class ByteBuffer implements Appendable, CharsetName {
 
     /** 字符串的默认字符集名称 */
     private String charsetName;
@@ -595,7 +595,7 @@ public class ByteBuffer implements Appendable, Charset {
     }
 
     /**
-     * 返回一个输入流<br>
+     * 返回一个输入流
      * 需要特别注意的是: 只能读取当前时点的字节数组副本
      *
      * @return 输入流

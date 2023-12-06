@@ -95,6 +95,28 @@ public class ClassUtilsTest {
     }
 
     @Test
+    public void testgetPackageNameString1() {
+        assertEquals(null, ClassUtils.getPackageName((String) null, 1));
+        assertEquals("", ClassUtils.getPackageName("", 0));
+        assertEquals("", ClassUtils.getPackageName("", 1));
+        assertEquals("a", ClassUtils.getPackageName("a", 0));
+        assertEquals("a", ClassUtils.getPackageName("a", 1));
+        assertEquals("a", ClassUtils.getPackageName("a", 2));
+        assertEquals("a", ClassUtils.getPackageName("a", -1));
+        assertEquals("a", ClassUtils.getPackageName("a", -2));
+
+        assertEquals("a", ClassUtils.getPackageName("a.b", 1));
+        assertEquals("a.b", ClassUtils.getPackageName("a.b", 0));
+        assertEquals("b", ClassUtils.getPackageName("a.b", -1));
+
+        assertEquals("a.b", ClassUtils.getPackageName("a.b", 2));
+        assertEquals("a.b", ClassUtils.getPackageName("a.b", -2));
+
+        assertEquals("a.b", ClassUtils.getPackageName("a.b.c", 2));
+        assertEquals("b.c", ClassUtils.getPackageName("a.b.c", -2));
+    }
+
+    @Test
     public void testforName() {
         assertNotNull(ClassUtils.forName(String.class.getName()));
         assertNotNull(ClassUtils.forName(String.class.getName(), false, null));
@@ -232,6 +254,12 @@ public class ClassUtilsTest {
         Assert.assertFalse(Modifier.isAbstract(Testenum.class.getModifiers()));
         Assert.assertFalse(Modifier.isAbstract(Testenum.A1.getClass().getModifiers()));
         Assert.assertFalse(Modifier.isAbstract(GenericABCTest.class.getModifiers()));
+    }
+
+    @Test
+    public void testsetField() {
+        LogCeshi lc = new LogCeshi();
+        ClassUtils.setField(lc, "N.*", String.class, "new");
     }
 
 //    @Test

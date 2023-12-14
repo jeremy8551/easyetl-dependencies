@@ -1,6 +1,7 @@
 package icu.etl.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,60 +10,36 @@ import java.util.List;
 import java.util.Properties;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class FileUtilsTest {
 
-    /**
-     * 返回一个临时文件
-     *
-     * @return
-     */
-    public static File getFile() {
-        return getFile(null);
-    }
+    @Test
+    public void testcreateTempDirectory() throws IOException {
+        // 清空临时文件
+        FileUtils.clearDirectory(FileUtils.getTempDir());
 
-    /**
-     * 使用指定用户名创建一个文件
-     *
-     * @param name
-     * @return
-     */
-    public static File getFile(String name) {
-        if (StringUtils.isBlank(name)) {
-            name = FileUtils.getFilenameRandom("testfile", "_tmp") + ".txt";
-        }
+        System.out.println(FileUtils.createTempDirectory(null).getAbsolutePath());
+        System.out.println(FileUtils.createTempDirectory("").getAbsolutePath());
 
-        File dir = new File(FileUtils.getTempDir(FileUtilsTest.class), "单元测试");
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new RuntimeException("创建目录 " + dir.getAbsolutePath() + " 失败!");
-        } else {
-            return new File(dir, name); // 返回一个临时文件信息
-        }
-    }
+        File dir1 = FileUtils.createTempDirectory("1");
+        Assert.assertEquals("1", dir1.getName());
+        System.out.println(dir1.getAbsolutePath());
 
-    /**
-     * 执行单元测试前建立必要测试目录
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-        assertTrue(FileUtils.getTempDir(FileUtilsTest.class).exists() && FileUtils.getTempDir(FileUtilsTest.class).isDirectory());
+        File dir2 = FileUtils.createTempDirectory("a");
+        Assert.assertEquals("a", dir2.getName());
+        System.out.println(dir2.getAbsolutePath());
+
+        File dir3 = FileUtils.createTempDirectory("abc");
+        Assert.assertEquals("abc", dir3.getName());
+        System.out.println(dir3.getAbsolutePath());
     }
 
     @Test
     public void testfindFile() throws IOException {
-        File root = FileUtils.getTempDir(FileUtilsTest.class);
+        File root = FileUtils.getTempDir("test", FileUtilsTest.class.getSimpleName());
         File d0 = new File(root, "findfile");
         d0.mkdirs();
 
@@ -84,127 +61,100 @@ public class FileUtilsTest {
         File f22 = new File(d3, "20200102.txt");
         f22.createNewFile();
 
-        List<File> fs = FileUtils.findFile(d0, "20200102.txt");
-        assertEquals(3, fs.size());
-        assertTrue(fs.indexOf(f11) != -1);
-        assertTrue(fs.indexOf(f21) != -1);
-        assertTrue(fs.indexOf(f22) != -1);
+        List<File> fs = FileUtils.find(d0, "20200102.txt");
+        Assert.assertEquals(3, fs.size());
+        Assert.assertTrue(fs.indexOf(f11) != -1);
+        Assert.assertTrue(fs.indexOf(f21) != -1);
+        Assert.assertTrue(fs.indexOf(f22) != -1);
 
-        fs = FileUtils.findFile(d0, "20200102[^ ]{4}");
-        assertEquals(3, fs.size());
-        assertTrue(fs.indexOf(f11) != -1);
-        assertTrue(fs.indexOf(f21) != -1);
-        assertTrue(fs.indexOf(f22) != -1);
+        fs = FileUtils.find(d0, "20200102[^ ]{4}");
+        Assert.assertEquals(3, fs.size());
+        Assert.assertTrue(fs.indexOf(f11) != -1);
+        Assert.assertTrue(fs.indexOf(f21) != -1);
+        Assert.assertTrue(fs.indexOf(f22) != -1);
     }
 
     @Test
     public void testReplaceLinSeparator() {
-        assertEquals("", FileUtils.replaceLineSeparator("", ":"));
-        assertNull(FileUtils.replaceLineSeparator(null, ":"));
-        assertEquals("1", FileUtils.replaceLineSeparator("1", ":"));
-        assertEquals("1:22:3:44:", FileUtils.replaceLineSeparator("1\r22\n3\r\n44\r\n", ":"));
-        assertEquals("1:22:3:44", FileUtils.replaceLineSeparator("1\r22\n3\r\n44", ":"));
-        assertEquals("1:22:3:44", FileUtils.replaceLineSeparator("1\r22\n3\r\n44", ":"));
-        assertEquals(("1" + FileUtils.lineSeparator + "22" + FileUtils.lineSeparator + "3" + FileUtils.lineSeparator + "44"), FileUtils.replaceLineSeparator("1\r22\n3\r\n44"));
+        Assert.assertEquals("", FileUtils.replaceLineSeparator("", ":"));
+        Assert.assertNull(FileUtils.replaceLineSeparator(null, ":"));
+
+        Assert.assertEquals("1", FileUtils.replaceLineSeparator("1", ":"));
+        Assert.assertEquals("1:22:3:44:", FileUtils.replaceLineSeparator("1\r22\n3\r\n44\r\n", ":"));
+        Assert.assertEquals("1:22:3:44", FileUtils.replaceLineSeparator("1\r22\n3\r\n44", ":"));
+        Assert.assertEquals("1:22:3:44", FileUtils.replaceLineSeparator("1\r22\n3\r\n44", ":"));
+        Assert.assertEquals(("1" + FileUtils.lineSeparator + "22" + FileUtils.lineSeparator + "3" + FileUtils.lineSeparator + "44"), FileUtils.replaceLineSeparator("1\r22\n3\r\n44"));
     }
 
     @Test
     public void test0111() {
-        assertNull(FileUtils.getParent(null));
-        assertNull(FileUtils.getParent(""));
-        assertNull(FileUtils.getParent("/"));
-        assertNull(FileUtils.getParent("/1"));
-        assertEquals("/1", FileUtils.getParent("/1/2"));
-        assertEquals("/1", FileUtils.getParent("/1/2/"));
-        assertEquals("/1/2", FileUtils.getParent("/1/2/3.txt"));
+        Assert.assertNull(FileUtils.getParent(null));
+        Assert.assertNull(FileUtils.getParent(""));
+        Assert.assertNull(FileUtils.getParent("/"));
+        Assert.assertNull(FileUtils.getParent("/1"));
+        Assert.assertEquals("/1", FileUtils.getParent("/1/2"));
+        Assert.assertEquals("/1", FileUtils.getParent("/1/2/"));
+        Assert.assertEquals("/1/2", FileUtils.getParent("/1/2/3.txt"));
     }
 
     @Test
     public void testdos2unix() throws IOException {
-        File file = getFile();
-        assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\r\n2\r\n3\r\n"));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\r\n2\r\n3\r\n"));
+
         String nt = FileUtils.readline(file, StringUtils.CHARSET, 0);
-        assertEquals("1\\r\\n2\\r\\n3\\r\\n", StringUtils.escapeLineSeparator(nt));
-        assertTrue(nt.indexOf(FileUtils.lineSeparatorWindows) != -1);
-        assertTrue(FileUtils.dos2unix(file, StringUtils.CHARSET));
+        Assert.assertEquals("1\\r\\n2\\r\\n3\\r\\n", StringUtils.escapeLineSeparator(nt));
+        Assert.assertTrue(nt.indexOf(FileUtils.lineSeparatorWindows) != -1);
+        Assert.assertTrue(FileUtils.dos2unix(file, StringUtils.CHARSET, null));
+
         String text = FileUtils.readline(file, StringUtils.CHARSET, 0);
-        assertEquals(-1, text.indexOf(FileUtils.lineSeparatorWindows));
-    }
-
-    @Test
-    public void testCheckFile() throws IOException {
-        File file = getFile();
-
-        try {
-            FileUtils.checkPermission(file, true, false);
-            fail();
-        } catch (Exception e) {
-            Assert.assertTrue(true);
-        }
-
-        try {
-            FileUtils.checkPermission(file, false, true);
-            fail();
-        } catch (Exception e) {
-            Assert.assertTrue(true);
-        }
-
-        FileUtils.write(file, StringUtils.CHARSET, false, "ceshi neirong ");
-        file.setReadable(true);
-        file.setWritable(true);
-        try {
-            FileUtils.checkPermission(file, true, true);
-        } catch (Exception e) {
-            fail();
-        }
+        Assert.assertEquals(-1, text.indexOf(FileUtils.lineSeparatorWindows));
     }
 
     @Test
     public void testExists() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
+        File file = FileUtils.createTempDirectory(null);
+        System.out.println(file.getAbsolutePath());
 
-        assertFalse(FileUtils.exists(file.getAbsolutePath()));
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertFalse(FileUtils.exists(file.getAbsolutePath()));
 
-        FileUtils.createFile(file);
-        assertTrue(FileUtils.exists(file.getAbsolutePath()));
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(FileUtils.exists(file.getAbsolutePath()));
     }
 
     @Test
     public void testCleanFileFile() throws IOException {
-        File file = getFile();
+        File file = FileUtils.createTempFile(null);
         FileUtils.write(file, StringUtils.CHARSET, false, "测试内容是否删除");
-        FileUtils.clearFile(file);
-        assertEquals(0, file.length());
+        Assert.assertTrue(FileUtils.clearFile(file));
+        Assert.assertEquals(0, file.length());
     }
 
     @Test
     public void testCleanFileString() throws IOException {
-        File file = getFile();
-        FileUtils.createFile(file);
-        FileUtils.write(file, StringUtils.CHARSET, false, "测试内容是否");
-
-        assertTrue(FileUtils.clearFile(file) && file.length() == 0);
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "测试内容是否"));
+        Assert.assertTrue(FileUtils.clearFile(file) && file.length() == 0);
     }
 
     @Test
     public void testIsFileFile() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertTrue(FileUtils.createFile(file) && FileUtils.isFile(file));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file) && FileUtils.isFile(file));
     }
 
     @Test
     public void testIsFileString() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(FileUtils.isFile(file.getAbsolutePath()));
 
-        FileUtils.createFile(file);
-        assertTrue(FileUtils.isFile(file.getAbsolutePath()));
-
-        FileUtils.delete(file);
-        file.mkdirs();
-        assertFalse(FileUtils.isFile(file.getAbsolutePath()));
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(file.mkdirs());
+        Assert.assertFalse(FileUtils.isFile(file.getAbsolutePath()));
     }
 
     @Test
@@ -222,15 +172,15 @@ public class FileUtilsTest {
 
     @Test
     public void testIsDirString() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
 
-        FileUtils.createDirectory(file);
-        assertTrue(FileUtils.isDirectory(file.getAbsolutePath()));
+        Assert.assertTrue(FileUtils.createDirectory(file));
+        Assert.assertTrue(FileUtils.isDirectory(file.getAbsolutePath()));
 
-        FileUtils.delete(file);
-        FileUtils.createFile(file);
-        assertFalse(FileUtils.isDirectory(file.getAbsolutePath()));
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertFalse(FileUtils.isDirectory(file.getAbsolutePath()));
     }
 
     @Test
@@ -379,197 +329,219 @@ public class FileUtilsTest {
 
     @Test
     public void testGetFilename() {
-        assertEquals("", FileUtils.getFilename(""));
-        assertEquals("test", FileUtils.getFilename("/home/test/test"));
-        assertEquals("test.", FileUtils.getFilename("/home/test/test."));
-        assertEquals("test.txt", FileUtils.getFilename("/home/test/test.txt"));
-        assertEquals("test", FileUtils.getFilename("/home/test./test"));
-        assertEquals("test", FileUtils.getFilename("/home/.test\\test"));
-        assertEquals("test.txt", FileUtils.getFilename("/home/.test\\test.txt"));
-        assertEquals(".txt", FileUtils.getFilename("/home/.test\\.txt"));
-        assertEquals(".txt", FileUtils.getFilename("/home/.test/.txt"));
+        Assert.assertEquals("", FileUtils.getFilename(""));
+        Assert.assertEquals("test", FileUtils.getFilename("/home/test/test"));
+        Assert.assertEquals("test.", FileUtils.getFilename("/home/test/test."));
+        Assert.assertEquals("test.txt", FileUtils.getFilename("/home/test/test.txt"));
+        Assert.assertEquals("test", FileUtils.getFilename("/home/test./test"));
+        Assert.assertEquals("test", FileUtils.getFilename("/home/.test\\test"));
+        Assert.assertEquals("test.txt", FileUtils.getFilename("/home/.test\\test.txt"));
+        Assert.assertEquals(".txt", FileUtils.getFilename("/home/.test\\.txt"));
+        Assert.assertEquals(".txt", FileUtils.getFilename("/home/.test/.txt"));
     }
 
     @Test
     public void testGetFilenameNoExt() {
-        assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test.txt"));
-        assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test."));
-        assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test"));
-        assertEquals("test", FileUtils.getFilenameNoExt("shell/test"));
-        assertEquals("test", FileUtils.getFilenameNoExt("test"));
-        assertEquals("t", FileUtils.getFilenameNoExt("t"));
-        assertEquals("", FileUtils.getFilenameNoExt(""));
-        assertNull(FileUtils.getFilenameNoExt(null));
+        Assert.assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test.txt"));
+        Assert.assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test."));
+        Assert.assertEquals("test", FileUtils.getFilenameNoExt("/home/test/shell/test"));
+        Assert.assertEquals("test", FileUtils.getFilenameNoExt("shell/test"));
+        Assert.assertEquals("test", FileUtils.getFilenameNoExt("test"));
+        Assert.assertEquals("t", FileUtils.getFilenameNoExt("t"));
+        Assert.assertEquals("", FileUtils.getFilenameNoExt(""));
+        Assert.assertNull(FileUtils.getFilenameNoExt(null));
     }
 
     @Test
     public void testGetFilenameNoSuffix() {
-        assertNull(FileUtils.getFilenameNoSuffix(null));
-        assertEquals("1", FileUtils.getFilenameNoSuffix("1.del"));
-        assertEquals("", FileUtils.getFilenameNoSuffix("."));
-        assertEquals("", FileUtils.getFilenameNoSuffix(".del.gz"));
-        assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("INC_QYZX_ECC_LACKOFINTERESTS18.del.gz"));
-        assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("D:\\home\\test\\INC_QYZX_ECC_LACKOFINTERESTS18.del.gz"));
-        assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("D:\\home\\test\\INC_QYZX_ECC_LACKOFINTERESTS18.del"));
+        Assert.assertNull(FileUtils.getFilenameNoSuffix(null));
+        Assert.assertEquals("1", FileUtils.getFilenameNoSuffix("1.del"));
+        Assert.assertEquals("", FileUtils.getFilenameNoSuffix("."));
+        Assert.assertEquals("", FileUtils.getFilenameNoSuffix(".del.gz"));
+        Assert.assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("INC_QYZX_ECC_LACKOFINTERESTS18.del.gz"));
+        Assert.assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("D:\\home\\test\\INC_QYZX_ECC_LACKOFINTERESTS18.del.gz"));
+        Assert.assertEquals("INC_QYZX_ECC_LACKOFINTERESTS18", FileUtils.getFilenameNoSuffix("D:\\home\\test\\INC_QYZX_ECC_LACKOFINTERESTS18.del"));
     }
 
     @Test
     public void testGetFilenameExt() {
-        assertEquals("", FileUtils.getFilenameExt(""));
-        assertEquals("", FileUtils.getFilenameExt("/home/test/test"));
-        assertEquals("", FileUtils.getFilenameExt("/home/test/test."));
-        assertEquals("txt", FileUtils.getFilenameExt("/home/test/test.txt"));
-        assertEquals("", FileUtils.getFilenameExt("/home/test./test"));
-        assertEquals("", FileUtils.getFilenameExt("/home/.test\\test"));
-        assertEquals("txt", FileUtils.getFilenameExt("/home/.test\\test.txt"));
-        assertEquals("txt", FileUtils.getFilenameExt("/home/.test\\.txt"));
-        assertEquals("txt", FileUtils.getFilenameExt("/home/.test/.txt"));
+        Assert.assertEquals("", FileUtils.getFilenameExt(""));
+        Assert.assertEquals("", FileUtils.getFilenameExt("/home/test/test"));
+        Assert.assertEquals("", FileUtils.getFilenameExt("/home/test/test."));
+        Assert.assertEquals("txt", FileUtils.getFilenameExt("/home/test/test.txt"));
+        Assert.assertEquals("", FileUtils.getFilenameExt("/home/test./test"));
+        Assert.assertEquals("", FileUtils.getFilenameExt("/home/.test\\test"));
+        Assert.assertEquals("txt", FileUtils.getFilenameExt("/home/.test\\test.txt"));
+        Assert.assertEquals("txt", FileUtils.getFilenameExt("/home/.test\\.txt"));
+        Assert.assertEquals("txt", FileUtils.getFilenameExt("/home/.test/.txt"));
     }
 
     @Test
     public void testGetFilenameSuffix() {
-        assertNull(FileUtils.getFilenameSuffix(null));
-        assertEquals("", FileUtils.getFilenameSuffix(""));
-        assertEquals("", FileUtils.getFilenameSuffix("1"));
-        assertEquals("", FileUtils.getFilenameSuffix("1."));
-        assertEquals("d", FileUtils.getFilenameSuffix("1.d"));
-        assertEquals("del", FileUtils.getFilenameSuffix("1.del"));
-        assertEquals("del.gz", FileUtils.getFilenameSuffix("1.del.gz"));
-        assertEquals("del.gz", FileUtils.getFilenameSuffix("\\1.del.gz"));
-        assertEquals("del.gz", FileUtils.getFilenameSuffix("/1.del.gz"));
-        assertEquals("del.gz", FileUtils.getFilenameSuffix("1/1.del.gz"));
+        Assert.assertNull(FileUtils.getFilenameSuffix(null));
+        Assert.assertEquals("", FileUtils.getFilenameSuffix(""));
+        Assert.assertEquals("", FileUtils.getFilenameSuffix("1"));
+        Assert.assertEquals("", FileUtils.getFilenameSuffix("1."));
+        Assert.assertEquals("d", FileUtils.getFilenameSuffix("1.d"));
+        Assert.assertEquals("del", FileUtils.getFilenameSuffix("1.del"));
+        Assert.assertEquals("del.gz", FileUtils.getFilenameSuffix("1.del.gz"));
+        Assert.assertEquals("del.gz", FileUtils.getFilenameSuffix("\\1.del.gz"));
+        Assert.assertEquals("del.gz", FileUtils.getFilenameSuffix("/1.del.gz"));
+        Assert.assertEquals("del.gz", FileUtils.getFilenameSuffix("1/1.del.gz"));
     }
 
     @Test
     public void testStripFilenameExt() {
-        assertNull(FileUtils.removeFilenameExt(null));
-        assertEquals("", FileUtils.removeFilenameExt(""));
-        assertEquals("/home/test/", FileUtils.removeFilenameExt("/home/test/"));
-        assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test.txt"));
-        assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test"));
-        assertEquals("/home/.test/test", FileUtils.removeFilenameExt("/home/.test/test"));
-        assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test."));
-        assertEquals("/home/test/", FileUtils.removeFilenameExt("/home/test/.test"));
+        Assert.assertNull(FileUtils.removeFilenameExt(null));
+        Assert.assertEquals("", FileUtils.removeFilenameExt(""));
+        Assert.assertEquals("/home/test/", FileUtils.removeFilenameExt("/home/test/"));
+        Assert.assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test.txt"));
+        Assert.assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test"));
+        Assert.assertEquals("/home/.test/test", FileUtils.removeFilenameExt("/home/.test/test"));
+        Assert.assertEquals("/home/test/test", FileUtils.removeFilenameExt("/home/test/test."));
+        Assert.assertEquals("/home/test/", FileUtils.removeFilenameExt("/home/test/.test"));
 
-        assertEquals("/home/test\\", FileUtils.removeFilenameExt("/home/test\\"));
-        assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test.txt"));
-        assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test"));
-        assertEquals("/home/.test\\test", FileUtils.removeFilenameExt("/home/.test\\test"));
-        assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test."));
-        assertEquals("/home/test\\", FileUtils.removeFilenameExt("/home/test\\.test"));
+        Assert.assertEquals("/home/test\\", FileUtils.removeFilenameExt("/home/test\\"));
+        Assert.assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test.txt"));
+        Assert.assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test"));
+        Assert.assertEquals("/home/.test\\test", FileUtils.removeFilenameExt("/home/.test\\test"));
+        Assert.assertEquals("/home/test\\test", FileUtils.removeFilenameExt("/home/test\\test."));
+        Assert.assertEquals("/home/test\\", FileUtils.removeFilenameExt("/home/test\\.test"));
     }
 
     @Test
     public void testGetNoRepeatFilename() throws IOException {
-        File tempDir = FileUtils.getTempDir(FileUtilsTest.class);
+        File tempDir = FileUtils.createTempDirectory(null);
         File parent = new File(tempDir, Dates.format08(new Date()));
-        FileUtils.createDirectory(parent);
+        Assert.assertTrue(FileUtils.createDirectory(parent));
 
         // 先创建一个文件
         File file = new File(parent, "test_repeat_file.dat.tmp");
-        FileUtils.createFile(file);
+        Assert.assertTrue(FileUtils.createFile(file));
 
         // 再创建一个不重名文件
-        File newfile = FileUtils.getFileNoRepeat(parent, "test_repeat_file.dat.tmp");
-        assertNotEquals(newfile, file);
-        FileUtils.createFile(newfile);
+        File newfile = FileUtils.allocate(parent, "test_repeat_file.dat.tmp");
+        Assert.assertNotEquals(newfile, file);
+        Assert.assertTrue(FileUtils.createFile(newfile));
 
         // 再创建一个不重名文件
-        File newfile1 = FileUtils.getFileNoRepeat(parent, "test_repeat_file.dat.tmp");
-        assertNotEquals(newfile1, file);
-        assertNotEquals(newfile1, newfile);
-        FileUtils.createFile(newfile1);
+        File newfile1 = FileUtils.allocate(parent, "test_repeat_file.dat.tmp");
+        Assert.assertNotEquals(newfile1, file);
+        Assert.assertNotEquals(newfile1, newfile);
+        Assert.assertTrue(FileUtils.createFile(newfile1));
+    }
+
+    @Test
+    public void testcreateUniqueFile() {
+        File tempDir = FileUtils.createTempDirectory(null);
+        File newfile = FileUtils.allocate(tempDir, "test_repeat_file.dat");
+        Assert.assertTrue(FileUtils.createFile(newfile));
     }
 
     @Test
     public void testGetResourceAsStream() throws IOException {
-        assertNotNull(FileUtils.loadProperties("/testfile.properties"));
+        Assert.assertNotNull(FileUtils.loadProperties("/testfile.properties"));
+        Assert.assertNotNull(FileUtils.loadProperties("classpath:/testfile.properties"));
     }
 
     @Test
     public void testCreateFileString() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertFalse(file.exists());
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertFalse(file.exists());
 
-        FileUtils.createFile(file);
-        assertTrue(file.exists());
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(file.exists());
     }
 
     @Test
     public void testCreateFileFile() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertFalse(file.exists());
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertFalse(file.exists());
 
-        FileUtils.createFile(file);
-        assertTrue(file.exists());
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(file.exists());
     }
 
     @Test
     public void testCreatefileFile() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertTrue(FileUtils.createFile(file) && file.exists());
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file) && file.exists());
     }
 
     @Test
     public void testCreatefileString() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertTrue(FileUtils.createFile(file) && file.exists());
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file) && file.exists());
     }
 
     @Test
     public void testCreatefileFileBoolean() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        FileUtils.createDirectory(file);
-        assertTrue(FileUtils.createFile(file, true));
+        Assert.assertFalse(FileUtils.createFile(null, true));
+
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createDirectory(file));
+        Assert.assertTrue(FileUtils.createFile(file, true)); // 测试强制新建文件
+    }
+
+    @Test
+    public void testCreatefileFileBoolean1() throws IOException {
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+
+        String path = FileUtils.joinPath(file.getAbsolutePath(), "a", "b", "c");
+        File dir = new File(path);
+        Assert.assertTrue(FileUtils.createDirectory(dir));
+        Assert.assertTrue(FileUtils.isDirectory(dir));
     }
 
     @Test
     public void testCreateDirecotryString() {
-        File file = getFile();
+        File file = FileUtils.createTempDirectory(null);
         FileUtils.delete(file);
-        FileUtils.createDirectory(file);
-        assertTrue(file.exists() && file.isDirectory());
+        Assert.assertTrue(FileUtils.createDirectory(file));
+        Assert.assertTrue(file.exists() && file.isDirectory());
     }
 
     @Test
     public void testCreateDirecotryFile() {
-        File file = getFile();
-        FileUtils.delete(file);
-        FileUtils.createDirectory(file);
-        assertTrue(file.exists() && file.isDirectory());
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createDirectory(file));
+        Assert.assertTrue(file.exists() && file.isDirectory());
     }
 
     @Test
     public void testCreateDirectoryString() {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertTrue(FileUtils.createDirectory(file) && file.exists() && file.isDirectory());
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createDirectory(file) && file.exists() && file.isDirectory());
     }
 
     @Test
     public void testCreateDirectoryFile() {
-        File file = getFile();
-        FileUtils.delete(file);
-        assertTrue(FileUtils.createDirectory(file) && file.exists() && file.isDirectory());
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createDirectory(file) && file.exists() && file.isDirectory());
     }
 
     @Test
     public void testCreateDirectoryFileBoolean() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        FileUtils.createFile(file);
-        assertTrue(FileUtils.createDirectory(file, true) && file.exists() && file.isDirectory());
+        File file = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(FileUtils.createDirectory(file, true) && file.exists() && file.isDirectory());
 
-        File f = new File(FileUtils.getTempDir(FileUtilsTest.class), "dirdir0000");
-        FileUtils.delete(f);
-        f.mkdirs();
-        File f0 = new File(f, FileUtils.joinFilepath("t1", "t2", "t3"));
-        assertTrue(FileUtils.createDirectory(f0) && f0.exists() && f0.isDirectory());
+        File file1 = FileUtils.getTempDir("test", FileUtilsTest.class.getSimpleName(), "dirdir0000");
+        Assert.assertTrue(FileUtils.delete(file1));
+        Assert.assertTrue(file1.mkdirs());
+
+        File f0 = new File(file1, FileUtils.joinPath("t1", "t2", "t3"));
+        Assert.assertTrue(FileUtils.createDirectory(f0) && f0.exists() && f0.isDirectory());
         System.out.println("f0: " + f0.getAbsolutePath());
     }
 
@@ -577,238 +549,273 @@ public class FileUtilsTest {
     public void testTranslateSeperator() {
         String str1 = "/home/test/shell/qyzx/";
         String str2 = StringUtils.replaceAll(str1, "/", File.separator);
-        assertEquals(FileUtils.replaceFolderSeparator(str1), str2);
+        Assert.assertEquals(FileUtils.replaceFolderSeparator(str1), str2);
     }
 
     @Test
     public void testSpellFileStringString() {
-        assertEquals(FileUtils.joinFilepath("/home/test", "shell"), "/home/test" + File.separator + "shell");
-        assertEquals(FileUtils.joinFilepath("/home/test", "shell/qyzx"), "/home/test" + File.separator + "shell/qyzx");
+        Assert.assertEquals(FileUtils.joinPath("/home/test", "shell"), "/home/test" + File.separator + "shell");
+        Assert.assertEquals(FileUtils.joinPath("/home/test", "shell/qyzx"), "/home/test" + File.separator + "shell/qyzx");
     }
 
     @Test
     public void testSpellFileStringArray() {
-        assertEquals(FileUtils.joinFilepath(new String[]{"home", "test", "shell", "grzx"}), "home" + File.separator + "test" + File.separator + "shell" + File.separator + "grzx");
+        Assert.assertEquals(FileUtils.joinPath(new String[]{"home", "test", "shell", "grzx"}), "home" + File.separator + "test" + File.separator + "shell" + File.separator + "grzx");
     }
 
     @Test
     public void testRemoveEndFileSeparator() {
-        assertEquals("\\home\\test\\shell\\qyzx", FileUtils.rtrimFolderSeparator("\\home\\test\\shell\\qyzx\\"));
-        assertEquals("\\home\\test\\shell\\qyzx", FileUtils.rtrimFolderSeparator("\\home\\test\\shell\\qyzx\\/"));
+        Assert.assertEquals("\\home\\test\\shell\\mulu", FileUtils.rtrimFolderSeparator("\\home\\test\\shell\\mulu\\"));
+        Assert.assertEquals("\\home\\test\\shell\\mulu", FileUtils.rtrimFolderSeparator("\\home\\test\\shell\\mulu\\/"));
     }
 
     @Test
     public void testChangeFilenameExt() {
-        assertEquals("C:/test/ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/ceshi/test.txt", "enc"));
-        assertEquals("C:/test/.ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/test.txt", "enc"));
-        assertEquals("C:\\.test\\.ceshi\\test.enc", FileUtils.changeFilenameExt("C:\\.test\\.ceshi\\test.txt", "enc"));
-        assertEquals("C:/test/.ceshi/.test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/.test.txt", "enc"));
-        assertEquals("C:/test/.ceshi/.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/.test", "enc"));
-        assertEquals("C:/test/.ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/test", "enc"));
+        Assert.assertEquals("C:/test/ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/ceshi/test.txt", "enc"));
+        Assert.assertEquals("C:/test/.ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/test.txt", "enc"));
+        Assert.assertEquals("C:\\.test\\.ceshi\\test.enc", FileUtils.changeFilenameExt("C:\\.test\\.ceshi\\test.txt", "enc"));
+        Assert.assertEquals("C:/test/.ceshi/.test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/.test.txt", "enc"));
+        Assert.assertEquals("C:/test/.ceshi/.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/.test", "enc"));
+        Assert.assertEquals("C:/test/.ceshi/test.enc", FileUtils.changeFilenameExt("C:/test/.ceshi/test", "enc"));
     }
 
     @Test
     public void testLoadPropertiesFile() throws IOException {
-        File file = new File(FileUtils.getTempDir(FileUtilsTest.class), "a.properties");
-        FileOutputStream fs = new FileOutputStream(file);
+        File file = FileUtils.createTempFile("a.properties");
+        FileOutputStream out = new FileOutputStream(file);
         Properties p = new Properties();
-        p.put("path", "/home/user/shell/grzx/grzx_execute.xml");
-        p.store(fs, "测试");
+        p.put("path", "/home/user/shell/test/execute.properties");
+        p.store(out, "测试");
 
-        Properties nc = FileUtils.loadProperties(file.getAbsolutePath());
-        assertEquals("/home/user/shell/grzx/grzx_execute.xml", nc.getProperty("path"));
+        Properties np = FileUtils.loadProperties(file.getAbsolutePath());
+        Assert.assertEquals("/home/user/shell/test/execute.properties", np.getProperty("path"));
     }
 
     @Test
     public void testWriteProperties() throws IOException {
         Properties p = new Properties();
-        p.put("path", "/home/user/shell/grzx/grzx_execute.xml");
+        p.put("path", "/home/user/shell/test/config.properties");
 
-        File file = getFile();
-        File newFile = FileUtils.storeProperties(p, file);
+        File file = FileUtils.createTempFile(".properties");
+        System.out.println(file.getAbsolutePath());
+        Assert.assertTrue(FileUtils.store(p, file));
 
-        Properties nc = FileUtils.loadProperties(newFile.getAbsolutePath());
-        assertEquals("/home/user/shell/grzx/grzx_execute.xml", nc.getProperty("path"));
+        Properties nc = FileUtils.loadProperties(file.getAbsolutePath());
+        Assert.assertEquals("/home/user/shell/test/config.properties", nc.getProperty("path"));
     }
 
     @Test
     public void testDelete() throws IOException {
-        File file = getFile();
-        FileUtils.createFile(file);
-        FileUtils.delete(file);
-        assertFalse(file.exists());
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertFalse(file.exists());
 
-        FileUtils.delete(file);
-        FileUtils.createDirectory(file);
-        FileUtils.delete(file);
-        assertFalse(file.exists());
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertTrue(FileUtils.createDirectory(file));
+        Assert.assertTrue(FileUtils.delete(file));
+        Assert.assertFalse(file.exists());
     }
 
     @Test
     public void testDeleteFileFile() throws IOException {
-        File f0 = getFile();
+        File f0 = FileUtils.createTempFile(null);
         FileUtils.createFile(f0);
-        assertTrue(FileUtils.deleteFile(f0) && !f0.exists());
+        Assert.assertTrue(FileUtils.deleteFile(f0) && !f0.exists());
 
-        File f1 = getFile();
-        FileUtils.createDirectory(f1);
-        assertTrue(!FileUtils.deleteFile(f1) && f1.exists());
+        File f1 = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(f1));
+        Assert.assertTrue(!FileUtils.deleteFile(f1) && f1.exists());
     }
 
     @Test
     public void testDeleteFileString() throws IOException {
-        File f0 = getFile();
+        File f0 = FileUtils.createTempFile(null);
         FileUtils.createFile(f0);
-        assertTrue(FileUtils.deleteFile(new File(f0.getAbsolutePath())) && !f0.exists());
+        Assert.assertTrue(FileUtils.deleteFile(new File(f0.getAbsolutePath())) && !f0.exists());
 
-        File f1 = getFile();
-        FileUtils.createDirectory(f1);
-        assertTrue(!FileUtils.deleteFile(new File(f1.getAbsolutePath())) && f1.exists());
+        File f1 = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(f1));
+        Assert.assertTrue(!FileUtils.deleteFile(new File(f1.getAbsolutePath())) && f1.exists());
     }
 
     @Test
     public void testDeleteDirectoryString() throws IOException {
-        File f0 = getFile();
-        FileUtils.createFile(f0);
-        assertTrue(!FileUtils.deleteDirectory(new File(f0.getAbsolutePath())) && f0.exists());
+        File f0 = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.createFile(f0));
+        Assert.assertTrue(!FileUtils.deleteDirectory(new File(f0.getAbsolutePath())) && f0.exists());
 
-        File f1 = getFile();
-        FileUtils.createDirectory(f1);
-        assertTrue(FileUtils.deleteDirectory(new File(f1.getAbsolutePath())) && !f1.exists());
+        File f1 = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(f1));
+        Assert.assertTrue(FileUtils.deleteDirectory(new File(f1.getAbsolutePath())) && !f1.exists());
     }
 
     @Test
     public void testDeleteDirectoryFile() throws IOException {
-        File f0 = getFile();
-        FileUtils.createFile(f0);
-        assertTrue(!FileUtils.deleteDirectory(f0) && f0.exists());
+        File f0 = FileUtils.createTempFile(null);
+        FileUtils.assertCreateFile(f0);
+        Assert.assertTrue(!FileUtils.deleteDirectory(f0) && f0.exists());
 
-        File f1 = getFile();
-        FileUtils.createDirectory(f1);
-        assertTrue(FileUtils.deleteDirectory(f1) && !f1.exists());
+        File dir1 = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(dir1));
+        Assert.assertTrue(FileUtils.deleteDirectory(dir1) && !dir1.exists());
     }
 
     @Test
     public void testCleanDirectoryString() throws IOException {
-        File dir = getFile();
-        FileUtils.createDirectory(dir);
+        File dir = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(dir));
 
         File cdir = new File(dir, "cdir");
-        FileUtils.createDirectory(cdir);
+        Assert.assertTrue(FileUtils.createDirectory(cdir));
 
         File f1 = new File(cdir, "test.del");
-        FileUtils.createFile(f1);
-        File f2 = new File(dir, "test.del");
-        FileUtils.createFile(f2);
+        Assert.assertTrue(FileUtils.createFile(f1));
 
-        assertTrue(FileUtils.clearDirectory(dir) && !cdir.exists() && !f1.exists() && !f2.exists());
+        File f2 = new File(dir, "test.del");
+        Assert.assertTrue(FileUtils.createFile(f2));
+        Assert.assertTrue(FileUtils.clearDirectory(dir) && !cdir.exists() && !f1.exists() && !f2.exists());
+    }
+
+    @Test
+    public void testCleanDirectoryString1() throws IOException {
+        File dir = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.delete(dir));
+        Assert.assertTrue(FileUtils.clearDirectory(dir));
+
+        Assert.assertTrue(FileUtils.delete(dir));
+        Assert.assertTrue(FileUtils.createFile(dir));
+        Assert.assertFalse(FileUtils.clearDirectory(dir));
     }
 
     @Test
     public void testCleanDirectoryFile() throws IOException {
-        File dir = getFile();
-        FileUtils.createDirectory(dir);
+        File dir = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createDirectory(dir));
 
         File cdir = new File(dir, "cdir");
-        FileUtils.createDirectory(cdir);
+        Assert.assertTrue(FileUtils.createDirectory(cdir));
 
         File f1 = new File(cdir, "test.del");
-        FileUtils.createFile(f1);
-        File f2 = new File(dir, "test.del");
-        FileUtils.createFile(f2);
+        Assert.assertTrue(FileUtils.createFile(f1));
 
-        assertTrue(FileUtils.clearDirectory(new File(dir.getAbsolutePath())) && !cdir.exists() && !f1.exists() && !f2.exists());
+        File f2 = new File(dir, "test.del");
+        Assert.assertTrue(FileUtils.createFile(f2));
+        Assert.assertTrue(FileUtils.clearDirectory(dir) && !cdir.exists() && !f1.exists() && !f2.exists());
     }
 
     @Test
     public void testGetLineContent() throws IOException {
-        File file = getFile();
-        FileUtils.write(file, StringUtils.CHARSET, false, "l1\nl2\nl3");
-        assertEquals("l1", FileUtils.readline(file, null, 1));
-        assertEquals("l2", FileUtils.readline(file, null, 2));
-        assertEquals("l3", FileUtils.readline(file, null, 3));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "l1\nl2\nl3"));
+        Assert.assertEquals("l1", FileUtils.readline(file, null, 1));
+        Assert.assertEquals("l2", FileUtils.readline(file, null, 2));
+        Assert.assertEquals("l3", FileUtils.readline(file, null, 3));
     }
 
     @Test
-    public void testMoveFileToDirFileFile() throws IOException {
-        File dir = getFile();
-        FileUtils.createDirectory(dir);
+    public void testrename() throws IOException {
+        File dir = FileUtils.getTempDir("test", Dates.format17());
 
-        File cdir = new File(dir, "cdir");
-        FileUtils.createDirectory(cdir);
+        File f1 = new File(dir, "test1.txt");
+        FileUtils.assertCreateFile(f1);
+        File f2 = new File(dir, "test2.txt");
+        FileUtils.assertDelete(f2);
 
-        File f1 = new File(cdir, "test.del");
-        FileUtils.createFile(f1);
-        File f2 = new File(dir, "test.del");
-        FileUtils.createFile(f2);
-
-        File dest = getFile();
-        FileUtils.createDirectory(dest);
-
-        assertTrue(FileUtils.moveFile(dir, dest) && !dir.exists());
-
-        File ff = getFile();
-        FileUtils.createFile(ff);
-        assertTrue(FileUtils.moveFile(ff, dest) && !dir.exists());
+        Assert.assertTrue(FileUtils.rename(f1, f2, null));
+        Assert.assertFalse(f1.exists());
+        Assert.assertTrue(f2.exists());
     }
 
     @Test
-    public void testMoveFileToDirStringString() throws IOException {
-        File dir = getFile();
-        FileUtils.createDirectory(dir);
+    public void testrename1() throws IOException {
+        File dir = FileUtils.getTempDir("test", Dates.format17());
 
-        File cdir = new File(dir, "cdir");
-        FileUtils.createDirectory(cdir);
+        File f1 = new File(dir, "test1.txt");
+        FileUtils.assertCreateFile(f1);
 
-        File f1 = new File(cdir, "test.del");
-        FileUtils.createFile(f1);
-        File f2 = new File(dir, "test.del");
-        FileUtils.createFile(f2);
+        File f2 = new File(dir, "test2.txt");
+        FileUtils.assertCreateFile(f2);
 
-        File dest = getFile();
-        FileUtils.createDirectory(dest);
+        Assert.assertTrue(FileUtils.rename(f1, f2, null));
+        Assert.assertFalse(f1.exists());
+        Assert.assertTrue(f2.exists());
+    }
 
-        assertTrue(FileUtils.moveFile(new File(dir.getAbsolutePath()), new File(dest.getAbsolutePath())) && !dir.exists());
+    @Test
+    public void testrename2() throws IOException {
+        File dir = FileUtils.getTempDir("test", Dates.format17());
 
-        File ff = getFile();
-        FileUtils.createFile(ff);
-        assertTrue(FileUtils.moveFile(new File(ff.getAbsolutePath()), new File(dest.getAbsolutePath())) && !dir.exists());
+        File dir1 = new File(dir, Dates.format17());
+        FileUtils.assertCreateDirectory(dir1);
+        Assert.assertTrue(FileUtils.clearDirectory(dir1));
+
+        File f1 = new File(dir, "test1.txt");
+        FileUtils.assertCreateFile(f1);
+
+        File f2 = new File(dir, "test2.txt");
+        FileUtils.assertCreateFile(f2);
+
+        File newfile2 = new File(dir1, f2.getName());
+        Assert.assertTrue(FileUtils.rename(f1, f2, newfile2));
+        Assert.assertFalse(f1.exists());
+        Assert.assertTrue(f2.exists());
+        Assert.assertTrue(newfile2.exists());
+    }
+
+    @Test
+    public void testrename3() throws IOException {
+        File dir = FileUtils.getTempDir("test", Dates.format17());
+
+        File f1 = new File(dir, "test1.txt");
+        FileUtils.assertCreateFile(f1);
+
+        File dir1 = new File(dir, Dates.format17());
+        FileUtils.assertCreateDirectory(dir1);
+
+        File f2 = new File(dir1, "test2.txt");
+        FileUtils.assertCreateFile(f2);
+        Assert.assertTrue(FileUtils.rename(f1, f2, null));
+        Assert.assertFalse(f1.exists());
+        Assert.assertTrue(f2.exists());
     }
 
     @Test
     public void testMoveFileToRecycle() throws IOException {
-        File file = getFile();
-        File dir = getFile();
-        FileUtils.createFile(file);
-        FileUtils.createDirectory(dir);
-
-//		File recFile = new File(IOUtils.getSystemRecycle(), file.getName());
-//		System.out.println(recFile.getAbsolutePath() + ", " + recFile.exists());
-
-        assertTrue(FileUtils.moveFileToRecycle(file) && !file.exists());
+        File file = FileUtils.createTempFile(null);
+        File dir = FileUtils.createTempDirectory(null);
+        Assert.assertTrue(FileUtils.createFile(file));
+        Assert.assertTrue(FileUtils.createDirectory(dir));
+        Assert.assertTrue(FileUtils.move2Recycle(file) && !file.exists());
     }
 
     @Test
-    public void testRenameFileStringString() throws IOException {
-        File file = getFile();
-        FileUtils.delete(file);
-        FileUtils.createFile(file);
-
-        File newFile = new File(file.getParentFile(), "test_rename_g.txt");
-        assertTrue(FileUtils.delete(newFile) && FileUtils.rename(file, "test_rename_g", ".txt") == 0 && newFile.exists());
+    public void testcreateFileQuiet() throws IOException {
+        File file = new FileProxy(FileUtils.createTempDirectory(null));
+        Assert.assertFalse(FileUtils.Atomic.createFileQuiet(file));
+        System.out.println(file.getAbsolutePath());
     }
 
     @Test
-    public void testRenameFileFile() throws IOException {
-        File f0 = getFile();
-        FileUtils.delete(f0);
-        FileUtils.createFile(f0);
+    public void createDirectory() {
+        File parent = FileUtils.createTempDirectory(null);
+        FileUtils.createDirectory(parent, "a", "b", "c", "d");
 
-        File f1 = new File(f0.getParentFile(), "renameFileFile.del");
-        FileUtils.delete(f1);
+        parent = FileUtils.createTempDirectory(null);
+        FileUtils.createDirectory(parent, "a");
 
-        FileUtils.rename(f0, f1);
-        assertTrue(true);
+        parent = FileUtils.createTempDirectory(null);
+        FileUtils.createDirectory(parent);
+    }
+
+    private static class FileProxy extends File {
+        public FileProxy(File file) {
+            super(file.getAbsolutePath());
+        }
+
+        public boolean createNewFile() throws IOException {
+            throw new IOException("test createNewFile()");
+        }
     }
 
     @Test
@@ -820,18 +827,18 @@ public class FileUtilsTest {
 
     @Test
     public void testReplaceFileSeparator() {
-        assertEquals("|", FileUtils.replaceFolderSeparator("/", '|'));
-        assertEquals("|", FileUtils.replaceFolderSeparator("\\", '|'));
-        assertEquals("|home", FileUtils.replaceFolderSeparator("/home", '|'));
-        assertEquals("|home|test|shell|qyzx", FileUtils.replaceFolderSeparator("/home/test/shell/qyzx", '|'));
-        assertEquals("|home|test|shell|qyzx|", FileUtils.replaceFolderSeparator("/home/test/shell/qyzx\\", '|'));
+        Assert.assertEquals("|", FileUtils.replaceFolderSeparator("/", '|'));
+        Assert.assertEquals("|", FileUtils.replaceFolderSeparator("\\", '|'));
+        Assert.assertEquals("|home", FileUtils.replaceFolderSeparator("/home", '|'));
+        Assert.assertEquals("|home|test|shell|mulu", FileUtils.replaceFolderSeparator("/home/test/shell/mulu", '|'));
+        Assert.assertEquals("|home|test|shell|mulu|", FileUtils.replaceFolderSeparator("/home/test/shell/mulu\\", '|'));
     }
 
     @Test
     public void testGetLineSeparator() throws IOException {
-        File file = getFile();
-        FileUtils.write(file, StringUtils.CHARSET, false, "a\nb\nc\n\n");
-        assertEquals("\n", FileUtils.readLineSeparator(file));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "a\nb\nc\n\n"));
+        Assert.assertEquals("\n", FileUtils.readLineSeparator(file));
     }
 
     @Test
@@ -847,137 +854,138 @@ public class FileUtilsTest {
 
     @Test
     public void testGetRadomFileName() {
-        assertTrue(StringUtils.isNotBlank(FileUtils.getFilenameRandom("", "")));
     }
 
     @Test
     public void testGetSystemTempDir() {
-        assertTrue(FileUtils.getTempDir(FileUtilsTest.class).exists() && FileUtils.getTempDir(FileUtilsTest.class).isDirectory());
+        Assert.assertTrue(FileUtils.getTempDir("test", FileUtilsTest.class.getSimpleName()).exists() && FileUtils.getTempDir("test", FileUtilsTest.class.getSimpleName()).isDirectory());
     }
 
     @Test
     public void testGetSystemRecycle() {
-        assertTrue(FileUtils.getRecyDir().exists() && FileUtils.getRecyDir().isDirectory());
+        Assert.assertTrue(FileUtils.getRecyDir().exists() && FileUtils.getRecyDir().isDirectory());
         System.out.println(FileUtils.getRecyDir().getAbsolutePath());
     }
 
     @Test
     public void testCopy() throws IOException {
-        File f0 = getFile();
+        File f0 = FileUtils.createTempFile(null);
         FileUtils.write(f0, StringUtils.CHARSET, false, "1,2,3,4,5");
 
         File f1 = new File(f0.getParentFile(), "clone_" + f0.getName());
-        assertTrue(FileUtils.copy(f0, f1) && FileUtils.readline(f1, null, 1).equals("1,2,3,4,5"));
+        Assert.assertTrue(FileUtils.copy(f0, f1) && FileUtils.readline(f1, null, 1).equals("1,2,3,4,5"));
     }
 
     @Test
     public void testWriteFileFileBooleanString() throws IOException {
-        File file = getFile();
-        FileUtils.write(file, StringUtils.CHARSET, false, "1\n");
-        assertEquals("1", FileUtils.readline(file, StringUtils.CHARSET, 1));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\n"));
+        Assert.assertEquals("1", FileUtils.readline(file, StringUtils.CHARSET, 1));
 
-        FileUtils.write(file, StringUtils.CHARSET, false, "1\n2");
-        assertEquals("1", FileUtils.readline(file, StringUtils.CHARSET, 1));
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\n2"));
+        Assert.assertEquals("1", FileUtils.readline(file, StringUtils.CHARSET, 1));
 
-        FileUtils.write(file, StringUtils.CHARSET, true, "\n3");
-        assertEquals("3", FileUtils.readline(file, StringUtils.CHARSET, 3));
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, true, "\n3"));
+        Assert.assertEquals("3", FileUtils.readline(file, StringUtils.CHARSET, 3));
     }
 
     @Test
     public void testWriteFileFileString() throws IOException {
-        File file = getFile();
-        FileUtils.write(file, StringUtils.CHARSET, false, "1\n2\n3");
-        assertEquals("3", FileUtils.readline(file, StringUtils.CHARSET, 3));
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\n2\n3"));
+        Assert.assertEquals("3", FileUtils.readline(file, StringUtils.CHARSET, 3));
+    }
+
+    @Test
+    public void testwrite() throws IOException {
+        File file = FileUtils.createTempFile(null);
+        Assert.assertTrue(FileUtils.write(file, StringUtils.CHARSET, false, "1\n2\n3"));
+        Assert.assertEquals("3", FileUtils.readline(file, StringUtils.CHARSET, 3));
+
+        File file1 = FileUtils.createTempFile(null);
+        FileInputStream in = new FileInputStream(file);
+        Assert.assertTrue(FileUtils.write(file1, StringUtils.CHARSET, false, in));
+        in.close();
+        Assert.assertEquals("3", FileUtils.readline(file1, StringUtils.CHARSET, 3));
     }
 
     @Test
     public void testEqualsFileFileInt() throws IOException {
-        File f0 = getFile();
-        File f1 = getFile();
+        File f0 = FileUtils.createTempFile(null);
+        File f1 = FileUtils.createTempFile(null);
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "");
-        assertTrue(FileUtils.equals(f0, f1, 0));
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, ""));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, ""));
+        Assert.assertTrue(FileUtils.equals(f0, f1, 0));
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "1");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "1");
-        assertTrue(FileUtils.equals(f0, f1, 0));
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, "1"));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, "1"));
+        Assert.assertTrue(FileUtils.equals(f0, f1, 0));
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-        assertTrue(FileUtils.equals(f0, f1, 0));
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
+        Assert.assertTrue(FileUtils.equals(f0, f1, 0));
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "1");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "2");
-        assertFalse(FileUtils.equals(f0, f1, 0));
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, "1"));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, "2"));
+        Assert.assertFalse(FileUtils.equals(f0, f1, 0));
     }
 
     @Test
     public void testEqualsIgnoreLineSeperator() throws IOException {
-        File f0 = getFile();
-        File f1 = getFile();
+        File f0 = FileUtils.createTempFile(null);
+        File f1 = FileUtils.createTempFile(null);
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "1");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "1");
-        assertEquals(FileUtils.equalsIgnoreLineSeperator(f0, StringUtils.CHARSET, f1, StringUtils.CHARSET, 0), 0);
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, "1"));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, "1"));
+        Assert.assertEquals(FileUtils.equalsIgnoreLineSeperator(f0, StringUtils.CHARSET, f1, StringUtils.CHARSET, 0), 0);
 
-        FileUtils.write(f0, StringUtils.CHARSET, false, "1234567\n890123456789012345678\r90123456789012345\r\n678901234567890123456789012345\n678901234567890");
-        FileUtils.write(f1, StringUtils.CHARSET, false, "1234567\r\n890123456789012345678\n90123456789012345\n678901234567890123456789012345\r\n678901234567890");
-        assertEquals(FileUtils.equalsIgnoreLineSeperator(f0, StringUtils.CHARSET, f1, StringUtils.CHARSET, 0), 0);
+        Assert.assertTrue(FileUtils.write(f0, StringUtils.CHARSET, false, "1234567\n890123456789012345678\r90123456789012345\r\n678901234567890123456789012345\n678901234567890"));
+        Assert.assertTrue(FileUtils.write(f1, StringUtils.CHARSET, false, "1234567\r\n890123456789012345678\n90123456789012345\n678901234567890123456789012345\r\n678901234567890"));
+        Assert.assertEquals(FileUtils.equalsIgnoreLineSeperator(f0, StringUtils.CHARSET, f1, StringUtils.CHARSET, 0), 0);
     }
 
     @Test
-    public void test100() throws IOException {
-        File root = FileUtils.getTempDir(FileUtils.class);
-        FileUtils.clearDirectory(root);
-        if (!FileUtils.isWriting(root, 500).isEmpty()) {
-            fail();
-        }
+    public void test100() throws IOException, InterruptedException {
+        File parent = FileUtils.createTempDirectory(null);
+        FileUtils.assertClearDirectory(parent);
 
-        FileUtils.clearDirectory(root);
-        final File file = new File(root, "test.del");
-        FileUtils.write(file, "utf-8", false, "testset");
-        Thread t = new Thread() {
+        final File file = new File(parent, "test.del");
+        Assert.assertTrue(FileUtils.write(file, "utf-8", false, "testset"));
+        System.out.println("before: " + FileUtils.readline(file, "utf-8", 0));
+
+        Thread thread = new Thread() {
             public void run() {
-                TimeWatch w = new TimeWatch();
-                boolean b = true;
-                while (w.useSeconds() <= 10) {
-                    try {
-                        String str = "lvzhaojun123" + Dates.currentTimeStamp();
-                        if (b) {
-                            System.out.println("写入: " + str + " > " + file.getAbsolutePath());
-                            b = false;
-                        }
-                        FileUtils.write(file, "utf-8", false, str);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        fail();
-                    }
+                try {
+                    Thread.sleep(1000);
+                    String str = "test" + Dates.currentTimeStamp();
+                    System.out.println("写入: " + str + " > " + file.getAbsolutePath());
+                    FileUtils.write(file, "utf-8", false, str);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
                 }
             }
         };
-        t.start();
+        thread.start();
 
-        System.out.println("等待2秒!");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        List<File> list = FileUtils.isWriting(root, 500);
-        assertEquals(1, list.size());
-        assertEquals(file, list.get(0));
+        List<File> list = FileUtils.isWriting(parent, 2000);
+        System.out.println("主线程恢复运行 ..");
+        System.out.println(" after: " + FileUtils.readline(file, "utf-8", 0));
+        Assert.assertEquals(1, list.size());
+        Assert.assertEquals(file, list.get(0));
     }
 
     @Test
     public void testcreateTempfile() throws IOException {
-        File tempfile = FileUtils.createTempfile(String.class, "txt", "testfile");
+        File tempfile = FileUtils.createTempFile("testfile.txt");
         System.out.println(tempfile.getAbsolutePath());
-        assertTrue(tempfile.exists());
+        Assert.assertTrue(tempfile.exists());
 
         // 重复创建同一个文件来测试
-        FileUtils.createTempfile(String.class, "txt", "testfile");
+        File newfile = FileUtils.createTempFile("testfile.txt");
+        System.out.println(newfile.getAbsolutePath());
+        Assert.assertNotEquals(tempfile, newfile);
     }
 
 }

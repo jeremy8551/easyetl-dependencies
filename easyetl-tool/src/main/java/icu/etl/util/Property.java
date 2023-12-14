@@ -43,10 +43,10 @@ public class Property {
     public Property(String name, Object value) {
         if (name == null) {
             throw new NullPointerException();
-        } else {
-            this.name = name;
-            this.value = value;
         }
+
+        this.name = name;
+        this.value = value;
     }
 
     /**
@@ -75,9 +75,9 @@ public class Property {
     public void setKey(String name) {
         if (name == null) {
             throw new NullPointerException();
-        } else {
-            this.name = name;
         }
+
+        this.name = name;
     }
 
     /**

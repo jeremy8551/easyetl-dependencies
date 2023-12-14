@@ -23,21 +23,21 @@ public class ResetMojo extends AbstractMojo {
     private File project;
 
     public void execute() {
-        File mainJava = new File(FileUtils.joinFilepath(this.project.getAbsolutePath(), "src", "main", "java"));
+        File mainJava = new File(FileUtils.joinPath(this.project.getAbsolutePath(), "src", "main", "java"));
         getLog().info("清空目录 " + mainJava.getAbsolutePath());
-        FileUtils.clearDirectory(mainJava);
+        FileUtils.assertClearDirectory(mainJava);
 
-        File mainResources = new File(FileUtils.joinFilepath(this.project.getAbsolutePath(), "src", "main", "resources"));
+        File mainResources = new File(FileUtils.joinPath(this.project.getAbsolutePath(), "src", "main", "resources"));
         getLog().info("清空目录 " + mainResources.getAbsolutePath());
-        FileUtils.clearDirectory(mainResources);
+        FileUtils.assertClearDirectory(mainResources);
 
-        File testJava = new File(FileUtils.joinFilepath(this.project.getAbsolutePath(), "src", "test", "java"));
+        File testJava = new File(FileUtils.joinPath(this.project.getAbsolutePath(), "src", "test", "java"));
         getLog().info("清空目录 " + testJava.getAbsolutePath());
-        FileUtils.clearDirectory(testJava);
+        FileUtils.assertClearDirectory(testJava);
 
-        File testResources = new File(FileUtils.joinFilepath(this.project.getAbsolutePath(), "src", "test", "resources"));
+        File testResources = new File(FileUtils.joinPath(this.project.getAbsolutePath(), "src", "test", "resources"));
         getLog().info("清空目录 " + testResources.getAbsolutePath());
-        FileUtils.clearDirectory(testResources);
+        FileUtils.assertClearDirectory(testResources);
     }
 
 }

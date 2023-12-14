@@ -1,5 +1,7 @@
 package icu.etl.util;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,7 +33,7 @@ public class XMLUtils {
      * 返回 xml 配置文件对象
      *
      * @param in xml信息
-     * @return
+     * @return XML文档对象
      */
     public static Document getXmlDocument(InputStream in) {
         try {
@@ -41,8 +41,7 @@ public class XMLUtils {
             xml.setIgnoringComments(true);
             xml.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = xml.newDocumentBuilder();
-            Document doc = documentBuilder.parse(in);
-            return doc;
+            return documentBuilder.parse(in);
         } catch (Exception e) {
             throw new RuntimeException(ResourcesUtils.getXmlMessage(1), e);
         }
@@ -62,7 +61,7 @@ public class XMLUtils {
      * 返回 XML 配置文件根节点
      *
      * @param file XML配置文件
-     * @return
+     * @return XML元素
      */
     public static Element getRoot(File file) {
         try {
@@ -71,8 +70,7 @@ public class XMLUtils {
             xml.setIgnoringElementContentWhitespace(true);
             DocumentBuilder builder = xml.newDocumentBuilder();
             Document doc = builder.parse(file);
-            Element root = doc.getDocumentElement();
-            return root;
+            return doc.getDocumentElement();
         } catch (IOException e) {
             throw new RuntimeException(ResourcesUtils.getXmlMessage(2, e.toString()));
         } catch (Exception ex) {
@@ -93,8 +91,7 @@ public class XMLUtils {
             xml.setIgnoringElementContentWhitespace(true);
             DocumentBuilder builder = xml.newDocumentBuilder();
             Document doc = builder.parse(in);
-            Element root = doc.getDocumentElement();
-            return root;
+            return doc.getDocumentElement();
         } catch (Exception e) {
             throw new RuntimeException(ResourcesUtils.getXmlMessage(1), e);
         }

@@ -82,7 +82,7 @@ public class Ensure {
      */
     public static void exists(String value, String... array) {
         if (value == null || array == null || array.length == 0 || !StringUtils.inArrayIgnoreCase(value, array)) {
-            throw new IllegalArgumentException(StringUtils.toString(value) + " != " + Arrays.toString(array));
+            throw new IllegalArgumentException(value + " != " + Arrays.toString(array));
         }
     }
 

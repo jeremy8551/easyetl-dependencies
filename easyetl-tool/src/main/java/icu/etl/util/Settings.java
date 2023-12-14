@@ -160,6 +160,15 @@ public final class Settings {
     }
 
     /**
+     * 返回临时文件目录
+     *
+     * @return 目录
+     */
+    public static String getTempDir() {
+        return System.getProperty("java.io.tmpdir");
+    }
+
+    /**
      * zh_CN
      *
      * @return 属性值

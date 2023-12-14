@@ -8,6 +8,11 @@ package icu.etl.util;
  */
 public class LogUtils {
 
+    public final static String PROPERTY_LOG_STACKTRACE = StringUtils.class.getPackage().getName().split("\\.")[0] + "." + StringUtils.class.getPackage().getName().split("\\.")[1] + ".logStackTrace";
+
+    /** 是否打印日志跟踪信息 */
+    public static boolean print = Boolean.parseBoolean(System.getProperty(PROPERTY_LOG_STACKTRACE));
+
     /**
      * 返回堆栈信息 <br>
      * 用于定位输出日志的代码位置 <br>
@@ -19,9 +24,11 @@ public class LogUtils {
     public static StackTraceElement getStackTrace(String name) {
         StackTraceElement[] array = new Throwable().getStackTrace();
 
-//        for (StackTraceElement e : array) {
-//            System.out.println(e.getClassName() + "." + e.getMethodName() + ":" + e.getLineNumber());
-//        }
+        if (print) {
+            for (StackTraceElement e : array) {
+                System.out.println(e.getClassName() + "." + e.getMethodName() + ":" + e.getLineNumber());
+            }
+        }
 
         for (int i = 0; i < array.length; i++) {
             StackTraceElement trace = array[i];

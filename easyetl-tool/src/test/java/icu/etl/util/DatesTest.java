@@ -27,6 +27,19 @@ public class DatesTest {
     }
 
     @Test
+    public void testsleep() {
+        long start = System.currentTimeMillis();
+        try {
+            Dates.sleep(1000, TimeUnit.MILLISECONDS);
+            long wait = (System.currentTimeMillis() - start) / 1000;
+            Assert.assertEquals(1L, wait);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Test
     public void testTimeUnit() {
         Assert.assertEquals("0", this.remove(Dates.format(0, TimeUnit.SECONDS, true)));
         Assert.assertEquals("11", this.remove(Dates.format(61, TimeUnit.SECONDS, true))); // (61) == 1 分 1 秒

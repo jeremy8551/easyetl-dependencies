@@ -47,6 +47,16 @@ public class StringUtils {
     }
 
     /**
+     * 返回字符集
+     *
+     * @param charsetName 字符集
+     * @return 字符集
+     */
+    public static String charset(String charsetName) {
+        return StringUtils.isBlank(charsetName) ? StringUtils.CHARSET : charsetName;
+    }
+
+    /**
      * 返回默认字符集
      *
      * @return 字符集
@@ -2584,7 +2594,9 @@ public class StringUtils {
     public static String[] split(CharSequence str, char delimiter) {
         List<String> list = new ArrayList<String>(10);
         StringUtils.split(str, delimiter, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -2621,7 +2633,9 @@ public class StringUtils {
     public static String[] split(CharSequence str, char delimiter, char escape) {
         List<String> list = new ArrayList<String>(10);
         StringUtils.split(str, delimiter, escape, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -2668,7 +2682,9 @@ public class StringUtils {
     public static String[] split(CharSequence str, String delimiter, char escape) {
         List<String> list = new ArrayList<String>(10);
         StringUtils.split(str, delimiter, escape, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -2860,7 +2876,9 @@ public class StringUtils {
     public static String[] splitJavaName(CharSequence str) {
         List<String> list = new ArrayList<String>();
         StringUtils.splitJavaName(str, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -2904,7 +2922,9 @@ public class StringUtils {
     public static String[] splitParameters(CharSequence str) {
         ArrayList<String> list = new ArrayList<String>();
         StringUtils.splitParameters(str, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -3105,7 +3125,9 @@ public class StringUtils {
     public static String[] splitByBlank(CharSequence str) {
         List<String> list = new ArrayList<String>();
         StringUtils.splitByBlank(str, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        list.toArray(array);
+        return array;
     }
 
     /**
@@ -3119,7 +3141,7 @@ public class StringUtils {
         try {
             return str == null ? null : str.toString().getBytes(charsetName);
         } catch (Throwable e) {
-            throw new RuntimeException(str + ", " + charsetName, e);
+            throw new IllegalArgumentException(str + ", " + charsetName, e);
         }
     }
 
@@ -3837,12 +3859,9 @@ public class StringUtils {
         if (from1 < 0 || end1 < from1 || from1 > (array.length - 1) || end1 >= array.length || from2 < 0 || from2 >= array2.length) {
             throw new IllegalArgumentException(StringUtils.toString(array) + ", " + from1 + ", " + end1 + ", " + StringUtils.toString(array2) + ", " + from2 + ", " + ignoreCase);
         }
-        if (array2.length == 0) {
-            return false;
-        }
 
-        int len = end1 - from1 + 1;
-        if (array2.length - from2 < len) {
+        int length = end1 - from1 + 1;
+        if (array2.length - from2 < length) {
             return false;
         }
 
@@ -4387,8 +4406,8 @@ public class StringUtils {
 
         for (int i = 0, length = str.length(); i < length; i++) {
             char c = str.charAt(i);
-            for (char ac : array) {
-                if (ac == c) {
+            for (char a : array) {
+                if (a == c) {
                     return true;
                 }
             }
@@ -4612,7 +4631,7 @@ public class StringUtils {
      */
     public static int parseHexadecimal(CharSequence str) {
         if (StringUtils.isBlank(str)) {
-            throw new IllegalArgumentException("parseHexadecimal(\"" + str + "\")");
+            throw new IllegalArgumentException(String.valueOf(str));
         }
         if (StringUtils.isNumber(str)) {
             return Integer.parseInt(str.toString());

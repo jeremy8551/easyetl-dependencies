@@ -11,10 +11,8 @@ public class TimeWatchTest {
 
     @Before
     public void setUp() {
-        File dir = FileUtils.getTempDir(TimeWatchTest.class);
-        if (dir != null) {
-            FileUtils.clearDirectory(dir);
-        }
+        File dir = FileUtils.getTempDir("test", TimeWatchTest.class.getSimpleName());
+        FileUtils.assertClearDirectory(dir);
     }
 
     @Test

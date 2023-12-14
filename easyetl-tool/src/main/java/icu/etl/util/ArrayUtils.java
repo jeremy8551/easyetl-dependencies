@@ -2,7 +2,6 @@ package icu.etl.util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,18 +91,21 @@ public class ArrayUtils {
     public static String[] subarray(String[] array, int begin, int length) {
         if (begin < 0) {
             throw new IllegalArgumentException(String.valueOf(begin));
-        } else if (length < 0) {
-            throw new IllegalArgumentException(String.valueOf(length));
-        } else if (array == null) {
-            return null;
-        } else if (length == 0) {
-            return new String[0];
-        } else {
-            int newlen = Math.min(length, array.length);
-            String[] newarray = new String[newlen];
-            System.arraycopy(array, begin, newarray, 0, newlen);
-            return newarray;
         }
+        if (length < 0) {
+            throw new IllegalArgumentException(String.valueOf(length));
+        }
+        if (array == null) {
+            return null;
+        }
+        if (length == 0) {
+            return new String[0];
+        }
+
+        int size = Math.min(length, array.length);
+        String[] newArray = new String[size];
+        System.arraycopy(array, begin, newArray, 0, size);
+        return newArray;
     }
 
     /**
@@ -118,41 +120,41 @@ public class ArrayUtils {
             return array;
         }
 
-        int size = 0;
+        int count = 0;
         String[] newarray = new String[array.length];
         if (str == null) {
             for (int i = 0; i < array.length; i++) {
                 String value = array[i];
                 if (value != null) {
-                    newarray[size++] = value;
+                    newarray[count++] = value;
                 }
             }
         } else {
             for (int i = 0; i < array.length; i++) {
                 String value = array[i];
                 if (!str.equals(value)) {
-                    newarray[size++] = value;
+                    newarray[count++] = value;
                 }
             }
         }
-        return ArrayUtils.subarray(newarray, 0, size);
+        return ArrayUtils.subarray(newarray, 0, count);
     }
 
     /**
      * 从数据参数array中删除重复数据项
      *
-     * @param <E>      元素类型
-     * @param array    数组
-     * @param compator 对比对象(可以为null)
+     * @param <E>   元素类型
+     * @param array 数组
+     * @param c     对比对象(可以为null)
      * @return ArrayList集合
      */
-    public static <E> List<E> removeDuplicat(E[] array, Comparator<E> compator) {
+    public static <E> List<E> removeDuplicat(E[] array, Comparator<E> c) {
         ArrayList<E> list = new ArrayList<E>();
         if (array == null) {
             return list;
         }
 
-        if (compator == null) {
+        if (c == null) {
             for (int i = 0; i < array.length; i++) {
                 E obj = array[i];
                 if (!list.contains(obj)) {
@@ -162,7 +164,7 @@ public class ArrayUtils {
         } else {
             for (int i = 0; i < array.length; i++) {
                 E obj = array[i];
-                if (!contain(list, obj, compator)) {
+                if (!ArrayUtils.contains(list, obj, c)) {
                     list.add(obj);
                 }
             }
@@ -173,15 +175,15 @@ public class ArrayUtils {
     /**
      * 判断集合参数 ite 中是否含有参数对象 obj
      *
-     * @param <E> 元素类型
-     * @param ite 集合
-     * @param obj 比对对象
-     * @param c   比对规则
+     * @param <E>      元素类型
+     * @param iterable 集合
+     * @param obj      比对对象
+     * @param c        比对规则
      * @return 返回true表示集合中包含对象 {@code obj}
      */
-    private static <E> boolean contain(Iterable<E> ite, E obj, Comparator<E> c) {
-        for (Iterator<E> it = ite.iterator(); it.hasNext(); ) {
-            if (c.compare(obj, it.next()) == 0) {
+    private static <E> boolean contains(Iterable<E> iterable, E obj, Comparator<E> c) {
+        for (E e : iterable) {
+            if (c.compare(obj, e) == 0) {
                 return true;
             }
         }
@@ -198,10 +200,10 @@ public class ArrayUtils {
         int length = 0;
         int[] newarray = new int[array.length];
         for (int i = 0; i < array.length; i++) {
-            int val = array[i];
+            int value = array[i];
             boolean exists = false;
             for (int j = 0; j < length; j++) {
-                if (val == newarray[j]) {
+                if (value == newarray[j]) {
                     exists = true;
                     break;
                 }
@@ -210,7 +212,7 @@ public class ArrayUtils {
             if (exists) {
                 continue;
             } else {
-                newarray[length++] = val;
+                newarray[length++] = value;
             }
         }
 
@@ -328,7 +330,7 @@ public class ArrayUtils {
      *
      * @param <E>   元素类型
      * @param array 数组
-     * @return ArrayList集合
+     * @return {@linkplain ArrayList}集合
      */
     public static <E> ArrayList<E> asList(E... array) {
         if (array == null) {
@@ -358,9 +360,8 @@ public class ArrayUtils {
      *
      * @param <E>   元素类型
      * @param array 数组
-     * @return
+     * @return 元素
      */
-    @SuppressWarnings("unchecked")
     public static <E> E firstElement(E... array) {
         return array == null || array.length == 0 ? null : array[0];
     }
@@ -370,9 +371,8 @@ public class ArrayUtils {
      *
      * @param <E>   元素类型
      * @param array 数组
-     * @return
+     * @return 元素
      */
-    @SuppressWarnings("unchecked")
     public static <E> E lastElement(E... array) {
         return array == null || array.length == 0 ? null : array[array.length - 1];
     }
@@ -415,7 +415,7 @@ public class ArrayUtils {
      * @param <E>   元素类型
      * @param array 数组
      * @param index 位置,从0开始
-     * @return
+     * @return 元素
      */
     public static <E> E elementAt(E[] array, int index) {
         return array != null && index >= 0 && index < array.length ? array[index] : null;

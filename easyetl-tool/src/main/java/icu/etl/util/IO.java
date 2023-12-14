@@ -371,12 +371,12 @@ public class IO {
 
         try {
             long total = 0;
-            byte[] array = new byte[BYTES_BUFFER_SIZE];
-            for (int size; (size = in.read(array)) != -1; ) {
-                out.write(array, 0, size);
-                total += size;
+            byte[] array = new byte[IO.BYTES_BUFFER_SIZE];
+            for (int len; (len = in.read(array)) != -1; ) {
+                out.write(array, 0, len);
+                out.flush();
+                total += len;
             }
-            out.flush();
             return total;
         } finally {
             IO.close(in, out);
@@ -394,7 +394,7 @@ public class IO {
      */
     public static StringBuilder read(Reader in, StringBuilder buf, char... array) throws IOException {
         if (array.length == 0) {
-            array = new char[READER_BUFFER_SIZE];
+            array = new char[IO.READER_BUFFER_SIZE];
         }
 
         for (int len; (len = in.read(array)) != -1; ) {
@@ -429,7 +429,7 @@ public class IO {
     public static byte[] read(InputStream in) throws IOException {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream(in.available());
-            byte[] array = new byte[BYTES_BUFFER_SIZE]; // 缓冲区
+            byte[] array = new byte[IO.BYTES_BUFFER_SIZE]; // 缓冲区
             for (int length; (length = in.read(array)) != -1; ) {
                 out.write(array, 0, length);
             }

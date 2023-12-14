@@ -399,7 +399,7 @@ public class ClassUtils {
             } else if (file.exists() && file.isDirectory()) {
                 classpaths.add(file.getAbsolutePath());
                 String classPackageName = cls.getPackage().getName().replace('.', File.separatorChar);
-                String classfilepath = FileUtils.joinFilepath(file.getAbsolutePath(), classPackageName);
+                String classfilepath = FileUtils.joinPath(file.getAbsolutePath(), classPackageName);
                 if (JUL.isDebugEnabled()) {
                     JUL.debug(ResourcesUtils.getCommonMessage(12, cls.getName(), classfilepath));
                 }
@@ -460,7 +460,7 @@ public class ClassUtils {
         int index = -1;
         if ((index = classpath.indexOf(prefix)) != -1) {
             String webinf = classpath.substring(0, index + prefix.length()); // /opt/IBM/.../WEB-INF
-            String classes = FileUtils.joinFilepath(webinf, "classes");
+            String classes = FileUtils.joinPath(webinf, "classes");
             File file = new File(classes);
             if (file.exists()) {
                 return classes;
@@ -488,7 +488,7 @@ public class ClassUtils {
             return false;
         } else {
             String className = cls.getName().replace('.', File.separatorChar);
-            String classfilepath = FileUtils.joinFilepath(classpath, className) + ".class";
+            String classfilepath = FileUtils.joinPath(classpath, className) + ".class";
             return FileUtils.isFile(classfilepath);
         }
     }

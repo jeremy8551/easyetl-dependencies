@@ -108,6 +108,25 @@ public final class Dates {
     /**
      * 使当前线程进入休眠
      *
+     * @param timeout 休眠的时间
+     * @param unit    时间单位
+     * @return 返回异常信息, 返回null表示没有发生错误
+     */
+    public static boolean sleep(long timeout, TimeUnit unit) {
+        try {
+            unit.sleep(timeout);
+            return true;
+        } catch (Throwable e) {
+            if (JUL.isWarnEnabled()) {
+                JUL.warn(e.getLocalizedMessage(), e);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 使当前线程进入休眠
+     *
      * @param millis 毫秒数
      * @return 返回异常信息, 返回null表示没有发生错误
      */
@@ -133,7 +152,7 @@ public final class Dates {
     /**
      * 返回时间戳 yyyy-MM-dd HH:mm:ss
      *
-     * @return
+     * @return 字符串
      */
     public static String currentTimeStamp() {
         return Dates.format19(new Date());
@@ -142,7 +161,7 @@ public final class Dates {
     /**
      * 返回当前日期
      *
-     * @return
+     * @return 日期
      */
     public static Date currentDate() {
         return new Date(System.currentTimeMillis());
@@ -197,7 +216,7 @@ public final class Dates {
      * 尝试用 'yyyyMMdd' 格式解析日期
      *
      * @param str 日期字符串
-     * @return
+     * @return 返回true表示字符串与格式相符 false表示字符串与格式不符
      */
     public static boolean testFormat08(String str) {
         return str != null //
@@ -371,7 +390,7 @@ public final class Dates {
      * 将数组中的元素转为日期
      *
      * @param array 数组, 支持的格式详见: {@linkplain #parse(Object)}
-     * @return
+     * @return 日期数组
      */
     public static Date[] parse(Object... array) {
         if (array == null) {
@@ -418,7 +437,7 @@ public final class Dates {
      * 31 dec 2017
      *
      * @param obj 日期信息
-     * @return
+     * @return 日期
      */
     public static Date parse(Object obj) {
         if (obj == null) {
@@ -433,7 +452,7 @@ public final class Dates {
         String str = StringUtils.trimBlank(obj.toString());
         int length = str.length();
 
-        /** 0 mean year, 1 mean month, 2 mean day of month, 3 mean hour, 4 mean minute, 5 mean second, 6 mean millisecond, 7 mean day of week */
+        // 0 mean year, 1 mean month, 2 mean day of month, 3 mean hour, 4 mean minute, 5 mean second, 6 mean millisecond, 7 mean day of week
         int[] datetime = new int[8];
 
         // yyyyMMdd
@@ -635,7 +654,7 @@ public final class Dates {
      * @param str      中文日期信息
      * @param datetime 数组第一位表示年份, 数组第二位表示月份, 数组第三位表示月份中的日, 数组第四位表示小时, 数组第五位表示分钟, 数组第六位表示秒, 数组第七位表示毫秒, 数组第八位表示星期几
      */
-    protected static void parse(String str, int[] datetime) {
+    private static void parse(String str, int[] datetime) {
         char[] array = new char[8];
 
         int size = 0, index = 0;
@@ -697,9 +716,7 @@ public final class Dates {
             throw new RuntimeException(str + " parse " + StringUtils.toString(array));
         }
 
-        /**
-         * date
-         */
+        // date
         flag = false;
         while (index < length) {
             char c = str.charAt(index);
@@ -767,7 +784,7 @@ public final class Dates {
      * 中文字符范围包括： 零壹贰叁肆伍陆柒捌玖 零一二三四五六七八九
      *
      * @param c 字符
-     * @return
+     * @return 字符
      */
     private static char replaceChineseNumber(char c) {
         for (int i = 0; i <= 9; i++) {
@@ -792,7 +809,7 @@ public final class Dates {
      * @param str 字符串，格式：周一、或 monday 或 星期一 或 星期1
      * @return 数字: 1-7
      */
-    protected static int parseDayOfWeek(String str) {
+    static int parseDayOfWeek(String str) {
         if (str == null) {
             throw new NullPointerException(str);
         }
@@ -834,7 +851,7 @@ public final class Dates {
      * @param str 字符串：格式：一月 或 Jan 或 January 或 1月
      * @return 月份: 1-12
      */
-    protected static int parseMonth(String str) {
+    static int parseMonth(String str) {
         if (str == null) {
             throw new NullPointerException(str);
         }
@@ -901,7 +918,7 @@ public final class Dates {
      *                 第七个位置上的是毫秒 （0-999）
      *                 第八个位置上的是周中的日期（1-7）
      */
-    protected static void parseTime(String str, int[] datetime) {
+    private static void parseTime(String str, int[] datetime) {
         List<String> list = new ArrayList<String>();
         StringUtils.split(str, Dates.TIME_DELIMITER, true, list); // 分隔参数要与 isStandTimeFormat 函数保持一致
         if (list.size() == 1) {
@@ -930,7 +947,7 @@ public final class Dates {
      *
      * @param date    日期信息
      * @param pattern 日期时间格式，详见: {@link SimpleDateFormat}
-     * @return
+     * @return 字符串
      */
     public static String format(Date date, String pattern) {
         if (date == null) {
@@ -952,13 +969,13 @@ public final class Dates {
      * @param date    日期信息
      * @param pattern 日期时间格式，详见: {@link SimpleDateFormat}
      * @param locale  本地信息
-     * @return
+     * @return 字符串
      */
     public static String format(Date date, String pattern, Locale locale) {
         if (date == null) {
             return null;
         } else if (pattern == null) {
-            throw new IllegalArgumentException("format(" + date + ", \"" + pattern + "\", " + locale + ")");
+            throw new IllegalArgumentException(date + ", " + pattern + ", " + locale);
         } else {
             return new SimpleDateFormat(pattern, locale).format(date);
         }
@@ -968,7 +985,7 @@ public final class Dates {
      * MM/DD/YYYY
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format01(Date date) {
         if (date == null) {
@@ -1000,7 +1017,7 @@ public final class Dates {
      * dd/MM/yyyy
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format02(Date date) {
         if (date == null) {
@@ -1032,7 +1049,7 @@ public final class Dates {
      * yyyyMMdd
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format08(Date date) {
         if (date == null) {
@@ -1127,7 +1144,7 @@ public final class Dates {
      * HH:mm:ss:SSS
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format12(Date date) {
         if (date == null) {
@@ -1173,7 +1190,7 @@ public final class Dates {
      * yyyyMMddHHmmss
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format14(Date date) {
         if (date == null) {
@@ -1223,7 +1240,7 @@ public final class Dates {
      * yyyy-MM-dd HH:mm
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format16(Date date) {
         if (date == null) {
@@ -1264,10 +1281,19 @@ public final class Dates {
     }
 
     /**
+     * 当前时间的 yyyyMMddHHmmssSSS
+     *
+     * @return 字符串
+     */
+    public static String format17() {
+        return Dates.format17(new Date());
+    }
+
+    /**
      * yyyyMMddHHmmssSSS
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format17(Date date) {
         if (date == null) {
@@ -1324,7 +1350,7 @@ public final class Dates {
      * yyyy-MM-dd HH:mm:ss
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format19(Date date) {
         if (date == null) {
@@ -1374,7 +1400,7 @@ public final class Dates {
      * yyyy-MM-dd HH:mm:ss:SSS
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String format21(Date date) {
         if (date == null) {
@@ -1444,7 +1470,7 @@ public final class Dates {
      * yyyy年MM月dd日
      *
      * @param date 日期信息
-     * @return
+     * @return 字符串
      */
     public static String formatCN(Date date) {
         if (date == null) {
@@ -1523,13 +1549,13 @@ public final class Dates {
         }
         return buf;
     }
-    
+
     /**
      * 以月为单位计算日期
      *
      * @param date  日期
      * @param month 月数，等于0表示不变，大于0表示加月，小于0表示减月
-     * @return
+     * @return 日期
      */
     public static Date calcMonth(Date date, int month) {
         if (date == null) {
@@ -1575,7 +1601,7 @@ public final class Dates {
      *
      * @param date 日期
      * @param year 年数，等于0表示不变，大于0表示加年份，小于0表示减年份
-     * @return
+     * @return 日期
      */
     public static Date calcYear(Date date, int year) {
         if (date == null) {
@@ -1593,7 +1619,7 @@ public final class Dates {
      *
      * @param date 日期
      * @param days 等于0：日期+0 小于0：日期-天数 大于0：日期+天数
-     * @return
+     * @return 日期
      */
     public static Date calcDay(Date date, int days) {
         if (date == null) {
@@ -1611,7 +1637,7 @@ public final class Dates {
      *
      * @param start 起始日，格式参考：{@linkplain #parse(Object)}
      * @param end   终止日，格式参考：{@linkplain #parse(Object)}
-     * @return
+     * @return 天数
      */
     public static long calcDay(String start, String end) {
         return calcDay(Dates.parse(start), Dates.parse(end));
@@ -1622,7 +1648,7 @@ public final class Dates {
      *
      * @param start 起始日
      * @param end   终止日
-     * @return
+     * @return 天数
      */
     public static long calcDay(Date start, Date end) {
         if (start == null) {
@@ -1663,7 +1689,7 @@ public final class Dates {
      *              {@linkplain Calendar#MONTH}
      *              {@linkplain Calendar#YEAR}
      * @param value 操作数, 负数表示减法，整数表示加法
-     * @return
+     * @return 日期
      */
     public static Date calcDay(Date date, int type, int value) {
         if (date == null || value == 0) {
@@ -1704,7 +1730,7 @@ public final class Dates {
      * 返回日期参数date所在月的月初1号
      *
      * @param date 日期
-     * @return
+     * @return 日期
      */
     public static Date getBeginOfMonth(Date date) {
         if (date == null) {
@@ -1721,7 +1747,7 @@ public final class Dates {
      * 返回日期参数date所在月的月末最后一天
      *
      * @param date 日期
-     * @return
+     * @return 日期
      */
     public static Date getEndOfMonth(Date date) {
         if (date == null) {
@@ -1741,7 +1767,7 @@ public final class Dates {
      *
      * @param start 起始日，格式参考：{@linkplain #parse(Object)}
      * @param end   终止日，格式参考：{@linkplain #parse(Object)}
-     * @return
+     * @return 月末的集合
      */
     public static List<String> getEndOfMonth(String start, String end) {
         Ensure.notBlank(start);
@@ -1820,7 +1846,7 @@ public final class Dates {
      * @param d2 日期第二位
      * @return true表示日期正确
      */
-    protected static boolean isDate(char y1, char y2, char y3, char y4, char m1, char m2, char d1, char d2) {
+    static boolean isDate(char y1, char y2, char y3, char y4, char m1, char m2, char d1, char d2) {
         if (y1 == '0' || !StringUtils.isNumber(y1, y2, y3, y4)) {
             return false;
         }
@@ -1829,14 +1855,14 @@ public final class Dates {
         boolean isBigMonth = false;
 
         // 校验月
-        if (m1 == '0') { // 1月份
+        if (m1 == '0') { // 一月份
             if (m2 == '0') {
                 return false;
             }
 
             if (m2 == '1' || m2 == '3' || m2 == '5' || m2 == '7' || m2 == '8') {
                 isBigMonth = true;
-            } else if (m2 == '2') { // 2月份
+            } else if (m2 == '2') { // 二月份
                 if (d1 == '2' && d2 == '9') { // 2月29号
                     int year = Integer.parseInt(new String(new char[]{y1, y2, y3, y4}));
                     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
@@ -1856,7 +1882,7 @@ public final class Dates {
 
         // 校验日
         if (d1 == '0') {
-            return d2 == '0' ? false : StringUtils.isNumber(d2);
+            return d2 != '0' && StringUtils.isNumber(d2);
         } else if (d1 == '1' || d1 == '2') {
             return StringUtils.isNumber(d2);
         } else if (d1 == '3') {
@@ -1897,7 +1923,7 @@ public final class Dates {
      * @param dayOfMonth 月份中的日（从1到31）
      * @return true表示合法
      */
-    protected static boolean isDate(int year, int month, int dayOfMonth) {
+    static boolean isDate(int year, int month, int dayOfMonth) {
         if (year < 1000 || year > 9999) {
             return false;
         } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { // 大月
@@ -1924,9 +1950,9 @@ public final class Dates {
      * @param minute      分钟（从0到59）
      * @param second      秒数（从0到59）
      * @param millisecond 秒数（从0到999）
-     * @return
+     * @return 返回true表示正确 false表示错误
      */
-    protected static boolean isTime(int hour, int minute, int second, int millisecond) {
+    static boolean isTime(int hour, int minute, int second, int millisecond) {
         return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59 && millisecond >= 0 && millisecond <= 999;
     }
 
@@ -1946,9 +1972,9 @@ public final class Dates {
      *              h5          秒钟的第一位
      *              h6          秒钟的第二位
      *              millisecond 毫秒字符数组，为null或空数组时表示不需要校验毫秒
-     * @return
+     * @return 返回true表示格式正确 false表示格式错误
      */
-    protected static boolean isTime(char... array) {
+    static boolean isTime(char... array) {
         if (array.length < 6 || array.length > 9) { // 判断时间字符串长度
             return false;
         }
@@ -1990,9 +2016,9 @@ public final class Dates {
      * 时间的分隔符要与方法 {@linkplain #parseTime(String, int[])} 中保持一致
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示格式正确 false表示格式错误
      */
-    protected static boolean isTime(String str) {
+    static boolean isTime(String str) {
         if (StringUtils.isBlank(str) || StringUtils.indexOfBlank(str, 0, -1) != -1) {
             return false;
         }
@@ -2056,9 +2082,9 @@ public final class Dates {
      * 判断字符串是否是时区信息
      *
      * @param str 时区字符串: UTC, 不区分大小写
-     * @return
+     * @return 返回true表示格式正确 false表示格式错误
      */
-    protected static boolean isTimeZone(String str) {
+    private static boolean isTimeZone(String str) {
         if (StringUtils.isBlank(str)) {
             return false;
         }
@@ -2139,7 +2165,7 @@ public final class Dates {
      * 返回日期的年份
      *
      * @param date 日期
-     * @return
+     * @return 年份
      */
     public static int getYear(Date date) {
         if (date == null) {
@@ -2232,12 +2258,12 @@ public final class Dates {
     }
 
     /**
-     * true表示 date 是在 start 与 end 之间的日期（包含 start 与 end）
+     * 判断 {@code date} 是在 {@code start} 与 {@code end} 之间的日期（包含 start 与 end）
      *
      * @param date  日期
      * @param start 起始日
      * @param end   终止日
-     * @return
+     * @return 返回true表示日期在范围之内 false表示不在范围之内
      */
     public static boolean between(Date date, Date start, Date end) {
         return date.compareTo(start) >= 0 && date.compareTo(end) <= 0;
@@ -2247,7 +2273,7 @@ public final class Dates {
      * 判断日期参数date是否是月初一号
      *
      * @param date 日期
-     * @return
+     * @return 返回true表示日期是月初第一天 false表示日期不是月初第一天
      */
     public static boolean isBeginOfMonth(Date date) {
         return Dates.getDayOfMonth(date) == 1;
@@ -2257,7 +2283,7 @@ public final class Dates {
      * 判断日期参数date是否是月末最后一天
      *
      * @param date 日期
-     * @return
+     * @return 返回true表示日期是月末最后一天 false表示日期不是月末最后一天
      */
     public static boolean isEndOfMonth(Date date) {
         return date.equals(Dates.getEndOfMonth(date));
@@ -2318,7 +2344,7 @@ public final class Dates {
      * 判断字符串(如: Mon, Monday, Tuesday, Wednesday, 星期一, 星期1)是星期几
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串是周日 false表示字符串不是周日
      */
     public static boolean isDayOfWeek(String str) {
         if (str == null) {
@@ -2355,7 +2381,7 @@ public final class Dates {
      * 忽略法定补休日
      *
      * @param date 日期
-     * @return
+     * @return 返回true表示日期是双休日 false表示日期不是双休日
      */
     public static boolean isWeekend(Date date) {
         if (date == null) {
@@ -2435,11 +2461,11 @@ public final class Dates {
      *
      * @param d1 日期
      * @param d2 日期
-     * @return 0表示2个日期相等 大于0表示d1大于d2 小于0表示d1小于d2
+     * @return 返回0表示2个日期相等 大于0表示d1大于d2 小于0表示d1小于d2
      */
     public static int compareIgnoreDay(Date d1, Date d2) {
         if (d1 == null || d2 == null) {
-            throw new NullPointerException("compareIgnoreDay(" + d1 + ", " + d2 + ")");
+            throw new NullPointerException(format10(d1) + ", " + format10(d2));
         }
 
         Calendar cr = Calendar.getInstance();
@@ -2459,15 +2485,15 @@ public final class Dates {
      *
      * @param str     字符串
      * @param pattern 日期格式: yyyy-MM-dd 或 yyyyMMdd
-     * @return
+     * @return 返回true表示字符串与模式匹配 false表示不匹配
      */
     public static boolean match(String str, String pattern) {
         try {
-            SimpleDateFormat sf = new SimpleDateFormat();
-            sf.applyPattern(pattern);
-            sf.parse(str);
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern(pattern);
+            sdf.parse(str);
             return true;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -2476,7 +2502,7 @@ public final class Dates {
      * 返回日期数组中最小值
      *
      * @param array 日期数组
-     * @return
+     * @return 日期
      */
     public static Date min(Date... array) {
         if (array == null || array.length == 0) {
@@ -2504,7 +2530,7 @@ public final class Dates {
      * 返回日期数组中最大的日期数值
      *
      * @param array 日期数组
-     * @return
+     * @return 日期
      */
     public static Date max(Date... array) {
         if (array == null || array.length == 0) {
@@ -2543,17 +2569,17 @@ public final class Dates {
      *
      * @param start 起始日（包含），格式参考：{@linkplain #parse(Object)}
      * @param end   终止日（包含），格式参考：{@linkplain #parse(Object)}
-     * @return
+     * @return 日期字符串集合
      */
     public static List<String> tolist(String start, String end) {
         Ensure.notBlank(start);
         Ensure.notBlank(end);
-        Date b = Dates.parse(start), e = Dates.parse(end);
+        Date date = Dates.parse(start), e = Dates.parse(end);
         List<String> list = new ArrayList<String>(31);
         String pattern = Dates.pattern(start);
-        while (b.compareTo(e) <= 0) {
-            list.add(Dates.format(b, pattern));
-            b = Dates.calcDay(b, 1);
+        while (date.compareTo(e) <= 0) {
+            list.add(Dates.format(date, pattern));
+            date = Dates.calcDay(date, 1);
         }
         return list;
     }

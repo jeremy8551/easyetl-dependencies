@@ -10,7 +10,7 @@ public class MessySequenceTest {
 
     @Test
     public void test() throws IOException {
-        File dir = FileUtils.getTempDir(MessySequenceTest.class);
+        File dir = FileUtils.getTempDir("test", MessySequenceTest.class.getSimpleName());
         File file = new File(dir, "file.txt");
 
         System.out.println(file.getAbsolutePath());

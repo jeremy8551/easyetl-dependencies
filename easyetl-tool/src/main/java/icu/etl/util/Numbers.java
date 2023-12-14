@@ -2,6 +2,7 @@ package icu.etl.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class Numbers {
      * @return 四舍五入后的整数
      */
     public static Integer floorDecimal2int(BigDecimal value) {
-        return value == null ? null : value.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+        return value == null ? null : value.setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
     /**
@@ -37,9 +38,9 @@ public class Numbers {
         }
 
         int max = array[0];
-        for (int i : array) {
-            if (i > max) {
-                max = i;
+        for (int value : array) {
+            if (value > max) {
+                max = value;
             }
         }
         return max;

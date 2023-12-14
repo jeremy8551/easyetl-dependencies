@@ -104,14 +104,17 @@ public class Throwables extends RuntimeException {
     public String toString() {
         StringBuilder buf = new StringBuilder(100);
         int size = this.messages.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; ) {
             String msg = this.messages.get(i);
             buf.append(msg);
             buf.append(System.getProperty("line.separator"));
 
             Throwable e = this.list.get(i);
             buf.append(e.toString());
-            buf.append(System.getProperty("line.separator"));
+
+            if (++i < size) {
+                buf.append(System.getProperty("line.separator"));
+            }
         }
         return buf.toString();
     }

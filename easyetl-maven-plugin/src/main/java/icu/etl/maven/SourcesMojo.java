@@ -86,17 +86,17 @@ public class SourcesMojo extends AbstractMojo {
 
         // 返回生成jar包的目录
         File srcMainJava = this.getSrcMainJava(basedir);
-        FileUtils.createDirectory(srcMainJava);
+        FileUtils.assertCreateDirectory(srcMainJava);
         File srcMainResources = this.getSrcMainResources(basedir);
-        FileUtils.createDirectory(srcMainResources);
+        FileUtils.assertCreateDirectory(srcMainResources);
 
         ct.addCell("清空目录:");
         ct.addCell(srcMainJava.getAbsolutePath());
-        FileUtils.clearDirectory(srcMainJava);
+        FileUtils.assertClearDirectory(srcMainJava);
 
         ct.addCell("清空目录:");
         ct.addCell(srcMainResources.getAbsolutePath());
-        FileUtils.clearDirectory(srcMainResources);
+        FileUtils.assertClearDirectory(srcMainResources);
 
         ct.addCell("打包项目的源代码目录:");
         ct.addCell(srcMainJava.getAbsolutePath());
@@ -150,7 +150,7 @@ public class SourcesMojo extends AbstractMojo {
      * @throws IOException 存放源代码文件的目录不存在
      */
     private File getSrcMainJava(File barsedir) throws IOException {
-        String filepath = FileUtils.joinFilepath(barsedir.getAbsolutePath(), "src", "main", "java");
+        String filepath = FileUtils.joinPath(barsedir.getAbsolutePath(), "src", "main", "java");
         return new File(filepath);
     }
 
@@ -161,7 +161,7 @@ public class SourcesMojo extends AbstractMojo {
      * @return 存放资源文件的目录
      */
     private File getSrcMainResources(File barsedir) {
-        String filepath = FileUtils.joinFilepath(barsedir.getAbsolutePath(), "src", "main", "resources");
+        String filepath = FileUtils.joinPath(barsedir.getAbsolutePath(), "src", "main", "resources");
         return new File(filepath);
     }
 

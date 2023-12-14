@@ -48,7 +48,7 @@ public class IOTest {
     public void test4() throws IOException {
         String str = "rtgfhajsdgjfhsadl;jslkdaghilouyweqoirt测试sdfasdfsadf;lj";
         String charsetName = StringUtils.CHARSET;
-        File file = FileUtils.createTempfile(IOTest.class, "txt");
+        File file = FileUtils.createTempFile(".txt");
         FileUtils.write(file, charsetName, false, str);
         byte[] array = IO.read(file);
         Assert.assertEquals(new String(array, charsetName), str);
@@ -56,7 +56,7 @@ public class IOTest {
 
     @Test
     public void testGetBufferedReaderReader() throws IOException {
-        File file = FileUtils.createTempfile(IOTest.class, "txt");
+        File file = FileUtils.createTempFile(".txt");
         FileUtils.write(file, StringUtils.CHARSET, false, "ceshi");
         BufferedReader r = IO.getBufferedReader(file, StringUtils.CHARSET);
         Assert.assertTrue(r.readLine().equals("ceshi"));
@@ -64,7 +64,7 @@ public class IOTest {
 
     @Test
     public void testGetBufferedReaderFile() throws IOException {
-        File file = FileUtils.createTempfile(IOTest.class, "txt");
+        File file = FileUtils.createTempFile(".txt");
         FileUtils.write(file, StringUtils.CHARSET, false, "ceshi");
         BufferedReader r = IO.getBufferedReader(file, StringUtils.CHARSET);
         Assert.assertTrue(r.readLine().equals("ceshi"));
@@ -72,7 +72,7 @@ public class IOTest {
 
     @Test
     public void testGetBufferedReaderFileString() throws IOException {
-        File file = FileUtils.createTempfile(IOTest.class, "txt");
+        File file = FileUtils.createTempFile(".txt");
         FileUtils.write(file, StringUtils.CHARSET, false, "ceshi");
         BufferedReader r = IO.getBufferedReader(file, StringUtils.CHARSET);
         Assert.assertTrue(r.readLine().equals("ceshi"));

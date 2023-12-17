@@ -195,10 +195,7 @@ public class SourcesMojo extends AbstractMojo {
         // 复制目录
         if (file.isDirectory()) {
             if (!dest.exists()) {
-                dest.mkdirs();
-                if (!dest.exists()) {
-                    throw new IOException("创建目录" + dest.getAbsolutePath() + " 失败!");
-                }
+                FileUtils.assertCreateDirectory(dest);
             }
 
             if (dest.exists() && !dest.isDirectory()) { // 文件存在，且文件不是一个目录
@@ -210,14 +207,19 @@ public class SourcesMojo extends AbstractMojo {
             for (File childfile : files) {
                 File newfile = new File(dest, childfile.getName());
                 if (newfile.exists() && !newfile.isDirectory()) {
+                    // 如果是POM属性类
+                    if (newfile.getName().equals(PomMojo.CLASS_NAME + ".java")) {
+                        continue;
+                    }
+
                     if (StringUtils.rtrim(childfile.getParentFile().getAbsolutePath(), '/', '\\').endsWith(FileUtils.replaceFolderSeparator("META-INF/services"))) { // 对SPI配置文件进行合并
                         ct.addCell("将文件 " + childfile.getAbsolutePath());
                         ct.addCell(" 合并到 " + newfile.getAbsolutePath());
                         this.merge(childfile, newfile);
                         continue;
-                    } else {
-                        throw new IOException("复制文件" + childfile.getAbsolutePath() + " 失败，文件 " + newfile.getAbsolutePath() + " 已存在不能覆盖!");
                     }
+
+                    throw new IOException("复制文件" + childfile.getAbsolutePath() + " 失败，文件 " + newfile.getAbsolutePath() + " 已存在不能覆盖!");
                 } else {
                     this.copy(ct, childfile, newfile);
                 }

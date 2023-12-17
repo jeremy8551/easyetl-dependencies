@@ -393,7 +393,7 @@ public class IO {
      * @throws IOException 从输入流中读取字符发生错误
      */
     public static StringBuilder read(Reader in, StringBuilder buf, char... array) throws IOException {
-        if (array.length == 0) {
+        if (array == null || array.length == 0) {
             array = new char[IO.READER_BUFFER_SIZE];
         }
 

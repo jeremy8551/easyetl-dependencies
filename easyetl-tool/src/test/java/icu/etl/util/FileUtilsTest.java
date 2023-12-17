@@ -863,8 +863,8 @@ public class FileUtilsTest {
 
     @Test
     public void testGetSystemRecycle() {
-        Assert.assertTrue(FileUtils.getRecyDir().exists() && FileUtils.getRecyDir().isDirectory());
-        System.out.println(FileUtils.getRecyDir().getAbsolutePath());
+        Assert.assertTrue(FileUtils.getRecycle().exists() && FileUtils.getRecycle().isDirectory());
+        System.out.println(FileUtils.getRecycle().getAbsolutePath());
     }
 
     @Test

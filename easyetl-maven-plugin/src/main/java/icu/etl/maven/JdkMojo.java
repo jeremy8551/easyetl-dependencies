@@ -56,8 +56,7 @@ public class JdkMojo extends AbstractMojo {
         try {
             this.run();
         } catch (Throwable e) {
-            getLog().error("插件 " + CommonUtils.getPuginName(this) + " 发生错误!", e);
-            throw new MojoExecutionException("", e);
+            throw new MojoExecutionException(e.getLocalizedMessage(), e);
         }
     }
 
@@ -112,6 +111,7 @@ public class JdkMojo extends AbstractMojo {
      *
      * @param copyfiles 复制的方言实现类文件
      * @throws MojoFailureException 修改文件发生错误
+     * @throws IOException          访问文件错误
      */
     private void changeIgnorefile(List<File> copyfiles) throws MojoFailureException, IOException {
         File ignorefile = new File(this.projectBasedir, ".gitignore");
@@ -119,13 +119,8 @@ public class JdkMojo extends AbstractMojo {
             getLog().info("配置规则文件: " + ignorefile.getAbsolutePath());
 
             Set<String> patterns = JdkMojoUtils.readPatterns(copyfiles, this.projectBasedir);
-//            getLog().info("patterns: " + StringUtils.toString(patterns));
-
             Set<String> rules = JdkMojoUtils.readIgnorefile(ignorefile, this.sourceEncoding);
-//            getLog().info("rules: " + StringUtils.toString(rules));
-
             patterns.removeAll(rules);
-//            getLog().info("left rule: " + StringUtils.toString(patterns));
 
             if (patterns.isEmpty()) {
                 return;
@@ -153,7 +148,7 @@ public class JdkMojo extends AbstractMojo {
      * @return 复制后的文件集合
      * @throws MojoFailureException 发生错误
      */
-    private List<File> copyfiles(File dir, File[] files, Log log) throws MojoFailureException, IOException {
+    private List<File> copyfiles(File dir, File[] files, Log log) throws MojoFailureException {
         int major = this.getJdkMajor(); // JDK大版本号，如: 5, 6, 7, 8 ..
         log.info("当前Java编译器的大版本号是 " + major);
 
@@ -186,9 +181,7 @@ public class JdkMojo extends AbstractMojo {
                         }
                     }
                 } else {
-                    if (!newfile.createNewFile()) {
-                        throw new IOException("创建文件 " + newfile.getAbsolutePath() + " 失败!");
-                    }
+                    FileUtils.assertCreateFile(newfile);
                     copyfile(file, newfile, log);
                 }
                 list.add(newfile);

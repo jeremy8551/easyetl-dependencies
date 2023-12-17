@@ -195,31 +195,4 @@ public final class Settings {
         return value == null ? null : value.trim();
     }
 
-    /**
-     * 返回工程的 groupId
-     *
-     * @return 包名
-     */
-    public static String getGroupID() {
-        String packageName = Settings.class.getPackage().getName();
-        String[] array = packageName.split("\\.");
-        StringBuilder buf = new StringBuilder(packageName.length());
-        for (int i = 0, length = Math.min(2, array.length); i < length; ) {
-            buf.append(array[i]);
-            if (++i < length) {
-                buf.append('.');
-            }
-        }
-        return buf.toString();
-    }
-
-    /**
-     * 返回当前的应用程序名
-     *
-     * @return 应用名
-     */
-    public static String getApplicationName() {
-        return ResourcesUtils.getMessage("project.name");
-    }
-
 }

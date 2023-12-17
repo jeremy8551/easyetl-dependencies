@@ -28,6 +28,9 @@ import java.util.concurrent.TimeUnit;
  */
 public final class FileUtils {
 
+    /** 系统默认字符集 */
+    public final static String PROPERTY_TEMPDIR = FileUtils.class.getPackage().getName().split("\\.")[0] + "." + FileUtils.class.getPackage().getName().split("\\.")[1] + ".tempDir";
+
     /** 文件系统文件路径的分隔符集合 */
     public final static List<String> pathSeparators = java.util.Collections.unmodifiableList(ArrayUtils.asList("/", "\\"));
 
@@ -726,7 +729,16 @@ public final class FileUtils {
     }
 
     /**
-     * 返回JAVA虚拟机的临时目录
+     * 设置临时文件存储目录
+     *
+     * @param tempDir 临时文件存储目录
+     */
+    public static void setTempDir(File tempDir) {
+        FileUtils.tempDir = tempDir;
+    }
+
+    /**
+     * 返回临时文件存储目录
      *
      * @param array 目录结构（按字符串数组中从左到右顺序建立子目录）
      * @return 临时目录
@@ -735,20 +747,25 @@ public final class FileUtils {
         if (tempDir == null) {
             synchronized (FileUtils.class) {
                 if (tempDir == null) {
-                    // 在临时目录下建立应用名
-                    List<String> list = new ArrayList<String>(5);
-                    StringUtils.split(Settings.getGroupID(), '.', list);
-                    list.add(Settings.getApplicationName());
+                    String value = System.getProperty(PROPERTY_TEMPDIR);
+                    if (FileUtils.isDirectory(value)) {
+                        tempDir = new File(value);
+                    } else {
+                        // 在临时目录下建立应用名
+                        List<String> list = new ArrayList<String>(5);
+                        StringUtils.split(ClassUtils.getPackageName(Easyetl.class, 2), '.', list);
+                        list.add(Easyetl.class.getSimpleName().toLowerCase());
 
-                    // 拼接文件路径
-                    String filepath = Settings.getTempDir();
-                    for (String str : list) {
-                        filepath = FileUtils.joinPath(filepath, str);
+                        // 拼接文件路径
+                        String filepath = Settings.getTempDir();
+                        for (String str : list) {
+                            filepath = FileUtils.joinPath(filepath, str);
+                        }
+                        File dir = new File(filepath);
+
+                        FileUtils.assertCreateDirectory(dir, true);
+                        tempDir = dir;
                     }
-                    File dir = new File(filepath);
-
-                    FileUtils.assertCreateDirectory(dir, true);
-                    tempDir = dir;
                 }
             }
         }
@@ -765,7 +782,7 @@ public final class FileUtils {
      *
      * @return 如果操作系统文件系统未设置回收站时返回临时目录
      */
-    public static File getRecyDir() {
+    public static File getRecycle() {
         if (OSUtils.isWindows()) {
             File file = new File("\\$RECYCLE.BIN");
             if (file.exists() && file.isDirectory()) {
@@ -855,7 +872,7 @@ public final class FileUtils {
             return false;
         }
 
-        File recycle = FileUtils.getRecyDir();
+        File recycle = FileUtils.getRecycle();
         File parent = new File(recycle, Dates.format17());
         File newfile = FileUtils.allocate(parent, file.getName());
 
@@ -1392,11 +1409,11 @@ public final class FileUtils {
         // 删除前缀
         String prefix = "classpath:";
         if (filepath.startsWith(prefix)) {
-            filepath = filepath.substring(prefix.length());
+            filepath = StringUtils.trimBlank(filepath.substring(prefix.length()));
         }
 
         // 如果路径是资源描述信息
-        URL url = StringUtils.class.getClassLoader().getResource(filepath);
+        URL url = ClassUtils.class.getClassLoader().getResource(filepath);
         if (url != null) {
             Properties p = new Properties();
             p.load(new FileInputStream(filepath));

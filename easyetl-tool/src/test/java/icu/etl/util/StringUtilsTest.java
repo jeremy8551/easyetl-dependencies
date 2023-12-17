@@ -1570,7 +1570,7 @@ public class StringUtilsTest {
 
     @Test
     public void testGetJvmUserTimezone() {
-        Settings.getUserTimezone();
+        Ensure.notBlank(Settings.getUserTimezone());
     }
 
     @Test

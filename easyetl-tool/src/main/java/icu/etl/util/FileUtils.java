@@ -1415,9 +1415,14 @@ public final class FileUtils {
         // 如果路径是资源描述信息
         URL url = ClassUtils.class.getClassLoader().getResource(filepath);
         if (url != null) {
-            Properties p = new Properties();
-            p.load(new FileInputStream(filepath));
-            return p;
+            InputStream in = url.openStream();
+            try {
+                Properties p = new Properties();
+                p.load(in);
+                return p;
+            } finally {
+                in.close();
+            }
         }
 
         // 如果路径是资源描述信息

@@ -2008,13 +2008,12 @@ public class StringUtils {
     /**
      * 在字符序列参数 str 中从左开始搜索第一次出现非空白字符的位置
      *
-     * @param str   字符串
-     * @param from  搜索起始位置, 等于 -1 时表示从0开始搜索
-     * @param end   搜索终止位置, 等于 -1 时表示没有限制
-     * @param array 忽略字符数组
+     * @param str  字符串
+     * @param from 搜索起始位置, 等于 -1 时表示从0开始搜索
+     * @param end  搜索终止位置, 等于 -1 时表示没有限制
      * @return -1表示非空白字符没有出现
      */
-    public static int indexOfNotBlank(CharSequence str, int from, int end, char... array) {
+    public static int indexOfNotBlank(CharSequence str, int from, int end) {
         if (str == null) {
             throw new NullPointerException();
         }
@@ -2033,7 +2032,7 @@ public class StringUtils {
 
         for (int i = from; i < str.length() && i <= end; i++) {
             char c = str.charAt(i);
-            if (!(Character.isWhitespace(c) || StringUtils.inArray(c, array))) {
+            if (!(Character.isWhitespace(c))) {
                 return i;
             }
         }

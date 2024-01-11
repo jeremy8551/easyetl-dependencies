@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import icu.etl.util.StringUtils;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class NatureRandomListTest {
@@ -14,66 +15,66 @@ public class NatureRandomListTest {
     @Test
     public void test() {
         RandomAccessList<String> list = new RandomAccessList<String>();
-        assertTrue(list.size() == 0);
+        assertEquals(0, list.size());
 
         list.add("1");
-        assertTrue(list.size() == 1);
-        assertTrue(list.get(0).equals("1"));
+        assertEquals(1, list.size());
+        assertEquals("1", list.get(0));
 
         list.add("2");
-        assertTrue(list.get(1).equals("2"));
+        assertEquals("2", list.get(1));
 
         list.add("3");
-        list.add("吕钊军");
+        list.add("测试");
 
-        assertTrue(list.size() == 4);
+        assertEquals(4, list.size());
         RandomAccessList<String> clone = (RandomAccessList<String>) list.clone();
-        assertTrue(StringUtils.toString(clone).equals("RandomAccessList[1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 3, 测试]", StringUtils.toString(clone));
 
         list.add(0, "0");
-        assertTrue(list.get(0).equals("0"));
-        assertTrue(list.get(1).equals("1"));
+        assertEquals("0", list.get(0));
+        assertEquals("1", list.get(1));
 
         list.clear();
         assertTrue(list.isEmpty());
-        assertTrue(list.size() == 0);
+        assertEquals(0, list.size());
 
         list.addAll(clone);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 3, 测试]", StringUtils.toString(list));
 
         list.addAll(0, clone);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 2, 3, 吕钊军, 1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 3, 测试, 1, 2, 3, 测试]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
         list.addAll(4, clone);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 2, 3, 吕钊军, 1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 3, 测试, 1, 2, 3, 测试]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
         list.addAll(2, clone);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 2, 1, 2, 3, 吕钊军, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 1, 2, 3, 测试, 3, 测试]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
-        assertTrue(list.equals(clone));
+        assertEquals(list, clone);
 
-        assertTrue(list.indexOf("1") == 0);
-        assertTrue(list.indexOf("吕钊军") == 3);
+        assertEquals(0, list.indexOf("1"));
+        assertEquals(3, list.indexOf("测试"));
 
         list.clear();
         list.addAll(clone);
         Iterator<String> it = list.iterator();
         while (it.hasNext()) {
             String str = it.next();
-            if (str.equals("吕钊军")) {
+            if (str.equals("测试")) {
                 it.remove();
             }
             if (str.equals("2")) {
                 it.remove();
             }
         }
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 3]"));
+        assertEquals("RandomAccessList[1, 3]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
@@ -86,45 +87,45 @@ public class NatureRandomListTest {
 
         list.clear();
         list.addAll(clone);
-        assertTrue(list.lastIndexOf("1") == 0);
-        assertTrue(list.lastIndexOf("吕钊军") == 3);
+        assertEquals(0, list.lastIndexOf("1"));
+        assertEquals(3, list.lastIndexOf("测试"));
 
         list.clear();
         list.addAll(clone);
         list.remove("1");
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[2, 3, 吕钊军]"));
-        list.remove("吕钊军");
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[2, 3]"));
+        assertEquals("RandomAccessList[2, 3, 测试]", StringUtils.toString(list));
+        list.remove("测试");
+        assertEquals("RandomAccessList[2, 3]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
         list.remove(0);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[2, 3, 测试]", StringUtils.toString(list));
         list.remove(2);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[2, 3]"));
+        assertEquals("RandomAccessList[2, 3]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
         list.set(0, "4");
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[4, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[4, 2, 3, 测试]", StringUtils.toString(list));
         list.set(3, "4");
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[4, 2, 3, 4]"));
+        assertEquals("RandomAccessList[4, 2, 3, 4]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
         List<String> subList = list.subList(0, 1);
-        assertTrue(StringUtils.toString(subList).equals("RandomAccessSubList[1]"));
+        assertEquals("RandomAccessSubList[1]", StringUtils.toString(subList));
         subList = list.subList(0, 0);
-        assertTrue(StringUtils.toString(subList).equals("RandomAccessSubList[]"));
+        assertEquals("RandomAccessSubList[]", StringUtils.toString(subList));
         subList = list.subList(0, 4);
-        assertTrue(StringUtils.toString(subList).equals("RandomAccessSubList[1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessSubList[1, 2, 3, 测试]", StringUtils.toString(subList));
 
         String[] array = new String[list.size()];
         list.toArray(array);
-        assertTrue(StringUtils.toString(array).equals("String[1, 2, 3, 吕钊军]"));
+        assertEquals("String[1, 2, 3, 测试]", StringUtils.toString(array));
 
         Object[] array1 = list.toArray();
-        assertTrue(StringUtils.toString(array1).equals("Object[1, 2, 3, 吕钊军]"));
+        assertEquals("Object[1, 2, 3, 测试]", StringUtils.toString(array1));
 
         list.clear();
         list.addAll(clone);
@@ -134,17 +135,17 @@ public class NatureRandomListTest {
         list.clear();
         list.addAll(clone);
         list.retainAll(clone);
-        assertTrue(StringUtils.toString(list).equals("RandomAccessList[1, 2, 3, 吕钊军]"));
+        assertEquals("RandomAccessList[1, 2, 3, 测试]", StringUtils.toString(list));
 
         list.clear();
         list.addAll(clone);
-        // clone.remove("吕钊军");
+        // clone.remove("测试");
         // list.retainAll(clone);
         // assertTrue(ST.toString(list, " ").equals("RandomAccessList[1, 2, 3]"));
         assertTrue(list.containsAll(clone));
 
         list.expandCapacity(10);
-        assertTrue(list.size() == 4);
+        assertEquals(4, list.size());
 
         StringBuilder buf = new StringBuilder();
         list.clear();
@@ -153,7 +154,7 @@ public class NatureRandomListTest {
         while (lt.hasNext()) {
             buf.append(lt.next());
         }
-        assertTrue(buf.toString().equals("123"));
+        assertEquals("123", buf.toString());
 
         buf.setLength(0);
         list.clear();
@@ -162,7 +163,7 @@ public class NatureRandomListTest {
         while (lt.hasNext()) {
             buf.append(lt.next());
         }
-        assertTrue(buf.toString().equals("23"));
+        assertEquals("23", buf.toString());
 
         list.clear();
         list.addAll(clone);

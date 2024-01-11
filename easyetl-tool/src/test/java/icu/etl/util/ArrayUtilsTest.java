@@ -101,6 +101,12 @@ public class ArrayUtilsTest {
     }
 
     @Test
+    public void testCloneStringArray() {
+        String[] array = ArrayUtils.copyOf(new String[]{"0", "1", "2"}, 3);
+        Assert.assertEquals(new String[]{"0", "1", "2"}, array);
+    }
+
+    @Test
     public void testIsEmptyTArray() {
         String[] array = null;
         assertTrue(ArrayUtils.isEmpty(array));
@@ -272,7 +278,7 @@ public class ArrayUtilsTest {
 
     @Test
     public void testSetLastElement() {
-        
+
     }
 
     @Test

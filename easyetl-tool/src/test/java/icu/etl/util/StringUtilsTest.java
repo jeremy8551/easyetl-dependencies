@@ -14,10 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class StringUtilsTest {
 
@@ -25,13 +22,13 @@ public class StringUtilsTest {
     public void testGetProtocaol() {
         try {
             URL jarUrl = new URL("jar:file:/C:/proj/parser/jar/parser.jar!/test.xml");
-            assertEquals("jar", jarUrl.getProtocol());
-            assertEquals("file:/C:/proj/parser/jar/parser.jar!/test.xml", jarUrl.getFile());
+            Assert.assertEquals("jar", jarUrl.getProtocol());
+            Assert.assertEquals("file:/C:/proj/parser/jar/parser.jar!/test.xml", jarUrl.getFile());
             URL fileUrl = new URL(jarUrl.getFile());
-            assertEquals("file", fileUrl.getProtocol());
-            assertEquals("/C:/proj/parser/jar/parser.jar!/test.xml", fileUrl.getFile());
+            Assert.assertEquals("file", fileUrl.getProtocol());
+            Assert.assertEquals("/C:/proj/parser/jar/parser.jar!/test.xml", fileUrl.getFile());
             String[] parts = fileUrl.getFile().split("!");
-            assertEquals("/C:/proj/parser/jar/parser.jar", parts[0]);
+            Assert.assertEquals("/C:/proj/parser/jar/parser.jar", parts[0]);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,69 +36,69 @@ public class StringUtilsTest {
 
     @Test
     public void testleft2() {
-        assertEquals("1234567890", StringUtils.left("1234567890", 10, null, ' ')); // 判断字符串是否相等
-        assertEquals("1234567890 ", StringUtils.left("1234567890", 11, null, ' ')); // 判断字符串是否相等
-        assertEquals("1234567890  ", StringUtils.left("1234567890", 12, null, ' ')); // 判断字符串是否相等
+        Assert.assertEquals("1234567890", StringUtils.left("1234567890", 10, null, ' ')); // 判断字符串是否相等
+        Assert.assertEquals("1234567890 ", StringUtils.left("1234567890", 11, null, ' ')); // 判断字符串是否相等
+        Assert.assertEquals("1234567890  ", StringUtils.left("1234567890", 12, null, ' ')); // 判断字符串是否相等
     }
 
     @Test
     public void tesgtlastIndexOfNotBlank() {
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(null, 0));
-        assertEquals(0, StringUtils.lastIndexOfNotBlank("1", -1));
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank("1", 0));
-        assertEquals(0, StringUtils.lastIndexOfNotBlank("1 ", -1));
-        assertEquals(2, StringUtils.lastIndexOfNotBlank("1 1", 0));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(null, 0));
+        Assert.assertEquals(0, StringUtils.lastIndexOfNotBlank("1", -1));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank("1", 0));
+        Assert.assertEquals(0, StringUtils.lastIndexOfNotBlank("1 ", -1));
+        Assert.assertEquals(2, StringUtils.lastIndexOfNotBlank("1 1", 0));
     }
 
     @Test
     public void tsetsplitByBlank() {
         List<String> a = StringUtils.splitByBlank("1 2      ", 2);
-        assertTrue(a.size() == 2 && a.get(1).equals("2      "));
+        Assert.assertTrue(a.size() == 2 && a.get(1).equals("2      "));
 
         a = StringUtils.splitByBlank("1", 2);
-        assertTrue(a.size() == 1 && a.get(0).equals("1"));
+        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
 
         a = StringUtils.splitByBlank("1 ", 2);
-        assertTrue(a.size() == 2 && a.get(0).equals("1"));
+        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1"));
 
         a = StringUtils.splitByBlank("1 2", 2);
-        assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2"));
+        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2"));
 
         a = StringUtils.splitByBlank("1 2   30000000    ", 2);
-        assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2   30000000    "));
+        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2   30000000    "));
 
         a = StringUtils.splitByBlank("1 2   30000000    ", 1);
-        assertTrue(a.size() == 1 && a.get(0).equals("1 2   30000000    "));
+        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1 2   30000000    "));
 
         a = StringUtils.splitByBlank("1", 2);
-        assertTrue(a.size() == 1 && a.get(0).equals("1"));
+        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
     }
 
     @Test
     public void testsplitByWhitespace() {
-        assertEquals("1 2      ", StringUtils.join(StringUtils.splitByBlanks("1 2      "), ""));
-        assertEquals("1 2  3    ", StringUtils.join(StringUtils.splitByBlanks("1 2  3    "), ""));
-        assertEquals("1 2  3    ", StringUtils.join(StringUtils.splitByBlanks("1 2  3    "), ""));
-        assertEquals(" ", StringUtils.join(StringUtils.splitByBlanks(" "), ""));
-        assertEquals("1", StringUtils.join(StringUtils.splitByBlanks("1"), ""));
+        Assert.assertEquals("1 2      ", StringUtils.join(StringUtils.splitByBlanks("1 2      "), ""));
+        Assert.assertEquals("1 2  3    ", StringUtils.join(StringUtils.splitByBlanks("1 2  3    "), ""));
+        Assert.assertEquals("1 2  3    ", StringUtils.join(StringUtils.splitByBlanks("1 2  3    "), ""));
+        Assert.assertEquals(" ", StringUtils.join(StringUtils.splitByBlanks(" "), ""));
+        Assert.assertEquals("1", StringUtils.join(StringUtils.splitByBlanks("1"), ""));
     }
 
     @Test
     public void addLinePrefixTest() {
         StringUtils.testEncoding("测试test1234");
 
-        assertEquals("", StringUtils.addLinePrefix("", ""));
-        assertEquals("1", StringUtils.addLinePrefix("", "1"));
-        assertEquals("1", StringUtils.addLinePrefix("1", ""));
-        assertEquals("21", StringUtils.addLinePrefix("1", "2"));
-        assertEquals("21\n", StringUtils.addLinePrefix("1\n", "2"));
-        assertEquals("31\r32", StringUtils.addLinePrefix("1\r2", "3"));
-        assertEquals("1\r2\n3\n4", StringUtils.addLinePrefix("1\r2\n3\n4", ""));
-        assertEquals("01\r02\n03\n04", StringUtils.addLinePrefix("1\r2\n3\n4", "0"));
-        assertEquals("01\r02\n03\n", StringUtils.addLinePrefix("1\r2\n3\n", "0"));
-        assertEquals("01\r02\r\n03\r\n", StringUtils.addLinePrefix("1\r2\r\n3\r\n", "0"));
-        assertEquals("", StringUtils.addLinePrefix("", ""));
-        assertEquals("", StringUtils.addLinePrefix("", ""));
+        Assert.assertEquals("", StringUtils.addLinePrefix("", ""));
+        Assert.assertEquals("1", StringUtils.addLinePrefix("", "1"));
+        Assert.assertEquals("1", StringUtils.addLinePrefix("1", ""));
+        Assert.assertEquals("21", StringUtils.addLinePrefix("1", "2"));
+        Assert.assertEquals("21\n", StringUtils.addLinePrefix("1\n", "2"));
+        Assert.assertEquals("31\r32", StringUtils.addLinePrefix("1\r2", "3"));
+        Assert.assertEquals("1\r2\n3\n4", StringUtils.addLinePrefix("1\r2\n3\n4", ""));
+        Assert.assertEquals("01\r02\n03\n04", StringUtils.addLinePrefix("1\r2\n3\n4", "0"));
+        Assert.assertEquals("01\r02\n03\n", StringUtils.addLinePrefix("1\r2\n3\n", "0"));
+        Assert.assertEquals("01\r02\r\n03\r\n", StringUtils.addLinePrefix("1\r2\r\n3\r\n", "0"));
+        Assert.assertEquals("", StringUtils.addLinePrefix("", ""));
+        Assert.assertEquals("", StringUtils.addLinePrefix("", ""));
     }
 
     @Test
@@ -121,30 +118,30 @@ public class StringUtilsTest {
 
     @Test
     public void removeRightLineSeparator() {
-        assertEquals("", StringUtils.removeEOL("\n"));
-        assertEquals("", StringUtils.removeEOL("\r\n"));
-        assertEquals("", StringUtils.removeEOL("\r"));
-        assertEquals("1", StringUtils.removeEOL("1\n"));
-        assertEquals("2", StringUtils.removeEOL("2\r\n"));
-        assertEquals("3", StringUtils.removeEOL("3\r"));
-        assertEquals("1234", StringUtils.removeEOL("1234\n"));
-        assertEquals("1234", StringUtils.removeEOL("1234\r\n"));
-        assertEquals("1234", StringUtils.removeEOL("1234\r"));
-        assertEquals("1", StringUtils.removeEOL("1"));
-        assertEquals("2", StringUtils.removeEOL("2"));
-        assertEquals("3", StringUtils.removeEOL("3"));
+        Assert.assertEquals("", StringUtils.removeEOL("\n"));
+        Assert.assertEquals("", StringUtils.removeEOL("\r\n"));
+        Assert.assertEquals("", StringUtils.removeEOL("\r"));
+        Assert.assertEquals("1", StringUtils.removeEOL("1\n"));
+        Assert.assertEquals("2", StringUtils.removeEOL("2\r\n"));
+        Assert.assertEquals("3", StringUtils.removeEOL("3\r"));
+        Assert.assertEquals("1234", StringUtils.removeEOL("1234\n"));
+        Assert.assertEquals("1234", StringUtils.removeEOL("1234\r\n"));
+        Assert.assertEquals("1234", StringUtils.removeEOL("1234\r"));
+        Assert.assertEquals("1", StringUtils.removeEOL("1"));
+        Assert.assertEquals("2", StringUtils.removeEOL("2"));
+        Assert.assertEquals("3", StringUtils.removeEOL("3"));
     }
 
     @Test
     public void testindexOfSqlWords1() {
-        assertNull(StringUtils.lookupLocale(""));
-        assertNotNull(StringUtils.lookupLocale("zh_CN"));
+        Assert.assertNull(StringUtils.lookupLocale(""));
+        Assert.assertNotNull(StringUtils.lookupLocale("zh_CN"));
     }
 
     @Test
     public void test13() {
-        assertEquals("value", StringUtils.getValue(new String[]{"key", "value"}, "key"));
-        assertNull(StringUtils.getValue(new String[]{"key", "value", "key1"}, "key1"));
+        Assert.assertEquals("value", StringUtils.getValue(new String[]{"key", "value"}, "key"));
+        Assert.assertNull(StringUtils.getValue(new String[]{"key", "value", "key1"}, "key1"));
     }
 
     @Test
@@ -153,294 +150,294 @@ public class StringUtilsTest {
         p.setProperty("v1", "vn1");
         p.setProperty("v2", "vn2");
 
-        assertEquals("", StringUtils.replaceProperties("", p));
-        assertEquals("vn1", StringUtils.replaceProperties("${v1}", p));
-        assertEquals("vn1+$", StringUtils.replaceProperties("${v1}+$", p));
-        assertEquals("vn1+vn2", StringUtils.replaceProperties("${v1}+${v2}", p));
+        Assert.assertEquals("", StringUtils.replaceProperties("", p));
+        Assert.assertEquals("vn1", StringUtils.replaceProperties("${v1}", p));
+        Assert.assertEquals("vn1+$", StringUtils.replaceProperties("${v1}+$", p));
+        Assert.assertEquals("vn1+vn2", StringUtils.replaceProperties("${v1}+${v2}", p));
     }
 
     @Test
     public void test11() {
         List<String> list = new ArrayList<String>();
         StringUtils.splitVariable("", list);
-        assertEquals(0, list.size());
+        Assert.assertEquals(0, list.size());
 
         list.clear();
         StringUtils.splitVariable("${}", list);
-        assertTrue(list.size() == 1 && list.get(0).equals(""));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals(""));
 
         list.clear();
         StringUtils.splitVariable("${n}", list);
-        assertTrue(list.size() == 1 && list.get(0).equals("n"));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("n"));
 
         list.clear();
         StringUtils.splitVariable("${name1}", list);
-        assertTrue(list.size() == 1 && list.get(0).equals("name1"));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("name1"));
 
         list.clear();
         StringUtils.splitVariable("${name}＋", list);
-        assertTrue(list.size() == 1 && list.get(0).equals("name"));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("name"));
 
         list.clear();
         StringUtils.splitVariable("${name}+${code}", list);
-        assertTrue(list.size() == 2 && list.get(0).equals("name") && list.get(1).equals("code"));
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("name") && list.get(1).equals("code"));
 
         list.clear();
         StringUtils.splitVariable("${name}+${code}+}+$+${", list);
-        assertTrue(list.size() == 2 && list.get(0).equals("name") && list.get(1).equals("code"));
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("name") && list.get(1).equals("code"));
     }
 
     @Test
     public void test112() {
         List<String> list = new ArrayList<String>();
         StringUtils.splitParameters("", list);
-        assertEquals(0, list.size());
+        Assert.assertEquals(0, list.size());
 
         list.clear();
         StringUtils.splitParameters("a ", list);
-        assertTrue(list.size() == 1 && list.get(0).equals("a"));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("a"));
 
         list.clear();
         StringUtils.splitParameters("a  ", list);
-        assertTrue(list.size() == 1 && list.get(0).equals("a"));
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("a"));
 
         list.clear();
         StringUtils.splitParameters("a b", list);
-        assertTrue(list.size() == 2 && list.get(0).equals("a") && list.get(1).equals("b"));
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("a") && list.get(1).equals("b"));
 
         list.clear();
         StringUtils.splitParameters("a ' ' \"\" b", list);
-        assertTrue(list.size() == 4 && list.get(0).equals("a") && list.get(1).equals("' '") && list.get(2).equals("\"\"") && list.get(3).equals("b"));
+        Assert.assertTrue(list.size() == 4 && list.get(0).equals("a") && list.get(1).equals("' '") && list.get(2).equals("\"\"") && list.get(3).equals("b"));
 
         list.clear();
         StringUtils.splitParameters("a ' ' \"''\" b", list);
-        assertTrue(list.size() == 4 && list.get(0).equals("a") && list.get(1).equals("' '") && list.get(2).equals("\"''\"") && list.get(3).equals("b"));
+        Assert.assertTrue(list.size() == 4 && list.get(0).equals("a") && list.get(1).equals("' '") && list.get(2).equals("\"''\"") && list.get(3).equals("b"));
     }
 
     @Test
     public void test1() {
         assertNull(StringUtils.removePrefix(null, null));
         assertNull(StringUtils.removePrefix(null, ""));
-        assertEquals("", StringUtils.removePrefix("", ""));
-        assertEquals("", StringUtils.removePrefix(" ", " "));
-        assertEquals(" ", StringUtils.removePrefix(" ", ""));
-        assertEquals("", StringUtils.removePrefix("1", "1"));
-        assertEquals("23", StringUtils.removePrefix("123", "1"));
-        assertEquals("3", StringUtils.removePrefix("123", "12"));
-        assertEquals("123", StringUtils.removePrefix("123", "3"));
+        Assert.assertEquals("", StringUtils.removePrefix("", ""));
+        Assert.assertEquals("", StringUtils.removePrefix(" ", " "));
+        Assert.assertEquals(" ", StringUtils.removePrefix(" ", ""));
+        Assert.assertEquals("", StringUtils.removePrefix("1", "1"));
+        Assert.assertEquals("23", StringUtils.removePrefix("123", "1"));
+        Assert.assertEquals("3", StringUtils.removePrefix("123", "12"));
+        Assert.assertEquals("123", StringUtils.removePrefix("123", "3"));
     }
 
     @Test
     public void testTransUtf8HexString() {
         String str = StringUtils.encodeJvmUtf8HexString("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/");
-        assertEquals("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/", StringUtils.decodeJvmUtf8HexString(str));
+        Assert.assertEquals("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/", StringUtils.decodeJvmUtf8HexString(str));
     }
 
     @Test
     public void testDecodeJvmUtf8HexString() {
         String str = StringUtils.encodeJvmUtf8HexString("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/");
-        assertEquals("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/", StringUtils.decodeJvmUtf8HexString(StringUtils.encodeJvmUtf8HexString(str)));
+        Assert.assertEquals("中文/home/udsf/英文/名字d中文/daksdfjk0090美国/", StringUtils.decodeJvmUtf8HexString(StringUtils.encodeJvmUtf8HexString(str)));
 
-        assertEquals("", StringUtils.decodeJvmUtf8HexString(""));
-        assertEquals("abcdefughilmnopqrstuvwxyz", StringUtils.decodeJvmUtf8HexString("abcdefughilmnopqrstuvwxyz"));
-        assertEquals("0123456789", StringUtils.decodeJvmUtf8HexString("0123456789"));
-        assertEquals(" ", StringUtils.decodeJvmUtf8HexString(" "));
-        assertNull(StringUtils.decodeJvmUtf8HexString(null));
+        Assert.assertEquals("", StringUtils.decodeJvmUtf8HexString(""));
+        Assert.assertEquals("abcdefughilmnopqrstuvwxyz", StringUtils.decodeJvmUtf8HexString("abcdefughilmnopqrstuvwxyz"));
+        Assert.assertEquals("0123456789", StringUtils.decodeJvmUtf8HexString("0123456789"));
+        Assert.assertEquals(" ", StringUtils.decodeJvmUtf8HexString(" "));
+        Assert.assertNull(StringUtils.decodeJvmUtf8HexString(null));
     }
 
     @Test
     public void testDefaultString() {
-        assertNull(StringUtils.defaultString(null, null));
-        assertNull(StringUtils.defaultString("", null));
-        assertEquals("1", StringUtils.defaultString("1", "2"));
-        assertEquals("2", StringUtils.defaultString("", "2"));
-        assertEquals("", StringUtils.defaultString(null, ""));
+        Assert.assertNull(StringUtils.defaultString(null, null));
+        Assert.assertNull(StringUtils.defaultString("", null));
+        Assert.assertEquals("1", StringUtils.defaultString("1", "2"));
+        Assert.assertEquals("2", StringUtils.defaultString("", "2"));
+        Assert.assertEquals("", StringUtils.defaultString(null, ""));
     }
 
     @Test
     public void testEqualsCharCharBoolean() {
-        assertTrue(StringUtils.equals('a', 'A', true));
-        assertFalse(StringUtils.equals('a', 'A', false));
-        assertFalse(StringUtils.equals('a', 'b', true));
-        assertFalse(StringUtils.equals('a', 'B', false));
-        assertTrue(StringUtils.equals('中', '中', true));
+        Assert.assertTrue(StringUtils.equals('a', 'A', true));
+        Assert.assertFalse(StringUtils.equals('a', 'A', false));
+        Assert.assertFalse(StringUtils.equals('a', 'b', true));
+        Assert.assertFalse(StringUtils.equals('a', 'B', false));
+        Assert.assertTrue(StringUtils.equals('中', '中', true));
     }
 
     @Test
     public void testIsEmptyString() {
         String str = null;
-        assertTrue(StringUtils.isEmpty(str));
-        assertTrue(StringUtils.isEmpty(""));
-        assertFalse(StringUtils.isEmpty(" "));
-        assertFalse(StringUtils.isEmpty(StringUtils.FULLWIDTH_BLANK));
-        assertFalse(StringUtils.isEmpty("1"));
-        assertFalse(StringUtils.isEmpty("12"));
-        assertFalse(StringUtils.isEmpty("1234567890"));
+        Assert.assertTrue(StringUtils.isEmpty(str));
+        Assert.assertTrue(StringUtils.isEmpty(""));
+        Assert.assertFalse(StringUtils.isEmpty(" "));
+        Assert.assertFalse(StringUtils.isEmpty(StringUtils.FULLWIDTH_BLANK));
+        Assert.assertFalse(StringUtils.isEmpty("1"));
+        Assert.assertFalse(StringUtils.isEmpty("12"));
+        Assert.assertFalse(StringUtils.isEmpty("1234567890"));
     }
 
     @Test
     public void testIsBlankString() {
         String str = null;
-        assertTrue(StringUtils.isBlank(str));
-        assertTrue(StringUtils.isBlank(""));
-        assertTrue(StringUtils.isBlank(" "));
-        assertTrue(StringUtils.isBlank(StringUtils.FULLWIDTH_BLANK));
-        assertTrue(StringUtils.isBlank(" " + StringUtils.FULLWIDTH_BLANK));
-        assertTrue(StringUtils.isBlank(" " + StringUtils.FULLWIDTH_BLANK + " " + StringUtils.FULLWIDTH_BLANK));
+        Assert.assertTrue(StringUtils.isBlank(str));
+        Assert.assertTrue(StringUtils.isBlank(""));
+        Assert.assertTrue(StringUtils.isBlank(" "));
+        Assert.assertTrue(StringUtils.isBlank(StringUtils.FULLWIDTH_BLANK));
+        Assert.assertTrue(StringUtils.isBlank(" " + StringUtils.FULLWIDTH_BLANK));
+        Assert.assertTrue(StringUtils.isBlank(" " + StringUtils.FULLWIDTH_BLANK + " " + StringUtils.FULLWIDTH_BLANK));
     }
 
     @Test
     public void testIsBlankStringArray() {
         String[] a = new String[0];
-        assertTrue(StringUtils.isBlank(a));
+        Assert.assertTrue(StringUtils.isBlank(a));
 
         a = null;
-        assertTrue(StringUtils.isBlank(a));
-        assertFalse(StringUtils.isBlank(new String[]{"1"}));
-        assertFalse(StringUtils.isBlank(new String[]{" ", "1"}));
-        assertTrue(StringUtils.isBlank(new String[]{" ", StringUtils.FULLWIDTH_BLANK, null,}));
-        assertTrue(StringUtils.isBlank(new String[]{}));
-        assertFalse(StringUtils.isBlank(new String[]{" ", StringUtils.FULLWIDTH_BLANK, " 1"}));
+        Assert.assertTrue(StringUtils.isBlank(a));
+        Assert.assertFalse(StringUtils.isBlank(new String[]{"1"}));
+        Assert.assertFalse(StringUtils.isBlank(new String[]{" ", "1"}));
+        Assert.assertTrue(StringUtils.isBlank(new String[]{" ", StringUtils.FULLWIDTH_BLANK, null,}));
+        Assert.assertTrue(StringUtils.isBlank(new String[]{}));
+        Assert.assertFalse(StringUtils.isBlank(new String[]{" ", StringUtils.FULLWIDTH_BLANK, " 1"}));
     }
 
     @Test
     public void testIsEmptyStringArray() {
         String[] a = new String[0];
-        assertTrue(ArrayUtils.isEmpty(a));
+        Assert.assertTrue(ArrayUtils.isEmpty(a));
 
         a = null;
-        assertTrue(ArrayUtils.isEmpty(a));
-        assertFalse(ArrayUtils.isEmpty(new String[]{"1"}));
-        assertFalse(ArrayUtils.isEmpty(new String[]{" ", "1"}));
-        assertFalse(ArrayUtils.isEmpty(new String[]{" ", StringUtils.FULLWIDTH_BLANK, null,}));
-        assertTrue(ArrayUtils.isEmpty(new String[]{}));
-        assertFalse(ArrayUtils.isEmpty(new String[]{" ", StringUtils.FULLWIDTH_BLANK, " 1"}));
+        Assert.assertTrue(ArrayUtils.isEmpty(a));
+        Assert.assertFalse(ArrayUtils.isEmpty(new String[]{"1"}));
+        Assert.assertFalse(ArrayUtils.isEmpty(new String[]{" ", "1"}));
+        Assert.assertFalse(ArrayUtils.isEmpty(new String[]{" ", StringUtils.FULLWIDTH_BLANK, null,}));
+        Assert.assertTrue(ArrayUtils.isEmpty(new String[]{}));
+        Assert.assertFalse(ArrayUtils.isEmpty(new String[]{" ", StringUtils.FULLWIDTH_BLANK, " 1"}));
     }
 
     @Test
     public void testIsNotBlank() {
-        assertFalse(StringUtils.isNotBlank(null));
-        assertFalse(StringUtils.isNotBlank(""));
-        assertFalse(StringUtils.isNotBlank(" "));
-        assertFalse(StringUtils.isNotBlank(StringUtils.FULLWIDTH_BLANK));
-        assertFalse(StringUtils.isNotBlank(StringUtils.FULLWIDTH_BLANK + StringUtils.FULLWIDTH_BLANK));
-        assertTrue(StringUtils.isNotBlank("1"));
-        assertTrue(StringUtils.isNotBlank("12"));
-        assertTrue(StringUtils.isNotBlank("1234567890"));
+        Assert.assertFalse(StringUtils.isNotBlank(null));
+        Assert.assertFalse(StringUtils.isNotBlank(""));
+        Assert.assertFalse(StringUtils.isNotBlank(" "));
+        Assert.assertFalse(StringUtils.isNotBlank(StringUtils.FULLWIDTH_BLANK));
+        Assert.assertFalse(StringUtils.isNotBlank(StringUtils.FULLWIDTH_BLANK + StringUtils.FULLWIDTH_BLANK));
+        Assert.assertTrue(StringUtils.isNotBlank("1"));
+        Assert.assertTrue(StringUtils.isNotBlank("12"));
+        Assert.assertTrue(StringUtils.isNotBlank("1234567890"));
     }
 
     @Test
     public void testLastNotBlankString() {
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{}));
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{""}));
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, null}));
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, null}));
-        assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, " ", null}));
-        assertEquals(0, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, " ", null}));
-//		assertEquals(ST.lastNotBlankString(new String[] { "1", "", ST.FULLWIDTH_BLANK, "2", " ", null }), "2");
-        assertEquals(6, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, "2", " ", null, "3"}));
-        assertEquals(3, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, "2", " ", null}));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{}));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{""}));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, null}));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, null}));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfNotBlank(new String[]{"", StringUtils.FULLWIDTH_BLANK, " ", null}));
+        Assert.assertEquals(0, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, " ", null}));
+//	Assert.	assertEquals(ST.lastNotBlankString(new String[] { "1", "", ST.FULLWIDTH_BLANK, "2", " ", null }), "2");
+        Assert.assertEquals(6, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, "2", " ", null, "3"}));
+        Assert.assertEquals(3, StringUtils.lastIndexOfNotBlank(new String[]{"1", "", StringUtils.FULLWIDTH_BLANK, "2", " ", null}));
     }
 
     @Test
     public void testLastIndexBlank() {
-        assertEquals(-1, StringUtils.lastIndexOfBlank("0123456789", 0));
-        assertEquals(0, StringUtils.lastIndexOfBlank(" 123456789", 0));
-        assertEquals(0, StringUtils.lastIndexOfBlank(" 1234567" + StringUtils.FULLWIDTH_BLANK + "9", 0));
-        assertEquals(8, StringUtils.lastIndexOfBlank(" 1234567" + StringUtils.FULLWIDTH_BLANK + "9", -1));
-        assertEquals(9, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, -1));
-        assertEquals(9, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, 9));
-        assertEquals(0, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, 1));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfBlank("0123456789", 0));
+        Assert.assertEquals(0, StringUtils.lastIndexOfBlank(" 123456789", 0));
+        Assert.assertEquals(0, StringUtils.lastIndexOfBlank(" 1234567" + StringUtils.FULLWIDTH_BLANK + "9", 0));
+        Assert.assertEquals(8, StringUtils.lastIndexOfBlank(" 1234567" + StringUtils.FULLWIDTH_BLANK + "9", -1));
+        Assert.assertEquals(9, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, -1));
+        Assert.assertEquals(9, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, 9));
+        Assert.assertEquals(0, StringUtils.lastIndexOfBlank(" 12345678" + StringUtils.FULLWIDTH_BLANK, 1));
     }
 
     @Test
     public void testLastIndex() {
-        assertEquals(-1, StringUtils.lastIndexOfStr("0123456789", "tset", 0, 9, true));
-        assertEquals(9, StringUtils.lastIndexOfStr("0123456789", "9", 0, 9, true));
-        assertEquals(0, StringUtils.lastIndexOfStr("0123456789", "0", 0, 9, true));
-        assertEquals(4, StringUtils.lastIndexOfStr("0123456789", "4", 0, 9, true));
-        assertEquals(0, StringUtils.lastIndexOfStr("0123456789", "0123456789", 0, 9, true));
-        assertEquals(0, StringUtils.lastIndexOfStr("012345678901234567890123456789", "012", 0, 9, true));
-        assertEquals(8, StringUtils.lastIndexOfStr("01234567890123456789", "890", 0, 19, true));
-        assertEquals(20, StringUtils.lastIndexOfStr("012345678901234567890123456789", "0123456789", 0, 29, true));
+        Assert.assertEquals(-1, StringUtils.lastIndexOfStr("0123456789", "tset", 0, 9, true));
+        Assert.assertEquals(9, StringUtils.lastIndexOfStr("0123456789", "9", 0, 9, true));
+        Assert.assertEquals(0, StringUtils.lastIndexOfStr("0123456789", "0", 0, 9, true));
+        Assert.assertEquals(4, StringUtils.lastIndexOfStr("0123456789", "4", 0, 9, true));
+        Assert.assertEquals(0, StringUtils.lastIndexOfStr("0123456789", "0123456789", 0, 9, true));
+        Assert.assertEquals(0, StringUtils.lastIndexOfStr("012345678901234567890123456789", "012", 0, 9, true));
+        Assert.assertEquals(8, StringUtils.lastIndexOfStr("01234567890123456789", "890", 0, 19, true));
+        Assert.assertEquals(20, StringUtils.lastIndexOfStr("012345678901234567890123456789", "0123456789", 0, 29, true));
     }
 
     @Test
     public void testTrimBlank() {
         // System.out.print(ST.trim("sdf \n ") + "]");
         String[] str = {null, "1 ", "2 ", "3", " 4 ", "5  ", ""};
-        assertEquals("String[1, 2, 3, 4, 5]", StringUtils.toString(StringUtils.removeBlank(str)));
-        assertEquals("sdf", StringUtils.trimBlank(" 　\n sdf 　\n "));
-        assertEquals("d", StringUtils.trimBlank(" 　\n sdf 　\n ", 's', 'f'));
-        assertEquals("d", StringUtils.trimBlank(" 　\n sfdsf 　\n ", 's', 'f'));
-        assertEquals("1", StringUtils.trimBlank("1"));
+        Assert.assertEquals("String[1, 2, 3, 4, 5]", StringUtils.toString(StringUtils.removeBlank(str)));
+        Assert.assertEquals("sdf", StringUtils.trimBlank(" 　\n sdf 　\n "));
+        Assert.assertEquals("d", StringUtils.trimBlank(" 　\n sdf 　\n ", 's', 'f'));
+        Assert.assertEquals("d", StringUtils.trimBlank(" 　\n sfdsf 　\n ", 's', 'f'));
+        Assert.assertEquals("1", StringUtils.trimBlank("1"));
         // Exception e = new Exception();
         // check(ST.toString(e));
     }
 
     @Test
     public void testTrimStringCharArray() {
-        assertEquals("1", StringUtils.trim("1", 'a'));
-        assertEquals("1", StringUtils.trim("a1", 'a'));
-        assertEquals("1", StringUtils.trim("a1a", 'a'));
-        assertEquals("1", StringUtils.trim("aaa1aaa", 'a'));
-        assertEquals("1a ", StringUtils.trim("aaa1a aa", 'a'));
+        Assert.assertEquals("1", StringUtils.trim("1", 'a'));
+        Assert.assertEquals("1", StringUtils.trim("a1", 'a'));
+        Assert.assertEquals("1", StringUtils.trim("a1a", 'a'));
+        Assert.assertEquals("1", StringUtils.trim("aaa1aaa", 'a'));
+        Assert.assertEquals("1a ", StringUtils.trim("aaa1a aa", 'a'));
     }
 
     @Test
     public void testTrimString() {
-        assertNull(StringUtils.trim((String) null));
-        assertEquals("1", StringUtils.trim(" 1 "));
-        assertEquals("1", StringUtils.trim("  1  "));
+        Assert.assertNull(StringUtils.trim((String) null));
+        Assert.assertEquals("1", StringUtils.trim(" 1 "));
+        Assert.assertEquals("1", StringUtils.trim("  1  "));
 
-        assertNull(StringUtils.trim((String) null));
-        assertEquals("", StringUtils.trim(""));
-        assertEquals("", StringUtils.trim(" "));
-        assertEquals("1", StringUtils.trim(" 1 "));
-        assertEquals("12", StringUtils.trim(" 12 "));
-        assertEquals("12", StringUtils.trim(" 12"));
+        Assert.assertNull(StringUtils.trim((String) null));
+        Assert.assertEquals("", StringUtils.trim(""));
+        Assert.assertEquals("", StringUtils.trim(" "));
+        Assert.assertEquals("1", StringUtils.trim(" 1 "));
+        Assert.assertEquals("12", StringUtils.trim(" 12 "));
+        Assert.assertEquals("12", StringUtils.trim(" 12"));
     }
 
     @Test
     public void testTrimQuotes() {
-        assertNull(StringUtils.unquote(null));
-        assertEquals("", StringUtils.unquote(""));
-        assertEquals("'", StringUtils.unquote("'"));
-        assertEquals("", StringUtils.unquote("''"));
-        assertEquals(" ", StringUtils.unquote("' '"));
-        assertEquals("1", StringUtils.unquote("'1'"));
-        assertEquals("12", StringUtils.unquote("'12'"));
+        Assert.assertNull(StringUtils.unquote(null));
+        Assert.assertEquals("", StringUtils.unquote(""));
+        Assert.assertEquals("'", StringUtils.unquote("'"));
+        Assert.assertEquals("", StringUtils.unquote("''"));
+        Assert.assertEquals(" ", StringUtils.unquote("' '"));
+        Assert.assertEquals("1", StringUtils.unquote("'1'"));
+        Assert.assertEquals("12", StringUtils.unquote("'12'"));
     }
 
     @Test
     public void testTrim2Quotes() {
-        assertNull(StringUtils.unquotes(null));
-        assertEquals("1", StringUtils.unquotes("1"));
-        assertEquals("\"1", StringUtils.unquotes("\"1"));
-        assertEquals("1", StringUtils.unquotes("\"1\""));
-        assertEquals("\"1\" ", StringUtils.unquotes("\"1\" "));
-        assertEquals(" \"1\"", StringUtils.unquotes(" \"1\""));
+        Assert.assertNull(StringUtils.unquotes(null));
+        Assert.assertEquals("1", StringUtils.unquotes("1"));
+        Assert.assertEquals("\"1", StringUtils.unquotes("\"1"));
+        Assert.assertEquals("1", StringUtils.unquotes("\"1\""));
+        Assert.assertEquals("\"1\" ", StringUtils.unquotes("\"1\" "));
+        Assert.assertEquals(" \"1\"", StringUtils.unquotes(" \"1\""));
     }
 
     @Test
     public void testTrimQuotationMark() {
-        assertNull(StringUtils.unquotation((String) null));
-        assertEquals("1", StringUtils.unquotation("\"1\""));
-        assertEquals("1", StringUtils.unquotation("'1'"));
-        assertEquals("'1' ", StringUtils.unquotation("'1' "));
-        assertEquals(" '1' ", StringUtils.unquotation(" '1' "));
+        Assert.assertNull(StringUtils.unquotation((String) null));
+        Assert.assertEquals("1", StringUtils.unquotation("\"1\""));
+        Assert.assertEquals("1", StringUtils.unquotation("'1'"));
+        Assert.assertEquals("'1' ", StringUtils.unquotation("'1' "));
+        Assert.assertEquals(" '1' ", StringUtils.unquotation(" '1' "));
     }
 
     @Test
     public void testTrimBlankAndBrace() {
-        assertEquals("1", StringUtils.trimParenthes("1"));
-        assertEquals("12", StringUtils.trimParenthes("12"));
-        assertEquals("12", StringUtils.trimParenthes(" ( 12 ) "));
-        assertEquals("( 12", StringUtils.trimParenthes(" ( 12  "));
-        assertEquals("12", StringUtils.trimParenthes("  12  "));
-        assertEquals("12", StringUtils.trimParenthes("  ((12))  "));
-        assertEquals("12", StringUtils.trimParenthes("  ( ( 12 )  )  "));
-        assertEquals("(12", StringUtils.trimParenthes("  ( ( (12 )  )  "));
+        Assert.assertEquals("1", StringUtils.trimParenthes("1"));
+        Assert.assertEquals("12", StringUtils.trimParenthes("12"));
+        Assert.assertEquals("12", StringUtils.trimParenthes(" ( 12 ) "));
+        Assert.assertEquals("( 12", StringUtils.trimParenthes(" ( 12  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  12  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  ((12))  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  ( ( 12 )  )  "));
+        Assert.assertEquals("(12", StringUtils.trimParenthes("  ( ( (12 )  )  "));
     }
 
     @Test
@@ -453,10 +450,10 @@ public class StringUtilsTest {
 
         ArrayList<String> lc = new ArrayList<String>(l1);
         StringUtils.trim(lc);
-        assertEquals("1", lc.get(0));
-        assertEquals("2", lc.get(1));
-        assertEquals("3", lc.get(2));
-        assertEquals("4 　", lc.get(3));
+        Assert.assertEquals("1", lc.get(0));
+        Assert.assertEquals("2", lc.get(1));
+        Assert.assertEquals("3", lc.get(2));
+        Assert.assertEquals("4 　", lc.get(3));
     }
 
     @Test
@@ -476,10 +473,10 @@ public class StringUtilsTest {
 
         lc = new ArrayList<String>(l1);
         StringUtils.trimBlank(lc);
-        assertEquals("1", lc.get(0));
-        assertEquals("2", lc.get(1));
-        assertEquals("3", lc.get(2));
-        assertEquals("4", lc.get(3));
+        Assert.assertEquals("1", lc.get(0));
+        Assert.assertEquals("2", lc.get(1));
+        Assert.assertEquals("3", lc.get(2));
+        Assert.assertEquals("4", lc.get(3));
     }
 
     @Test
@@ -492,18 +489,18 @@ public class StringUtilsTest {
 
         ArrayList<String> lc = new ArrayList<String>(l1);
         StringUtils.trim(lc);
-        assertEquals("1", lc.get(0));
-        assertEquals("2", lc.get(1));
-        assertEquals("3", lc.get(2));
-        assertEquals("4 　", lc.get(3));
+        Assert.assertEquals("1", lc.get(0));
+        Assert.assertEquals("2", lc.get(1));
+        Assert.assertEquals("3", lc.get(2));
+        Assert.assertEquals("4 　", lc.get(3));
 
         lc = new ArrayList<String>(l1);
         String[] a4 = CollectionUtils.toArray(lc);
         StringUtils.trim(a4);
-        assertEquals("1", a4[0]);
-        assertEquals("2", a4[1]);
-        assertEquals("3", a4[2]);
-        assertEquals("4 　", a4[3]);
+        Assert.assertEquals("1", a4[0]);
+        Assert.assertEquals("2", a4[1]);
+        Assert.assertEquals("3", a4[2]);
+        Assert.assertEquals("4 　", a4[3]);
     }
 
     @Test
@@ -516,29 +513,29 @@ public class StringUtilsTest {
 
         List<String> lc = new ArrayList<String>(l1);
         StringUtils.trimBlank(lc);
-        assertTrue(lc.get(0).equals("1"));
-        assertTrue(lc.get(1).equals("2"));
-        assertTrue(lc.get(2).equals("3"));
-        assertTrue(lc.get(3).equals("4"));
+        Assert.assertEquals("1", lc.get(0));
+        Assert.assertEquals("2", lc.get(1));
+        Assert.assertEquals("3", lc.get(2));
+        Assert.assertEquals("4", lc.get(3));
 
         String[] a5 = CollectionUtils.toArray(lc);
         StringUtils.trimBlank(a5);
-        assertTrue(a5[0].equals("1"));
-        assertTrue(a5[1].equals("2"));
-        assertTrue(a5[2].equals("3"));
-        assertTrue(a5[3].equals("4"));
+        Assert.assertEquals("1", a5[0]);
+        Assert.assertEquals("2", a5[1]);
+        Assert.assertEquals("3", a5[2]);
+        Assert.assertEquals("4", a5[3]);
     }
 
     @Test
     public void testTrimQuotationMarkInArray() {
-        assertTrue(StringUtils.trimParenthes("1").equals("1"));
-        assertTrue(StringUtils.trimParenthes("12").equals("12"));
-        assertTrue(StringUtils.trimParenthes(" ( 12 ) ").equals("12"));
-        assertTrue(StringUtils.trimParenthes(" ( 12  ").equals("( 12"));
-        assertTrue(StringUtils.trimParenthes("  12  ").equals("12"));
-        assertTrue(StringUtils.trimParenthes("  ((12))  ").equals("12"));
-        assertTrue(StringUtils.trimParenthes("  ( ( 12 )  )  ").equals("12"));
-        assertTrue(StringUtils.trimParenthes("  ( ( (12 )  )  ").equals("(12"));
+        Assert.assertEquals("1", StringUtils.trimParenthes("1"));
+        Assert.assertEquals("12", StringUtils.trimParenthes("12"));
+        Assert.assertEquals("12", StringUtils.trimParenthes(" ( 12 ) "));
+        Assert.assertEquals("( 12", StringUtils.trimParenthes(" ( 12  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  12  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  ((12))  "));
+        Assert.assertEquals("12", StringUtils.trimParenthes("  ( ( 12 )  )  "));
+        Assert.assertEquals("(12", StringUtils.trimParenthes("  ( ( (12 )  )  "));
     }
 
     @Test
@@ -550,98 +547,98 @@ public class StringUtilsTest {
         m1.put("4", "  4 ");
         m1.put("41", "　 41 　　");
         StringUtils.trim(m1);
-        assertTrue(m1.get("1").equals("1"));
-        assertTrue(m1.get("2").equals("2"));
-        assertTrue(m1.get("3").equals("3"));
-        assertTrue(m1.get("4").equals("4"));
-        assertTrue(m1.get("41").equals("　 41 　　"));
+        assertEquals("1", m1.get("1"));
+        assertEquals("2", m1.get("2"));
+        assertEquals("3", m1.get("3"));
+        assertEquals("4", m1.get("4"));
+        assertEquals("　 41 　　", m1.get("41"));
     }
 
     @Test
     public void testRtrimString() {
-        assertTrue(StringUtils.rtrim(null) == null);
-        assertTrue(StringUtils.rtrim("1").equals("1"));
-        assertTrue(StringUtils.rtrim("1 ").equals("1"));
-        assertTrue(StringUtils.rtrim("1  ").equals("1"));
-        assertTrue(StringUtils.rtrim("1  1").equals("1  1"));
-        assertTrue(StringUtils.rtrim("1  1 　").equals("1  1 　"));
+        assertNull(StringUtils.rtrim(null));
+        assertEquals("1", StringUtils.rtrim("1"));
+        assertEquals("1", StringUtils.rtrim("1 "));
+        assertEquals("1", StringUtils.rtrim("1  "));
+        assertEquals("1  1", StringUtils.rtrim("1  1"));
+        assertEquals("1  1 　", StringUtils.rtrim("1  1 　"));
     }
 
     @Test
     public void testRtrimStringCharArray() {
-        assertTrue(StringUtils.rtrim("1234", '1').equals("1234"));
-        assertTrue(StringUtils.rtrim("1234", '4').equals("123"));
+        assertEquals("1234", StringUtils.rtrim("1234", '1'));
+        assertEquals("123", StringUtils.rtrim("1234", '4'));
 
-        assertTrue(StringUtils.rtrim(null, ' ') == null);
-        assertTrue(StringUtils.rtrim("1", ' ').equals("1"));
-        assertTrue(StringUtils.rtrim("1 ", ' ').equals("1"));
-        assertTrue(StringUtils.rtrim("1  ", ' ').equals("1"));
-        assertTrue(StringUtils.rtrim("1  1", ' ').equals("1  1"));
-        assertTrue(StringUtils.rtrim("1  1 　", ' ').equals("1  1 　"));
+        assertNull(StringUtils.rtrim(null, ' '));
+        assertEquals("1", StringUtils.rtrim("1", ' '));
+        assertEquals("1", StringUtils.rtrim("1 ", ' '));
+        assertEquals("1", StringUtils.rtrim("1  ", ' '));
+        assertEquals("1  1", StringUtils.rtrim("1  1", ' '));
+        assertEquals("1  1 　", StringUtils.rtrim("1  1 　", ' '));
 
-        assertTrue(StringUtils.rtrim("123", ' ', '2', '3').equals("1"));
-        assertTrue(StringUtils.rtrim("1aa ", ' ', 'a', '3').equals("1"));
+        assertEquals("1", StringUtils.rtrim("123", ' ', '2', '3'));
+        assertEquals("1", StringUtils.rtrim("1aa ", ' ', 'a', '3'));
 
-        assertTrue(StringUtils.rtrim("1", 'a').equals("1"));
-        assertTrue(StringUtils.rtrim("1a", 'a').equals("1"));
-        assertTrue(StringUtils.rtrim("1aa", 'a').equals("1"));
-        assertTrue(StringUtils.rtrim("1aa1", 'a').equals("1aa1"));
-        assertTrue(StringUtils.rtrim("1  1aaa", 'a').equals("1  1"));
+        assertEquals("1", StringUtils.rtrim("1", 'a'));
+        assertEquals("1", StringUtils.rtrim("1a", 'a'));
+        assertEquals("1", StringUtils.rtrim("1aa", 'a'));
+        assertEquals("1aa1", StringUtils.rtrim("1aa1", 'a'));
+        assertEquals("1  1", StringUtils.rtrim("1  1aaa", 'a'));
     }
 
     @Test
     public void testRtrimBlank() {
-        assertTrue(StringUtils.rtrimBlank(null) == null);
-        assertTrue(StringUtils.rtrimBlank("1").equals("1"));
-        assertTrue(StringUtils.rtrimBlank("1 ").equals("1"));
-        assertTrue(StringUtils.rtrimBlank("1  ").equals("1"));
-        assertTrue(StringUtils.rtrimBlank("1  1").equals("1  1"));
-        assertTrue(StringUtils.rtrimBlank("1  1 　").equals("1  1"));
-        assertTrue(StringUtils.rtrimBlank(" 1  1 　").equals(" 1  1"));
-        assertTrue(StringUtils.rtrimBlank("sdf 　\n ").equals("sdf"));
-        assertTrue(StringUtils.rtrimBlank("sdf 　\n ", 'f').equals("sd"));
+        Assert.assertNull(StringUtils.rtrimBlank(null));
+        Assert.assertEquals("1", StringUtils.rtrimBlank("1"));
+        Assert.assertEquals("1", StringUtils.rtrimBlank("1 "));
+        Assert.assertEquals("1", StringUtils.rtrimBlank("1  "));
+        Assert.assertEquals("1  1", StringUtils.rtrimBlank("1  1"));
+        Assert.assertEquals("1  1", StringUtils.rtrimBlank("1  1 　"));
+        Assert.assertEquals(" 1  1", StringUtils.rtrimBlank(" 1  1 　"));
+        Assert.assertEquals("sdf", StringUtils.rtrimBlank("sdf 　\n "));
+        Assert.assertEquals("sd", StringUtils.rtrimBlank("sdf 　\n ", 'f'));
     }
 
     @Test
     public void testLtrimString() {
-        assertTrue(StringUtils.ltrim(null) == null);
-        assertTrue(StringUtils.ltrim("1").equals("1"));
-        assertTrue(StringUtils.ltrim(" 1 ").equals("1 "));
-        assertTrue(StringUtils.ltrim("  1  ").equals("1  "));
-        assertTrue(StringUtils.ltrim("  1  1").equals("1  1"));
-        assertTrue(StringUtils.ltrim(" 　1  1 　").equals("　1  1 　"));
+        Assert.assertNull(StringUtils.ltrim(null));
+        Assert.assertEquals("1", StringUtils.ltrim("1"));
+        Assert.assertEquals("1 ", StringUtils.ltrim(" 1 "));
+        Assert.assertEquals("1  ", StringUtils.ltrim("  1  "));
+        Assert.assertEquals("1  1", StringUtils.ltrim("  1  1"));
+        Assert.assertEquals("　1  1 　", StringUtils.ltrim(" 　1  1 　"));
     }
 
     @Test
     public void testLtrimStringCharArray() {
-        assertTrue(StringUtils.ltrim(null, ' ') == null);
-        assertTrue(StringUtils.ltrim("1", 'a').equals("1"));
-        assertTrue(StringUtils.ltrim("a1 ", 'a').equals("1 "));
-        assertTrue(StringUtils.ltrim("aa1  ", 'a').equals("1  "));
-        assertTrue(StringUtils.ltrim("aaa1  1", 'a').equals("1  1"));
-        assertTrue(StringUtils.ltrim(" aa1  1 　", 'a').equals(" aa1  1 　"));
+        Assert.assertNull(StringUtils.ltrim(null, ' '));
+        Assert.assertEquals("1", StringUtils.ltrim("1", 'a'));
+        Assert.assertEquals("1 ", StringUtils.ltrim("a1 ", 'a'));
+        Assert.assertEquals("1  ", StringUtils.ltrim("aa1  ", 'a'));
+        Assert.assertEquals("1  1", StringUtils.ltrim("aaa1  1", 'a'));
+        Assert.assertEquals(" aa1  1 　", StringUtils.ltrim(" aa1  1 　", 'a'));
 
-        assertTrue(StringUtils.ltrim("1  1aaa", '1', 'a').equals("  1aaa"));
-        assertTrue(StringUtils.ltrim("1aa  1aaa", '1', 'a').equals("  1aaa"));
-        assertTrue(StringUtils.ltrim("1234", '1').equals("234"));
+        Assert.assertEquals("  1aaa", StringUtils.ltrim("1  1aaa", '1', 'a'));
+        Assert.assertEquals("  1aaa", StringUtils.ltrim("1aa  1aaa", '1', 'a'));
+        Assert.assertEquals("234", StringUtils.ltrim("1234", '1'));
     }
 
     @Test
     public void testLtrimBlank() {
-        assertTrue(StringUtils.ltrimBlank(null) == null);
-        assertTrue(StringUtils.ltrimBlank("1").equals("1"));
-        assertTrue(StringUtils.ltrimBlank(" 1 ").equals("1 "));
-        assertTrue(StringUtils.ltrimBlank("  1  ").equals("1  "));
-        assertTrue(StringUtils.ltrimBlank("  1  1").equals("1  1"));
-        assertTrue(StringUtils.ltrimBlank(" 　1  1 　").equals("1  1 　"));
-        assertTrue(StringUtils.ltrimBlank(" 　\n sdf 　\n ").equals("sdf 　\n "));
-        assertTrue(StringUtils.ltrimBlank(" 　\n sdf 　\n ", 's').equals("df 　\n "));
+        Assert.assertNull(StringUtils.ltrimBlank(null));
+        Assert.assertEquals("1", StringUtils.ltrimBlank("1"));
+        Assert.assertEquals("1 ", StringUtils.ltrimBlank(" 1 "));
+        Assert.assertEquals("1  ", StringUtils.ltrimBlank("  1  "));
+        Assert.assertEquals("1  1", StringUtils.ltrimBlank("  1  1"));
+        Assert.assertEquals("1  1 　", StringUtils.ltrimBlank(" 　1  1 　"));
+        Assert.assertEquals("sdf 　\n ", StringUtils.ltrimBlank(" 　\n sdf 　\n "));
+        Assert.assertEquals("df 　\n ", StringUtils.ltrimBlank(" 　\n sdf 　\n ", 's'));
     }
 
     @Test
     public void testObjToStrObject() {
-        assertTrue(StringUtils.objToStr(null).equals(""));
-        assertTrue(StringUtils.objToStr("1 ").equals("1"));
+        Assert.assertEquals("", StringUtils.objToStr(null));
+        Assert.assertEquals("1", StringUtils.objToStr("1 "));
     }
 
     @Test
@@ -653,38 +650,38 @@ public class StringUtilsTest {
 
     @Test
     public void testReplaceFirst() {
-        assertTrue(StringUtils.replace("12345678901234567890", "890", "A").equals("1234567A1234567890"));
-        assertTrue(StringUtils.replace("12345678901234567890", "1", "A").equals("A2345678901234567890"));
+        Assert.assertEquals("1234567A1234567890", StringUtils.replace("12345678901234567890", "890", "A"));
+        Assert.assertEquals("A2345678901234567890", StringUtils.replace("12345678901234567890", "1", "A"));
     }
 
     @Test
     public void testReplaceLast() {
-        assertTrue(StringUtils.replaceLast("12345678901234567890", "890", "").equals("12345678901234567"));
+        Assert.assertEquals("12345678901234567", StringUtils.replaceLast("12345678901234567890", "890", ""));
     }
 
     @Test
     public void testReplaceAll() {
-        assertTrue(StringUtils.replaceAll("12345678901234567890", "890", "A").equals("1234567A1234567A"));
-        assertTrue(StringUtils.replaceAll("", "890", "A").equals(""));
-        assertTrue(StringUtils.replaceAll("12345678901234567890", "1", "A").equals("A234567890A234567890"));
-        assertTrue(StringUtils.replaceAll("12345678901234567890", "1", "1").equals("12345678901234567890"));
+        Assert.assertEquals("1234567A1234567A", StringUtils.replaceAll("12345678901234567890", "890", "A"));
+        Assert.assertEquals("", StringUtils.replaceAll("", "890", "A"));
+        Assert.assertEquals("A234567890A234567890", StringUtils.replaceAll("12345678901234567890", "1", "A"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceAll("12345678901234567890", "1", "1"));
     }
 
     @Test
     public void testReplaceChars() {
-        assertTrue(StringUtils.replace("12345678901234567890", 0, 1, "").equals("2345678901234567890"));
-        assertTrue(StringUtils.replace("12345678901234567890", 0, 10, "").equals("1234567890"));
-        assertTrue(StringUtils.replace("12345678901234567890", 0, 20, "").equals(""));
-        assertTrue(StringUtils.replace("12345678901234567890", 19, 1, "").equals("1234567890123456789"));
+        Assert.assertEquals("2345678901234567890", StringUtils.replace("12345678901234567890", 0, 1, ""));
+        Assert.assertEquals("1234567890", StringUtils.replace("12345678901234567890", 0, 10, ""));
+        Assert.assertEquals("", StringUtils.replace("12345678901234567890", 0, 20, ""));
+        Assert.assertEquals("1234567890123456789", StringUtils.replace("12345678901234567890", 19, 1, ""));
     }
 
     @Test
     public void testReplaceChineseAscii() {
-        assertTrue(StringUtils.replaceHalfWidthChar("１2345678901234567890").equals("12345678901234567890"));
-        assertTrue(StringUtils.replaceHalfWidthChar("１234567890123456789０").equals("12345678901234567890"));
-        assertTrue(StringUtils.replaceHalfWidthChar("１234567890123456789０　").equals("12345678901234567890 "));
-        assertTrue(StringUtils.replaceHalfWidthChar("（１234567890123456789０　）").equals("(12345678901234567890 )"));
-        assertTrue(StringUtils.replaceHalfWidthChar("（１测试０　）").equals("(1测试0 )"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceHalfWidthChar("１2345678901234567890"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceHalfWidthChar("１234567890123456789０"));
+        Assert.assertEquals("12345678901234567890 ", StringUtils.replaceHalfWidthChar("１234567890123456789０　"));
+        Assert.assertEquals("(12345678901234567890 )", StringUtils.replaceHalfWidthChar("（１234567890123456789０　）"));
+        Assert.assertEquals("(1测试0 )", StringUtils.replaceHalfWidthChar("（１测试０　）"));
     }
 
     @Test
@@ -692,11 +689,12 @@ public class StringUtilsTest {
         Map<String, String> map = new HashMap<String, String>();
         map.put("HOME", "test");
         map.put("T", "test");
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${T}6789０", map).equals("１234567890test12345test6789０"));
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}123456789０", map).equals("１234567890test123456789０"));
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map).equals("１234567890test12345${PUBLIC}6789０"));
+        Assert.assertEquals("１234567890test12345test6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${T}6789０", map));
+        Assert.assertEquals("１234567890test123456789０", StringUtils.replaceEnvironment("１234567890${HOME}123456789０", map));
+        Assert.assertEquals("１234567890test12345${PUBLIC}6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map));
+
         map.put("PUBLIC", "PUBLIC");
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map).equals("１234567890test12345PUBLIC6789０"));
+        Assert.assertEquals("１234567890test12345PUBLIC6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map));
     }
 
     @Test
@@ -704,13 +702,13 @@ public class StringUtilsTest {
         Map<String, String> map = new HashMap<String, String>();
         map.put("HOME", "test");
         map.put("T", "test");
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${T}6789０", map).equals("１234567890test12345test6789０"));
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}123456789０", map).equals("１234567890test123456789０"));
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map).equals("１234567890test12345${PUBLIC}6789０"));
+        Assert.assertEquals("１234567890test12345test6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${T}6789０", map));
+        Assert.assertEquals("１234567890test123456789０", StringUtils.replaceEnvironment("１234567890${HOME}123456789０", map));
+        Assert.assertEquals("１234567890test12345${PUBLIC}6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map));
 
         map.put("PUBLIC", "PUBLIC");
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map).equals("１234567890test12345PUBLIC6789０"));
-        assertTrue(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０").equals("１234567890" + Settings.getUserHome() + "12345${PUBLIC}6789０"));
+        Assert.assertEquals("１234567890test12345PUBLIC6789０", StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０", map));
+        Assert.assertEquals(StringUtils.replaceEnvironment("１234567890${HOME}12345${PUBLIC}6789０"), "１234567890" + Settings.getUserHome() + "12345${PUBLIC}6789０");
     }
 
     @Test
@@ -720,12 +718,12 @@ public class StringUtilsTest {
         map.put("T", "test");
         map.put("PUBLIC", "PUBLIC");
 
-        assertTrue(StringUtils.replaceVariable("12345678901234567890", map).equals("12345678901234567890"));
-        assertTrue(StringUtils.replaceVariable("１234567890${HOME}12345${PUBLIC}6789０${HOME}", map).equals("１234567890test12345PUBLIC6789０test"));
-        assertTrue(StringUtils.replaceVariable("${HOME}", map).equals("test"));
-        assertTrue(StringUtils.replaceVariable("${HOME}${T}", map).equals("testtest"));
-        assertTrue(StringUtils.replaceVariable("", map).equals(""));
-        assertTrue(StringUtils.replaceVariable("${HOME}+${T}", map).equals("test+test"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceVariable("12345678901234567890", map));
+        Assert.assertEquals("１234567890test12345PUBLIC6789０test", StringUtils.replaceVariable("１234567890${HOME}12345${PUBLIC}6789０${HOME}", map));
+        Assert.assertEquals("test", StringUtils.replaceVariable("${HOME}", map));
+        Assert.assertEquals("testtest", StringUtils.replaceVariable("${HOME}${T}", map));
+        Assert.assertEquals("", StringUtils.replaceVariable("", map));
+        Assert.assertEquals("test+test", StringUtils.replaceVariable("${HOME}+${T}", map));
     }
 
     @Test
@@ -735,12 +733,12 @@ public class StringUtilsTest {
         map.put("T", "test");
         map.put("PUBLIC", "PUBLIC");
 
-        assertTrue(StringUtils.replaceVariable("12345678901234567890", map, null).equals("12345678901234567890"));
-        assertTrue(StringUtils.replaceVariable("１234567890${HOME}12345${PUBLIC}6789０${HOME}", map, null).equals("１234567890test12345PUBLIC6789０test"));
-        assertTrue(StringUtils.replaceVariable("${HOME}", map, null).equals("test"));
-        assertTrue(StringUtils.replaceVariable("${HOME}${T}", map, null).equals("testtest"));
-        assertTrue(StringUtils.replaceVariable("${HOME}+${T}", map, null).equals("test+test"));
-        assertTrue(StringUtils.replaceVariable("${HOME}+${T1}", map, null).equals("test+${T1}"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceVariable("12345678901234567890", map, null));
+        Assert.assertEquals("１234567890test12345PUBLIC6789０test", StringUtils.replaceVariable("１234567890${HOME}12345${PUBLIC}6789０${HOME}", map, null));
+        Assert.assertEquals("test", StringUtils.replaceVariable("${HOME}", map, null));
+        Assert.assertEquals("testtest", StringUtils.replaceVariable("${HOME}${T}", map, null));
+        Assert.assertEquals("test+test", StringUtils.replaceVariable("${HOME}+${T}", map, null));
+        Assert.assertEquals("test+${T1}", StringUtils.replaceVariable("${HOME}+${T1}", map, null));
     }
 
     @Test
@@ -750,20 +748,21 @@ public class StringUtilsTest {
         map.put("T", "test");
         map.put("PUBLIC", "PUBLIC");
 
-        assertTrue(StringUtils.replaceVariable("12345678901234567890", "HOME", "test").equals("12345678901234567890"));
-        assertTrue(StringUtils.replaceVariable("${HOME}", "HOME", "test").equals("test"));
+        Assert.assertEquals("12345678901234567890", StringUtils.replaceVariable("12345678901234567890", "HOME", "test"));
+        Assert.assertEquals("test", StringUtils.replaceVariable("${HOME}", "HOME", "test"));
     }
 
     @Test
     public void testSubstrStringIntInt() {
-        assertTrue(StringUtils.substring((String) null, 0, 0, CharsetName.UTF_8) == null);
-        assertTrue(StringUtils.substring("", 0, 0, CharsetName.UTF_8).equals(""));
+        Assert.assertNull(StringUtils.substring((String) null, 0, 0, CharsetName.UTF_8));
+        Assert.assertEquals("", StringUtils.substring("", 0, 0, CharsetName.UTF_8));
 
         boolean val = false;
         try {
-            assertTrue(StringUtils.substring("", 0, 1, CharsetName.UTF_8).equals(""));
+            Assert.assertEquals("", StringUtils.substring("", 0, 1, CharsetName.UTF_8));
             val = true;
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
         if (val) {
             throw new RuntimeException();
@@ -771,24 +770,25 @@ public class StringUtilsTest {
 
         val = false;
         try {
-            assertTrue(StringUtils.substring("12345678901234567890", 0, 21, CharsetName.UTF_8).equals(""));
+            Assert.assertEquals("", StringUtils.substring("12345678901234567890", 0, 21, CharsetName.UTF_8));
             val = true;
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
         if (val) {
             throw new RuntimeException();
         }
 
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 0, CharsetName.UTF_8).equals(""));
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 10, CharsetName.UTF_8).equals("1234567890"));
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 20, CharsetName.UTF_8).equals("12345678901234567890"));
+        Assert.assertEquals("", StringUtils.substring("12345678901234567890", 0, 0, CharsetName.UTF_8));
+        Assert.assertEquals("1234567890", StringUtils.substring("12345678901234567890", 0, 10, CharsetName.UTF_8));
+        Assert.assertEquals("12345678901234567890", StringUtils.substring("12345678901234567890", 0, 20, CharsetName.UTF_8));
     }
 
     @Test
     public void testSubstrStringIntIntString() {
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 0, "UTF-8").equals(""));
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 10, "UTF-8").equals("1234567890"));
-        assertTrue(StringUtils.substring("12345678901234567890", 0, 20, "UTF-8").equals("12345678901234567890"));
+        Assert.assertEquals("", StringUtils.substring("12345678901234567890", 0, 0, "UTF-8"));
+        Assert.assertEquals("1234567890", StringUtils.substring("12345678901234567890", 0, 10, "UTF-8"));
+        Assert.assertEquals("12345678901234567890", StringUtils.substring("12345678901234567890", 0, 20, "UTF-8"));
 
         Assert.assertEquals("一二三四五", StringUtils.substring("一二三四五六七八九十", 0, 15, "UTF-8"));
         Assert.assertNotEquals("一二三四五", StringUtils.substring("一二三四五六七八九十", 0, 16, "UTF-8"));
@@ -805,47 +805,47 @@ public class StringUtilsTest {
 
     @Test
     public void testSubstrByteArrayIntIntString() throws UnsupportedEncodingException {
-        assertTrue(StringUtils.substring("12345678901234567890".getBytes("UTF-8"), 0, 10, "UTF-8").equals("1234567890"));
-        assertTrue(StringUtils.substring("12345678901234567890".getBytes("UTF-8"), 0, 20, "UTF-8").equals("12345678901234567890"));
-        assertTrue(StringUtils.substring("12345678901234567890".getBytes("GBK"), 0, 19, "gbk").equals("1234567890123456789"));
-        assertTrue(StringUtils.substring("一二三四五六七八九十".getBytes("GBK"), 0, 10, "gbk").equals("一二三四五"));
-        assertTrue(!StringUtils.substring("一二三四五六七八九十".getBytes("GBK"), 0, 11, "gbk").equals("一二三四五"));
+        Assert.assertEquals("1234567890", StringUtils.substring("12345678901234567890".getBytes("UTF-8"), 0, 10, "UTF-8"));
+        Assert.assertEquals("12345678901234567890", StringUtils.substring("12345678901234567890".getBytes("UTF-8"), 0, 20, "UTF-8"));
+        Assert.assertEquals("1234567890123456789", StringUtils.substring("12345678901234567890".getBytes("GBK"), 0, 19, "gbk"));
+        Assert.assertEquals("一二三四五", StringUtils.substring("一二三四五六七八九十".getBytes("GBK"), 0, 10, "gbk"));
+        Assert.assertNotEquals("一二三四五", StringUtils.substring("一二三四五六七八九十".getBytes("GBK"), 0, 11, "gbk"));
     }
 
     @Test
     public void testSubstrStringIntIntInt() {
-        assertTrue(StringUtils.substring("0123456789", 1, 1, 1).equals("012"));
-        assertTrue(StringUtils.substring("0123456789", 0, 1, 1).equals("01"));
-        assertTrue(StringUtils.substring("0123456789", 0, 1, 0).equals("0"));
-        assertTrue(StringUtils.substring("0123456789", 5, 2, 2).equals("34567"));
-        assertTrue(StringUtils.substring("0123456789", 5, 5, 4).equals("0123456789"));
-        assertTrue(StringUtils.substring("0123456789", 5, 6, 5).equals("0123456789"));
-        assertTrue(StringUtils.substring("0123456789", 9, 0, 10).equals("9"));
+        Assert.assertEquals("012", StringUtils.substring("0123456789", 1, 1, 1));
+        Assert.assertEquals("01", StringUtils.substring("0123456789", 0, 1, 1));
+        Assert.assertEquals("0", StringUtils.substring("0123456789", 0, 1, 0));
+        Assert.assertEquals("34567", StringUtils.substring("0123456789", 5, 2, 2));
+        Assert.assertEquals("0123456789", StringUtils.substring("0123456789", 5, 5, 4));
+        Assert.assertEquals("0123456789", StringUtils.substring("0123456789", 5, 6, 5));
+        Assert.assertEquals("9", StringUtils.substring("0123456789", 9, 0, 10));
     }
 
     @Test
     public void testSubstrTrimBlank() {
-        assertTrue(StringUtils.substr("0123456789", 1, 0, 0).equals("1"));
-        assertTrue(StringUtils.substr("0123 5 789", 5, 1, 1).equals("5"));
-        assertTrue(StringUtils.substr("     5    ", 5, 5, 4).equals("5"));
-        assertTrue(StringUtils.substr("     5    ", 5, 6, 5).equals("5"));
-        assertTrue(StringUtils.substr("5", 0, 6, 5).equals("5"));
+        Assert.assertEquals("1", StringUtils.substr("0123456789", 1, 0, 0));
+        Assert.assertEquals("5", StringUtils.substr("0123 5 789", 5, 1, 1));
+        Assert.assertEquals("5", StringUtils.substr("     5    ", 5, 5, 4));
+        Assert.assertEquals("5", StringUtils.substr("     5    ", 5, 6, 5));
+        Assert.assertEquals("5", StringUtils.substr("5", 0, 6, 5));
     }
 
     @Test
     public void testLeft() {
-        assertTrue(StringUtils.left(null, 10) == null);
-        assertTrue(StringUtils.left("", 10).equals(""));
-        assertTrue(StringUtils.left("1", 10).equals("1"));
-        assertTrue(StringUtils.left("12", 10).equals("12"));
-        assertTrue(StringUtils.left("12345678901", 10).equals("1234567890"));
-        assertTrue(StringUtils.left("123456789012", 10).equals("1234567890"));
-        assertTrue(StringUtils.left("", 10).equals(""));
+        Assert.assertNull(StringUtils.left(null, 10));
+        Assert.assertEquals("", StringUtils.left("", 10));
+        Assert.assertEquals("1", StringUtils.left("1", 10));
+        Assert.assertEquals("12", StringUtils.left("12", 10));
+        Assert.assertEquals("1234567890", StringUtils.left("12345678901", 10));
+        Assert.assertEquals("1234567890", StringUtils.left("123456789012", 10));
+        Assert.assertEquals("", StringUtils.left("", 10));
     }
 
     @Test
     public void testLeftIgnoreChinese() {
-        assertTrue(StringUtils.left(null, 10, null) == null);
+        Assert.assertNull(StringUtils.left(null, 10, null));
         Assert.assertEquals("", StringUtils.left("", 10, null));
         Assert.assertEquals("1", StringUtils.left("1", 10, null));
         Assert.assertEquals("", StringUtils.left("1", 0, null));
@@ -859,18 +859,18 @@ public class StringUtilsTest {
 
     @Test
     public void testLeftFormatIgnoreChinese() {
+        Assert.assertNull(StringUtils.left(null, 11, null, ' '));
         Assert.assertEquals("1234567890", StringUtils.left("1234567890", 10, null, ' ')); // 判断字符串是否相等
         Assert.assertEquals("1234567890 ", StringUtils.left("1234567890", 11, null, ' ')); // 判断字符串是否相等
         Assert.assertEquals("1234567890  ", StringUtils.left("1234567890", 12, null, ' ')); // 判断字符串是否相等
         Assert.assertEquals("1234567截取", StringUtils.left("1234567截取", 11, null, ' '));
-        Assert.assertEquals(null, StringUtils.left(null, 11, null, ' '));
         Assert.assertEquals("", StringUtils.left("中", 0, null, ' '));
         Assert.assertEquals("", StringUtils.left("a", 0, null, ' '));
     }
 
     @Test
     public void testLeftFormatObjectInt() {
-        assertTrue(StringUtils.left(null, 1, ' ') == null);
+        Assert.assertTrue(StringUtils.left(null, 1, ' ') == null);
         Assert.assertEquals("1", StringUtils.left("1234567890", 1, ' '));
         Assert.assertEquals("12", StringUtils.left("1234567890", 2, ' '));
         Assert.assertEquals("1234567890", StringUtils.left("1234567890", 10, ' '));
@@ -887,7 +887,7 @@ public class StringUtilsTest {
 
     @Test
     public void testRight() {
-        assertTrue(StringUtils.right(null, 10) == null);
+        Assert.assertTrue(StringUtils.right(null, 10) == null);
         Assert.assertEquals("", StringUtils.right("", 10));
         Assert.assertEquals("1234567890", StringUtils.right("12345678901234567890", 10));
         Assert.assertEquals("12345678901234567890", StringUtils.right("12345678901234567890", 20));
@@ -896,7 +896,7 @@ public class StringUtilsTest {
 
     @Test
     public void testRightFormatObjectInt() {
-        assertTrue(StringUtils.right(null, 10, ' ') == null);
+        Assert.assertNull(StringUtils.right(null, 10, ' '));
         Assert.assertEquals(" 1", StringUtils.right("1", 2, ' '));
         Assert.assertEquals(" 123", StringUtils.right("123", 4, ' '));
         Assert.assertEquals("          1234567890", StringUtils.right("1234567890", 20, ' '));
@@ -908,7 +908,7 @@ public class StringUtilsTest {
 
     @Test
     public void testright() {
-        Assert.assertEquals(null, StringUtils.right(null, 1, StringUtils.CHARSET));
+        Assert.assertNull(StringUtils.right(null, 1, StringUtils.CHARSET));
         Assert.assertEquals("", StringUtils.right("", 0, StringUtils.CHARSET));
         Assert.assertEquals("", StringUtils.right("", 1, StringUtils.CHARSET));
         Assert.assertEquals("7", StringUtils.right("01234567", 1, StringUtils.CHARSET));
@@ -919,7 +919,7 @@ public class StringUtilsTest {
 
     @Test
     public void testRightFormatObjectStringIntByte() {
-        Assert.assertTrue(StringUtils.right(null, 10, null, ' ') == null);
+        Assert.assertNull(StringUtils.right(null, 10, null, ' '));
         Assert.assertEquals(" 1", StringUtils.right("1", 2, null, ' '));
         Assert.assertEquals(" 123", StringUtils.right("123", 4, null, ' '));
         Assert.assertEquals("          1234567890", StringUtils.right("1234567890", 20, null, ' '));
@@ -928,7 +928,7 @@ public class StringUtilsTest {
         Assert.assertEquals("12345678901234567890", StringUtils.right("A12345678901234567890", 20, null, ' '));
         Assert.assertEquals("12345678901234567890", StringUtils.right("12345678901234567890", 20, null, ' '));
 
-        Assert.assertTrue(StringUtils.right(null, 10, null, 'a') == null);
+        Assert.assertNull(StringUtils.right(null, 10, null, 'a'));
         Assert.assertEquals("a1", StringUtils.right("1", 2, null, 'a'));
         Assert.assertEquals("a123", StringUtils.right("123", 4, null, 'a'));
         Assert.assertEquals("aaaaaaaaaa1234567890", StringUtils.right("1234567890", 20, null, 'a'));
@@ -946,7 +946,7 @@ public class StringUtilsTest {
     public void testMiddleFormatObjectInt() {
 //		Assert.assertEquals("[    1     ]", ("[" + StringUtils.middleFormat("1", 10) + "]"));
 //		Assert.assertEquals("[     1     ]", ("[" + StringUtils.middleFormat("1", 11) + "]"));
-//		Assert.assertEquals("[  吕钊军  ]", ("[" + StringUtils.middleFormat("吕钊军", 10) + "]"));
+//		Assert.assertEquals("[  测试  ]", ("[" + StringUtils.middleFormat("测试", 10) + "]"));
 //		Assert.assertEquals("[    吕    ]", ("[" + StringUtils.middleFormat("吕", 10) + "]"));
     }
 
@@ -954,7 +954,7 @@ public class StringUtilsTest {
     public void testMiddleFormatObjectIntByte() {
 //		Assert.assertEquals("[    1     ]", ("[" + StringUtils.middleFormat("1", 10, (byte) ' ') + "]"));
 //		Assert.assertEquals("[     1     ]", ("[" + StringUtils.middleFormat("1", 11, (byte) ' ') + "]"));
-//		Assert.assertEquals("[  吕钊军  ]", ("[" + StringUtils.middleFormat("吕钊军", 10, (byte) ' ') + "]"));
+//		Assert.assertEquals("[  测试  ]", ("[" + StringUtils.middleFormat("测试", 10, (byte) ' ') + "]"));
 //		Assert.assertEquals("[    吕    ]", ("[" + StringUtils.middleFormat("吕", 10, (byte) ' ') + "]"));
     }
 
@@ -965,7 +965,7 @@ public class StringUtilsTest {
         Assert.assertEquals("[    吕     ]", ("[" + StringUtils.middle("吕", 11, null, ' ') + "]"));
         Assert.assertEquals("测", StringUtils.middle("测试", 2, null, ' '));
         Assert.assertEquals("", StringUtils.middle("测试", 0, null, ' '));
-        Assert.assertEquals(null, StringUtils.middle(null, 0, null, ' '));
+        Assert.assertNull(StringUtils.middle(null, 0, null, ' '));
     }
 
     @Test
@@ -981,87 +981,87 @@ public class StringUtilsTest {
 
     @Test
     public void testIndexStrFromArr() {
-        Assert.assertTrue(StringUtils.indexOf(new String[]{}, "") == -1);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{""}, "") == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{null, "", ""}, "") == 1);
+        Assert.assertEquals(-1, StringUtils.indexOf(new String[]{}, ""));
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{""}, ""));
+        Assert.assertEquals(1, StringUtils.indexOf(new String[]{null, "", ""}, ""));
     }
 
     @Test
     public void testIndexStrIgnoreCase() {
-        Assert.assertTrue(StringUtils.indexOfIgnoreCase(new String[]{}, "") == -1);
-        Assert.assertTrue(StringUtils.indexOfIgnoreCase(new String[]{null, "", ""}, "") == 1);
+        Assert.assertEquals(-1, StringUtils.indexOfIgnoreCase(new String[]{}, ""));
+        Assert.assertEquals(1, StringUtils.indexOfIgnoreCase(new String[]{null, "", ""}, ""));
     }
 
     @Test
     public void testIndexStrStringStringIntBoolean() {
-        Assert.assertTrue(StringUtils.indexOf("A", "a", 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf("A", "a", 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf("bA", "a", 0, true) == 1);
-        Assert.assertTrue(StringUtils.indexOf("bA", "a", 1, true) == 1);
-        Assert.assertTrue(StringUtils.indexOf("abAbc", "abc", 0, true) == 2);
-        Assert.assertTrue(StringUtils.indexOf("abc", "A", 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf("abc", "Ab", 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf("abc", "Abc", 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf("abc", "Abcd", 0, true) == -1);
-        Assert.assertTrue(StringUtils.indexOf("abcdefABCDEF", "A", 1, true) == 6);
-        Assert.assertTrue(StringUtils.indexOf("abcdefABCDEF", "Ab", 1, true) == 6);
-        Assert.assertTrue(StringUtils.indexOf("abcdefABCDEF", "ef", 1, true) == 4);
-        Assert.assertTrue(StringUtils.indexOf("abcdefABCDEF", "EF", 5, true) == 10);
+        Assert.assertEquals(0, StringUtils.indexOf("A", "a", 0, true));
+        Assert.assertEquals(0, StringUtils.indexOf("A", "a", 0, true));
+        Assert.assertEquals(1, StringUtils.indexOf("bA", "a", 0, true));
+        Assert.assertEquals(1, StringUtils.indexOf("bA", "a", 1, true));
+        Assert.assertEquals(2, StringUtils.indexOf("abAbc", "abc", 0, true));
+        Assert.assertEquals(0, StringUtils.indexOf("abc", "A", 0, true));
+        Assert.assertEquals(0, StringUtils.indexOf("abc", "Ab", 0, true));
+        Assert.assertEquals(0, StringUtils.indexOf("abc", "Abc", 0, true));
+        Assert.assertEquals(-1, StringUtils.indexOf("abc", "Abcd", 0, true));
+        Assert.assertEquals(6, StringUtils.indexOf("abcdefABCDEF", "A", 1, true));
+        Assert.assertEquals(6, StringUtils.indexOf("abcdefABCDEF", "Ab", 1, true));
+        Assert.assertEquals(4, StringUtils.indexOf("abcdefABCDEF", "ef", 1, true));
+        Assert.assertEquals(10, StringUtils.indexOf("abcdefABCDEF", "EF", 5, true));
     }
 
     @Test
     public void testIndexStrStringStringArrayIntIntBoolean() {
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 4, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "A", 0, 4, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "D", 0, 4, true) == 3);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a"}, "a", 0, 1, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "e", 0, 4, true) == -1);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{}, "a", 0, 1, true) == -1);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "B", 0, 1, true) == 1);
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 4, true));
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "A", 0, 4, true));
+        Assert.assertEquals(3, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "D", 0, 4, true));
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{"a"}, "a", 0, 1, true));
+        Assert.assertEquals(-1, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "e", 0, 4, true));
+        Assert.assertEquals(-1, StringUtils.indexOf(new String[]{}, "a", 0, 1, true));
+        Assert.assertEquals(1, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "B", 0, 1, true));
 
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 1, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 0, true) == 0);
-        Assert.assertTrue(StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "B", 2, 3, true) == -1);
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 1, true));
+        Assert.assertEquals(0, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "a", 0, 0, true));
+        Assert.assertEquals(-1, StringUtils.indexOf(new String[]{"a", "b", "c", "d"}, "B", 2, 3, true));
     }
 
     @Test
     public void testIndexBlank() {
-        Assert.assertTrue(StringUtils.indexOfBlank(" ", 0, 10) == 0);
-        Assert.assertTrue(StringUtils.indexOfBlank("123 456 789  ", 0, 10) == 3);
+        Assert.assertEquals(0, StringUtils.indexOfBlank(" ", 0, 10));
+        Assert.assertEquals(3, StringUtils.indexOfBlank("123 456 789  ", 0, 10));
 
-        Assert.assertTrue(StringUtils.indexOfBlank(" 123456789", 0, -1) == 0);
-        Assert.assertTrue(StringUtils.indexOfBlank("0 23456789", 0, -1) == 1);
-        Assert.assertTrue(StringUtils.indexOfBlank("012345678 ", 0, -1) == 9);
-        Assert.assertTrue(StringUtils.indexOfBlank("0123 5678 ", 0, 4) == 4);
-        Assert.assertTrue(StringUtils.indexOfBlank("012345678 ", 0, 9) == 9);
-        Assert.assertTrue(StringUtils.indexOfBlank("0123 5678 ", 0, 3) == -1);
+        Assert.assertEquals(0, StringUtils.indexOfBlank(" 123456789", 0, -1));
+        Assert.assertEquals(1, StringUtils.indexOfBlank("0 23456789", 0, -1));
+        Assert.assertEquals(9, StringUtils.indexOfBlank("012345678 ", 0, -1));
+        Assert.assertEquals(4, StringUtils.indexOfBlank("0123 5678 ", 0, 4));
+        Assert.assertEquals(9, StringUtils.indexOfBlank("012345678 ", 0, 9));
+        Assert.assertEquals(-1, StringUtils.indexOfBlank("0123 5678 ", 0, 3));
     }
 
     @Test
     public void testIndexCharCharCharArray() {
-        Assert.assertTrue(StringUtils.indexOf(new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}, '0') == 0);
-        Assert.assertTrue(StringUtils.indexOf(new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}, '9') == 9);
+        Assert.assertEquals(0, StringUtils.indexOf(new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}, '0'));
+        Assert.assertEquals(9, StringUtils.indexOf(new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}, '9'));
     }
 
     @Test
     public void testIndexCharCharCharArrayInt() {
-        Assert.assertTrue(StringUtils.indexOf("0123456789".toCharArray(), '0', 0) == 0);
-        Assert.assertTrue(StringUtils.indexOf("0123456789".toCharArray(), '1', 0) == 1);
-        Assert.assertTrue(StringUtils.indexOf("0123456789".toCharArray(), '9', 0) == 9);
+        Assert.assertEquals(0, StringUtils.indexOf("0123456789".toCharArray(), '0', 0));
+        Assert.assertEquals(1, StringUtils.indexOf("0123456789".toCharArray(), '1', 0));
+        Assert.assertEquals(9, StringUtils.indexOf("0123456789".toCharArray(), '9', 0));
     }
 
     @Test
     public void testIndexSqlQuotationMarkEndPos() {
-        Assert.assertTrue(StringUtils.indexOfQuotation("0123456789", 0, true) == -1);
-        Assert.assertTrue(StringUtils.indexOfQuotation("0'23456789", 0, true) == 1);
-        Assert.assertTrue(StringUtils.indexOfQuotation("012345678'", 0, true) == 9);
-        Assert.assertTrue(StringUtils.indexOfQuotation("0\\'23456789", 0, true) == -1);
+        Assert.assertEquals(-1, StringUtils.indexOfQuotation("0123456789", 0, true));
+        Assert.assertEquals(1, StringUtils.indexOfQuotation("0'23456789", 0, true));
+        Assert.assertEquals(9, StringUtils.indexOfQuotation("012345678'", 0, true));
+        Assert.assertEquals(-1, StringUtils.indexOfQuotation("0\\'23456789", 0, true));
     }
 
     @Test
     public void testJoinStringArrayString() {
 //		SQLScriptSyntaxAnalysis p = new SQLScriptSyntaxAnalysis();
-        Assert.assertEquals("11|2|3|4|5|吕钊军", StringUtils.join(StringUtils.splitByBlank(" 11 2 3 4 5 吕钊军 "), "|"));
+        Assert.assertEquals("|11|2|3|4|5|测试|", StringUtils.join(StringUtils.splitByBlank(" 11 2 3 4 5 测试 "), "|"));
 //		Assert.assertEquals("ip 22 user passwd", StringUtils.join(p.resolveSSHLoginCmd("user@ip -p 22 -w passwd"), " "));
 //		Assert.assertEquals("ip 22 user passwd", StringUtils.join(p.resolveSSHLoginCmd("-p 22 user@ip  -w passwd"), " "));
 //		Assert.assertEquals("ip 22 user passwd", StringUtils.join(p.resolveSSHLoginCmd("-p 22  -w passwd  user@ip  "), " "));
@@ -1073,7 +1073,7 @@ public class StringUtilsTest {
     @Test
     public void testJoinObjectArrayString() {
         String[] a = null;
-        Assert.assertTrue(StringUtils.join(a, ",") == null);
+        Assert.assertNull(StringUtils.join(a, ","));
         Assert.assertEquals("", StringUtils.join(new String[]{}, ", "));
         Assert.assertEquals("1", StringUtils.join(new String[]{"1"}, ", "));
         Assert.assertEquals("1, 2, 3", StringUtils.join(new String[]{"1", "2", "3"}, ", "));
@@ -1229,8 +1229,6 @@ public class StringUtilsTest {
     @Test
     public void testSplitStringCollectionOfStringListOfStringBooleanSpliter() {
         List<String> list = new ArrayList<String>();
-
-        list.clear();
         StringUtils.split("", ArrayUtils.asList("||", "|", "**", "++", "&&"), true, list);
         Assert.assertTrue(list.size() == 1 && list.get(0).equals(""));
 
@@ -1280,17 +1278,17 @@ public class StringUtilsTest {
 
     @Test
     public void testSplitKeyValue() {
-        Assert.assertTrue(Arrays.equals(StringUtils.splitProperty("key=value"), new String[]{"key", "value"}));
-        Assert.assertTrue(Arrays.equals(StringUtils.splitProperty("key="), new String[]{"key", ""}));
-        Assert.assertTrue(Arrays.equals(StringUtils.splitProperty("="), new String[]{"", ""}));
-        Assert.assertTrue(StringUtils.splitProperty("") == null);
+        Assert.assertArrayEquals(StringUtils.splitProperty("key=value"), new String[]{"key", "value"});
+        Assert.assertArrayEquals(StringUtils.splitProperty("key="), new String[]{"key", ""});
+        Assert.assertArrayEquals(StringUtils.splitProperty("="), new String[]{"", ""});
+        Assert.assertNull(StringUtils.splitProperty(""));
     }
 
     @Test
     public void testSplitKeyValueForceString() {
-        Assert.assertTrue(Arrays.equals(StringUtils.splitPropertyForce("key=value"), new String[]{"key", "value"}));
-        Assert.assertTrue(Arrays.equals(StringUtils.splitPropertyForce("key="), new String[]{"key", ""}));
-        Assert.assertTrue(Arrays.equals(StringUtils.splitPropertyForce("="), new String[]{"", ""}));
+        Assert.assertArrayEquals(StringUtils.splitPropertyForce("key=value"), new String[]{"key", "value"});
+        Assert.assertArrayEquals(StringUtils.splitPropertyForce("key="), new String[]{"key", ""});
+        Assert.assertArrayEquals(StringUtils.splitPropertyForce("="), new String[]{"", ""});
 
         try {
             Arrays.equals(StringUtils.splitPropertyForce(""), new String[]{"", ""});
@@ -1303,7 +1301,7 @@ public class StringUtilsTest {
     public void testSplitKeyValueForceStringString() {
         String str = "key=value; key1=value1; key2=value2;";
         List<String[]> list = StringUtils.splitPropertyForce(str, ";");
-        Assert.assertTrue(list.size() == 3);
+        Assert.assertEquals(3, list.size());
         Assert.assertEquals("key", list.get(0)[0]);
         Assert.assertEquals("value", list.get(0)[1]);
         Assert.assertEquals("key2", list.get(2)[0]);
@@ -1312,8 +1310,14 @@ public class StringUtilsTest {
 
     @Test
     public void testSplitBlank() {
-        Assert.assertEquals("11|2|3|4|5|吕钊军", StringUtils.join(StringUtils.splitByBlank(" 11 2 3 4 5 吕钊军 "), "|"));
-        Assert.assertEquals("11|2|3|4|5|吕钊军", StringUtils.join(StringUtils.splitByBlank(" 11   2     3 4     5 吕钊军 "), "|"));
+        Assert.assertEquals("|11|2|3|4|5|测试|", StringUtils.join(StringUtils.splitByBlank(" 11 2 3 4 5 测试 "), "|"));
+        Assert.assertEquals("|11|2|3|4|5|测试|", StringUtils.join(StringUtils.splitByBlank(" 11   2     3 4     5 测试 "), "|"));
+        Assert.assertEquals("11|2|3|4|5", StringUtils.join(StringUtils.splitByBlank("11   2     3 4     5"), "|"));
+
+        String[] array = StringUtils.splitByBlank("   1   2     3 4     5 6 7   ");
+        System.out.println(Arrays.toString(array));
+        Assert.assertEquals(9, array.length);
+
     }
 
     @Test
@@ -1380,7 +1384,7 @@ public class StringUtilsTest {
     public void testInArrayCharCharArray() {
         Assert.assertTrue(StringUtils.inArray('a', new char[]{'a', 'A'}));
         Assert.assertTrue(StringUtils.inArray('a', new char[]{'a', 'A', 'c'}));
-        assertFalse(StringUtils.inArray('e', new char[]{'a', 'A', 'c'}));
+        Assert.assertFalse(StringUtils.inArray('e', new char[]{'a', 'A', 'c'}));
     }
 
     @Test
@@ -1393,13 +1397,7 @@ public class StringUtilsTest {
         Assert.assertTrue(StringUtils.inCollection("a", c, true));
         Assert.assertTrue(StringUtils.inCollection("A", c, true));
         Assert.assertTrue(StringUtils.inCollection("C", c, true));
-        assertFalse(StringUtils.inCollection("A", c, false));
-    }
-
-    @Test
-    public void testCloneStringArray() {
-        String[] array = Arrays.copyOf(new String[]{"0", "1", "2"}, 3);
-        Assert.assertEquals(new String[]{"0", "1", "2"}, array);
+        Assert.assertFalse(StringUtils.inCollection("A", c, false));
     }
 
     @Test
@@ -1421,7 +1419,7 @@ public class StringUtilsTest {
     public void testStartsWtih1() {
         List<String> list = Arrays.asList("abc", "ABC", "eft");
         Assert.assertTrue(StringUtils.startsWith("abcdefghijk", list, false));
-        assertFalse(StringUtils.startsWith("abCdefghijk", list, false));
+        Assert.assertFalse(StringUtils.startsWith("abCdefghijk", list, false));
         Assert.assertTrue(StringUtils.startsWith("abCdefghijk", list, true));
     }
 
@@ -1431,7 +1429,7 @@ public class StringUtilsTest {
         Assert.assertTrue(StringUtils.startsWithIgnoreCase("a", "A"));
         Assert.assertTrue(StringUtils.startsWithIgnoreCase("012", "012"));
         Assert.assertTrue(StringUtils.startsWithIgnoreCase("abcd", "Abc"));
-        assertFalse(StringUtils.startsWithIgnoreCase("abcd", " Abc"));
+        Assert.assertFalse(StringUtils.startsWithIgnoreCase("abcd", " Abc"));
     }
 
     @Test
@@ -1443,9 +1441,9 @@ public class StringUtilsTest {
         Assert.assertTrue(StringUtils.startsWith("\tabc", "a", 0, true, true));
         Assert.assertTrue(StringUtils.startsWith("\t\n\rabc", "a", 0, true, true));
         Assert.assertTrue(StringUtils.startsWith("\t\n\ra bc", "a ", 0, true, true));
-        assertEquals(false, StringUtils.startsWith("   a abc", "a ", 5, true, true));
-        assertEquals(true, StringUtils.startsWith("   ra abc", "a", 6, true, true));
-        assertEquals(false, StringUtils.startsWith("   ra abc", "a", 7, true, true));
+        Assert.assertFalse(StringUtils.startsWith("   a abc", "a ", 5, true, true));
+        Assert.assertTrue(StringUtils.startsWith("   ra abc", "a", 6, true, true));
+        Assert.assertFalse(StringUtils.startsWith("   ra abc", "a", 7, true, true));
     }
 
     @Test
@@ -1467,19 +1465,19 @@ public class StringUtilsTest {
     @Test
     public void testIsLower() {
         Assert.assertTrue(Character.isLowerCase('a'));
-        assertFalse(Character.isLowerCase('A'));
+        Assert.assertFalse(Character.isLowerCase('A'));
     }
 
     @Test
     public void testIsUpper() {
-        assertFalse(Character.isUpperCase('a'));
+        Assert.assertFalse(Character.isUpperCase('a'));
         Assert.assertTrue(Character.isUpperCase('A'));
         Assert.assertTrue(Character.isUpperCase('Z'));
     }
 
     @Test
     public void testHexStringToBytes() throws UnsupportedEncodingException {
-        assertEquals("30313233343536373839", StringUtils.toHexString("0123456789".getBytes("GBK")));
+        Assert.assertEquals("30313233343536373839", StringUtils.toHexString("0123456789".getBytes("GBK")));
     }
 
     @Test
@@ -1505,7 +1503,7 @@ public class StringUtilsTest {
 
     @Test
     public void testByteSize() {
-        Assert.assertTrue(StringUtils.length("中文是个ab", "gbk") == 10);
+        Assert.assertEquals(10, StringUtils.length("中文是个ab", "gbk"));
     }
 
     @Test
@@ -1515,8 +1513,8 @@ public class StringUtilsTest {
         Assert.assertTrue(StringUtils.isAscii('Z'));
         Assert.assertTrue(StringUtils.isAscii('+'));
         Assert.assertTrue(StringUtils.isAscii(';'));
-        Assert.assertTrue(!StringUtils.isAscii('中'));
-        Assert.assertTrue(!StringUtils.isAscii('美'));
+        Assert.assertFalse(StringUtils.isAscii('中'));
+        Assert.assertFalse(StringUtils.isAscii('美'));
     }
 
     @Test
@@ -1530,42 +1528,42 @@ public class StringUtilsTest {
 
     @Test
     public void testGetJvmFileEncoding() {
-        assertTrue(StringUtils.isNotBlank(Settings.getFileEncoding()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getFileEncoding()));
     }
 
     @Test
     public void testGetJvmVmVersion() {
-        assertTrue(StringUtils.isNotBlank(Settings.getJavaVmVersion()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getJavaVmVersion()));
     }
 
     @Test
     public void testGetJvmVmVendor() {
-        assertTrue(StringUtils.isNotBlank(Settings.getJavaVmVendor()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getJavaVmVendor()));
     }
 
     @Test
     public void testGetJvmVmName() {
-        assertTrue(StringUtils.isNotBlank(Settings.getJavaVmName()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getJavaVmName()));
     }
 
     @Test
     public void testGetJvmUserCountry() {
-        assertTrue(StringUtils.isNotBlank(Settings.getUserCountry()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getUserCountry()));
     }
 
     @Test
     public void testGetJvmUserLanguage() {
-        assertTrue(StringUtils.isNotBlank(Settings.getUserLanguage()));
+        Assert.assertTrue(StringUtils.isNotBlank(Settings.getUserLanguage()));
     }
 
     @Test
     public void testGetJvmLineSeparator() {
-        assertTrue(StringUtils.inArray(FileUtils.lineSeparator, "\r", "\n", "\r\n"));
+        Assert.assertTrue(StringUtils.inArray(FileUtils.lineSeparator, "\r", "\n", "\r\n"));
     }
 
     @Test
     public void testGetJvmOsName() {
-        assertTrue(StringUtils.isNotBlank(OSUtils.getName()));
+        Assert.assertTrue(StringUtils.isNotBlank(OSUtils.getName()));
     }
 
     @Test
@@ -1577,7 +1575,7 @@ public class StringUtilsTest {
     @Test
     public void testToArrayStringArray() {
         String[] array = new String[]{"", "", ""};
-        assertTrue(Arrays.equals(array, new String[]{"", "", ""}));
+        Assert.assertArrayEquals(array, new String[]{"", "", ""});
     }
 
     @Test
@@ -1586,7 +1584,7 @@ public class StringUtilsTest {
         list.add("1");
         list.add("2");
         list.add("3");
-        assertTrue(Arrays.equals(CollectionUtils.toArray(list), new String[]{"1", "2", "3"}));
+        Assert.assertArrayEquals(CollectionUtils.toArray(list), new String[]{"1", "2", "3"});
     }
 
     @Test
@@ -1597,7 +1595,7 @@ public class StringUtilsTest {
 
     @Test
     public void testremove() {
-        assertTrue(StringUtils.remove(null, 0, 0) == null);
+        Assert.assertNull(StringUtils.remove(null, 0, 0));
         Assert.assertEquals("", StringUtils.remove("", 0, 1));
         Assert.assertEquals("", StringUtils.remove("0", 0, 1));
         Assert.assertEquals("1", StringUtils.remove("01", 0, 1));
@@ -1619,12 +1617,12 @@ public class StringUtilsTest {
     @Test
     public void testRemoveBlankAndTrimStrInArray() {
         String[] a1 = StringUtils.removeBlank(new String[]{" ", StringUtils.FULLWIDTH_BLANK, " a " + StringUtils.FULLWIDTH_BLANK});
-        assertTrue(a1.length == 1 && a1[0].equals("a"));
+        Assert.assertTrue(a1.length == 1 && a1[0].equals("a"));
     }
 
     @Test
     public void testRemoveRightEndChar() {
-        assertTrue(StringUtils.removeSuffix(null) == null);
+        Assert.assertNull(StringUtils.removeSuffix(null));
         Assert.assertEquals("", StringUtils.removeSuffix(""));
         Assert.assertEquals("", StringUtils.removeSuffix("1"));
         Assert.assertEquals("012345678", StringUtils.removeSuffix("0123456789"));
@@ -1633,7 +1631,7 @@ public class StringUtilsTest {
 
     @Test
     public void testRemoveLeftSideChar() {
-        assertTrue(true);
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -1643,131 +1641,131 @@ public class StringUtilsTest {
         map.put("b", "A");
         map.put("c", "A");
         String[] keys = CollectionUtils.toArray(map.keySet());
-        assertTrue(Arrays.equals(keys, new String[]{"a", "b", "c"}));
+        Assert.assertArrayEquals(keys, new String[]{"a", "b", "c"});
     }
 
     @Test
     public void testIsNumberChar() {
-        assertTrue(StringUtils.isNumber('0'));
-        assertTrue(StringUtils.isNumber('1'));
-        assertTrue(StringUtils.isNumber('9'));
-        assertTrue(!StringUtils.isNumber('\\'));
+        Assert.assertTrue(StringUtils.isNumber('0'));
+        Assert.assertTrue(StringUtils.isNumber('1'));
+        Assert.assertTrue(StringUtils.isNumber('9'));
+        Assert.assertFalse(StringUtils.isNumber('\\'));
     }
 
     @Test
     public void testIsEnglishCharacter() {
-        assertTrue(StringUtils.isLetter('a'));
-        assertTrue(StringUtils.isLetter('z'));
-        assertTrue(StringUtils.isLetter('A'));
-        assertTrue(StringUtils.isLetter('Z'));
-        assertTrue(!StringUtils.isLetter('1'));
-        assertTrue(!StringUtils.isLetter('了'));
+        Assert.assertTrue(StringUtils.isLetter('a'));
+        Assert.assertTrue(StringUtils.isLetter('z'));
+        Assert.assertTrue(StringUtils.isLetter('A'));
+        Assert.assertTrue(StringUtils.isLetter('Z'));
+        Assert.assertFalse(StringUtils.isLetter('1'));
+        Assert.assertFalse(StringUtils.isLetter('了'));
     }
 
     @Test
     public void testIsSpecialCharacter() {
-        assertTrue(StringUtils.isSymbol('~'));
-        assertTrue(StringUtils.isSymbol('!'));
-        assertTrue(StringUtils.isSymbol('/'));
-        assertTrue(!StringUtils.isSymbol('l'));
+        Assert.assertTrue(StringUtils.isSymbol('~'));
+        Assert.assertTrue(StringUtils.isSymbol('!'));
+        Assert.assertTrue(StringUtils.isSymbol('/'));
+        Assert.assertFalse(StringUtils.isSymbol('l'));
     }
 
     @Test
     public void testIsNumberCharArray() {
-        assertFalse(StringUtils.isNumber((char[]) null));
-        assertFalse(StringUtils.isNumber("".toCharArray()));
-        assertTrue(StringUtils.isNumber("0123456789".toCharArray()));
-        assertFalse(StringUtils.isNumber("0123456789|".toCharArray()));
+        Assert.assertFalse(StringUtils.isNumber((char[]) null));
+        Assert.assertFalse(StringUtils.isNumber("".toCharArray()));
+        Assert.assertTrue(StringUtils.isNumber("0123456789".toCharArray()));
+        Assert.assertFalse(StringUtils.isNumber("0123456789|".toCharArray()));
     }
 
     @Test
     public void testIsNumberString() {
-        assertTrue(!StringUtils.isNumber(""));
-        assertTrue(!StringUtils.isNumber((String) null));
+        Assert.assertFalse(StringUtils.isNumber(""));
+        Assert.assertFalse(StringUtils.isNumber((String) null));
 
-        assertTrue(!StringUtils.isNumber("q0123456789"));
-        assertTrue(StringUtils.isNumber("0123456789"));
-        assertTrue(!StringUtils.isNumber("0123456789|"));
+        Assert.assertFalse(StringUtils.isNumber("q0123456789"));
+        Assert.assertTrue(StringUtils.isNumber("0123456789"));
+        Assert.assertFalse(StringUtils.isNumber("0123456789|"));
     }
 
     @Test
     public void testContainQuotes() {
-        assertTrue(StringUtils.containsQuotation("' '"));
-        assertTrue(StringUtils.containsQuotation("''"));
-        assertTrue(StringUtils.containsQuotation("' '"));
-        assertTrue(!StringUtils.containsQuotation("'"));
-        assertTrue(!StringUtils.containsQuotation(""));
+        Assert.assertTrue(StringUtils.containsQuotation("' '"));
+        Assert.assertTrue(StringUtils.containsQuotation("''"));
+        Assert.assertTrue(StringUtils.containsQuotation("' '"));
+        Assert.assertFalse(StringUtils.containsQuotation("'"));
+        Assert.assertFalse(StringUtils.containsQuotation(""));
     }
 
     @Test
     public void testContain2Quotes() {
-        assertTrue(StringUtils.containsDoubleQuotation("\"\""));
-        assertTrue(StringUtils.containsDoubleQuotation("\"1\""));
-        assertTrue(!StringUtils.containsDoubleQuotation(""));
-        assertTrue(!StringUtils.containsDoubleQuotation(" "));
-        assertTrue(!StringUtils.containsDoubleQuotation("\""));
-        assertTrue(!StringUtils.containsDoubleQuotation("\"1"));
+        Assert.assertTrue(StringUtils.containsDoubleQuotation("\"\""));
+        Assert.assertTrue(StringUtils.containsDoubleQuotation("\"1\""));
+        Assert.assertFalse(StringUtils.containsDoubleQuotation(""));
+        Assert.assertFalse(StringUtils.containsDoubleQuotation(" "));
+        Assert.assertFalse(StringUtils.containsDoubleQuotation("\""));
+        Assert.assertFalse(StringUtils.containsDoubleQuotation("\"1"));
     }
 
     @Test
     public void testTestParseInt() {
-        assertTrue(StringUtils.isInt("0"));
-        assertTrue(StringUtils.isInt("1000"));
-        assertTrue(!StringUtils.isInt("0v"));
+        Assert.assertTrue(StringUtils.isInt("0"));
+        Assert.assertTrue(StringUtils.isInt("1000"));
+        Assert.assertFalse(StringUtils.isInt("0v"));
     }
 
     @Test
     public void testTestParseDouble() {
-        assertTrue(StringUtils.isDouble("0"));
-        assertTrue(StringUtils.isDouble("1000"));
-        assertTrue(!StringUtils.isDouble("0v"));
+        Assert.assertTrue(StringUtils.isDouble("0"));
+        Assert.assertTrue(StringUtils.isDouble("1000"));
+        Assert.assertFalse(StringUtils.isDouble("0v"));
     }
 
     @Test
     public void testTestParseLong() {
-        assertTrue(StringUtils.isLong("0"));
-        assertTrue(StringUtils.isLong("1000"));
-        assertTrue(!StringUtils.isLong("0v"));
+        Assert.assertTrue(StringUtils.isLong("0"));
+        Assert.assertTrue(StringUtils.isLong("1000"));
+        Assert.assertFalse(StringUtils.isLong("0v"));
     }
 
     @Test
     public void testTestParseBigDecimal() {
-        assertTrue(StringUtils.isDecimal("0"));
-        assertTrue(StringUtils.isDecimal("1000"));
-        assertTrue(!StringUtils.isDecimal("0v"));
+        Assert.assertTrue(StringUtils.isDecimal("0"));
+        Assert.assertTrue(StringUtils.isDecimal("1000"));
+        Assert.assertFalse(StringUtils.isDecimal("0v"));
     }
 
     @Test
     public void testParseIntStringInt() {
-        assertTrue(StringUtils.parseInt("0", 1) == 0);
-        assertTrue(StringUtils.parseInt("", 1) == 1);
+        Assert.assertEquals(0, StringUtils.parseInt("0", 1));
+        Assert.assertEquals(1, StringUtils.parseInt("", 1));
     }
 
     @Test
     public void testIndexEndOfLinePosition() {
-        assertTrue(StringUtils.indexOfEOL("", 0) == 0);
-        assertTrue(StringUtils.indexOfEOL("1", 0) == 0);
-        assertTrue(StringUtils.indexOfEOL("01", 0) == 1);
-        assertTrue(StringUtils.indexOfEOL("\r", 0) == 0);
-        assertTrue(StringUtils.indexOfEOL("\n", 0) == 0);
-        assertTrue(StringUtils.indexOfEOL("\r\n", 0) == 1);
-        assertTrue(StringUtils.indexOfEOL("\r\n\r", 0) == 1);
-        assertTrue(StringUtils.indexOfEOL("\r\n\n", 0) == 1);
-        assertTrue(StringUtils.indexOfEOL("0\r\n\n", 0) == 2);
-        assertTrue(StringUtils.indexOfEOL("01\n\n", 0) == 2);
-        assertTrue(StringUtils.indexOfEOL("01\n\r", 0) == 2);
-        assertTrue(StringUtils.indexOfEOL("01\r\n567890", 0) == 3);
-        assertTrue(StringUtils.indexOfEOL("01\r\n567890\r", 0) == 3);
-        assertTrue(StringUtils.indexOfEOL("01\r\n567890\n", 0) == 3);
-        assertTrue(StringUtils.indexOfEOL("01\r\n4567890\n", 4) == 11);
-        assertTrue(StringUtils.indexOfEOL("01\r\n4567890\n23456789\n", 4) == 11);
-        assertTrue(StringUtils.indexOfEOL("01\r\n4567890\n23456789\n", 12) == 20);
+        Assert.assertEquals(0, StringUtils.indexOfEOL("", 0));
+        Assert.assertEquals(0, StringUtils.indexOfEOL("1", 0));
+        Assert.assertEquals(1, StringUtils.indexOfEOL("01", 0));
+        Assert.assertEquals(0, StringUtils.indexOfEOL("\r", 0));
+        Assert.assertEquals(0, StringUtils.indexOfEOL("\n", 0));
+        Assert.assertEquals(1, StringUtils.indexOfEOL("\r\n", 0));
+        Assert.assertEquals(1, StringUtils.indexOfEOL("\r\n\r", 0));
+        Assert.assertEquals(1, StringUtils.indexOfEOL("\r\n\n", 0));
+        Assert.assertEquals(2, StringUtils.indexOfEOL("0\r\n\n", 0));
+        Assert.assertEquals(2, StringUtils.indexOfEOL("01\n\n", 0));
+        Assert.assertEquals(2, StringUtils.indexOfEOL("01\n\r", 0));
+        Assert.assertEquals(3, StringUtils.indexOfEOL("01\r\n567890", 0));
+        Assert.assertEquals(3, StringUtils.indexOfEOL("01\r\n567890\r", 0));
+        Assert.assertEquals(3, StringUtils.indexOfEOL("01\r\n567890\n", 0));
+        Assert.assertEquals(11, StringUtils.indexOfEOL("01\r\n4567890\n", 4));
+        Assert.assertEquals(11, StringUtils.indexOfEOL("01\r\n4567890\n23456789\n", 4));
+        Assert.assertEquals(20, StringUtils.indexOfEOL("01\r\n4567890\n23456789\n", 12));
     }
 
     @Test
     public void testTrimBlankMap() {
         Map<String, String> map = new HashMap<String, String>();
-        assertTrue(StringUtils.trimBlank(map).isEmpty());
+        Assert.assertTrue(StringUtils.trimBlank(map).isEmpty());
 
         map.put("key1", "vlaue1");
         map.put("key2", " vlaue1 ");
@@ -1781,21 +1779,21 @@ public class StringUtilsTest {
         Assert.assertEquals("vlaue1", map.get("key3"));
         Assert.assertEquals("vlaue1", map.get("key4"));
         Assert.assertEquals("vlaue1", map.get("key5"));
-        assertTrue(map.get("key6") == null);
+        Assert.assertNull(map.get("key6"));
     }
 
     @Test
     public void testSplitXmlPropertys() {
         List<Property> list = XMLUtils.splitXmlProperties(" value='' v1=\"1\" v2=  v3= 3 v4 = 4 v5 =5 ");
-        assertTrue(list.get(0).getValue().equals("") && list.get(0).getKey().equals("value"));
-        assertTrue(list.get(1).getValue().equals("1") && list.get(1).getKey().equals("v1"));
-        assertTrue(list.get(2).getValue() == null && list.get(2).getKey().equals("v2"));
-        assertTrue(list.get(3).getValue().equals(" 3") && list.get(3).getKey().equals("v3"));
-        assertTrue(list.get(4).getValue().equals(" 4") && list.get(4).getKey().equals("v4"));
-        assertTrue(list.get(5).getValue().equals("5") && list.get(5).getKey().equals("v5"));
-        assertTrue(XMLUtils.splitXmlProperties(" value='' ").get(0).getValue().equals(""));
-        assertTrue(XMLUtils.splitXmlProperties(" value='' v1 = \"test\" ").get(1).getKey().equals("v1"));
-        assertTrue(XMLUtils.splitXmlProperties(" value='' v1 = \"test\" ").get(1).getValue().equals("test"));
+        Assert.assertTrue(list.get(0).getValue().equals("") && list.get(0).getKey().equals("value"));
+        Assert.assertTrue(list.get(1).getValue().equals("1") && list.get(1).getKey().equals("v1"));
+        Assert.assertTrue(list.get(2).getValue() == null && list.get(2).getKey().equals("v2"));
+        Assert.assertTrue(list.get(3).getValue().equals(" 3") && list.get(3).getKey().equals("v3"));
+        Assert.assertTrue(list.get(4).getValue().equals(" 4") && list.get(4).getKey().equals("v4"));
+        Assert.assertTrue(list.get(5).getValue().equals("5") && list.get(5).getKey().equals("v5"));
+        Assert.assertEquals("", XMLUtils.splitXmlProperties(" value='' ").get(0).getValue());
+        Assert.assertEquals("v1", XMLUtils.splitXmlProperties(" value='' v1 = \"test\" ").get(1).getKey());
+        Assert.assertEquals("test", XMLUtils.splitXmlProperties(" value='' v1 = \"test\" ").get(1).getValue());
 
         String s1 = " value='' v1 = \"test\" v2 v3 ";
         Assert.assertEquals("test", XMLUtils.splitXmlProperties(s1).get(1).getValue());
@@ -1807,18 +1805,18 @@ public class StringUtilsTest {
 
     @Test
     public void testremoveStringIntegerInteger() {
-        assertTrue(StringUtils.remove(null, 0, 0) == null);
-        assertTrue("".equals(StringUtils.remove("", 0, 0)));
-        assertTrue("".equals(StringUtils.remove("0", 0, 1)));
-        assertTrue("".equals(StringUtils.remove("0123456789", 0, 10)));
+        Assert.assertNull(StringUtils.remove(null, 0, 0));
+        Assert.assertEquals("", StringUtils.remove("", 0, 0));
+        Assert.assertEquals("", StringUtils.remove("0", 0, 1));
+        Assert.assertEquals("", StringUtils.remove("0123456789", 0, 10));
     }
 
     @Test
     public void testindexNotBlank() {
-        assertTrue(StringUtils.indexOfNotBlank("", 0, -1) == -1);
-        assertTrue(StringUtils.indexOfNotBlank(" 123456789", 0, -1) == 1);
-        assertTrue(StringUtils.indexOfNotBlank("        8 ", 0, -1) == 8);
-        assertTrue(StringUtils.indexOfNotBlank("         9 ", 0, -1) == 9);
+        Assert.assertEquals(-1, StringUtils.indexOfNotBlank("", 0, -1));
+        Assert.assertEquals(1, StringUtils.indexOfNotBlank(" 123456789", 0, -1));
+        Assert.assertEquals(8, StringUtils.indexOfNotBlank("        8 ", 0, -1));
+        Assert.assertEquals(9, StringUtils.indexOfNotBlank("         9 ", 0, -1));
     }
 
     @Test
@@ -1829,10 +1827,10 @@ public class StringUtilsTest {
         Assert.assertEquals("gbk", NetUtils.parseContentTypeCharset("application/soap+xml; charset = gbk "));
         Assert.assertEquals("gbk", NetUtils.parseContentTypeCharset("application/soap+xml; charset =  gbk "));
         Assert.assertEquals("gbk", NetUtils.parseContentTypeCharset("application/soap+xml; charset =  gbk"));
-        assertTrue(NetUtils.parseContentTypeCharset("application/soap+xml; charset =   ") == null);
-        assertTrue(NetUtils.parseContentTypeCharset("application/soap+xml;  =   ") == null);
-        assertTrue(NetUtils.parseContentTypeCharset("application/soap+xml;  charset  ") == null);
-        assertTrue(NetUtils.parseContentTypeCharset("application/soap+xml;  charset gbk ") == null);
+        Assert.assertNull(NetUtils.parseContentTypeCharset("application/soap+xml; charset =   "));
+        Assert.assertNull(NetUtils.parseContentTypeCharset("application/soap+xml;  =   "));
+        Assert.assertNull(NetUtils.parseContentTypeCharset("application/soap+xml;  charset  "));
+        Assert.assertNull(NetUtils.parseContentTypeCharset("application/soap+xml;  charset gbk "));
     }
 
     /**
@@ -1857,7 +1855,7 @@ public class StringUtilsTest {
             String str = StringUtils.toHexadecimalString(val, 4);
             int v = StringUtils.parseHexadecimal(str);
 
-            assertTrue(val == v);
+            Assert.assertEquals(val, v);
         }
     }
 
@@ -1891,29 +1889,29 @@ public class StringUtilsTest {
 
     @Test
     public void testGetLongestString() {
-        assertTrue(StringUtils.maxlength("123", "1234", "1") == 4);
+        Assert.assertEquals(4, StringUtils.maxlength("123", "1234", "1"));
     }
 
     @Test
     public void testtoStringArray() {
         char[] chars = "1234".toCharArray();
         String[] sa = StringUtils.toStringArray(chars);
-        assertEquals("1", sa[0]);
-        assertEquals("4", sa[3]);
+        Assert.assertEquals("1", sa[0]);
+        Assert.assertEquals("4", sa[3]);
     }
 
     @Test
     public void testappend() {
         String[] a = {};
         String[] sa = StringUtils.append(a, "a", "bc");
-        assertEquals("a", sa[0]);
-        assertEquals("bc", sa[1]);
+        Assert.assertEquals("a", sa[0]);
+        Assert.assertEquals("bc", sa[1]);
 
         String[] b = {"1"};
         sa = StringUtils.append(b, "a", "bc");
-        assertEquals("1", sa[0]);
-        assertEquals("a", sa[1]);
-        assertEquals("bc", sa[2]);
+        Assert.assertEquals("1", sa[0]);
+        Assert.assertEquals("a", sa[1]);
+        Assert.assertEquals("bc", sa[2]);
     }
 
 }

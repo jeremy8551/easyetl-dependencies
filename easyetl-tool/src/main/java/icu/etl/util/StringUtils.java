@@ -2994,25 +2994,25 @@ public class StringUtils {
             return;
         }
 
+        boolean continueWhitespace = false;
         StringBuilder buf = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-
             if (Character.isWhitespace(c)) {
-                if (buf.length() > 0) {
-                    list.add(buf.toString());
-                    buf.setLength(0);
+                if (continueWhitespace) {
+                    continue;
                 }
-                continue;
+
+                list.add(buf.toString());
+                buf.setLength(0);
+                continueWhitespace = true;
             } else {
                 buf.append(c);
+                continueWhitespace = false;
             }
         }
 
-        if (buf.length() > 0) {
-            list.add(buf.toString());
-            buf.setLength(0);
-        }
+        list.add(buf.toString());
     }
 
     /**

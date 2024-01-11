@@ -2,6 +2,7 @@ package icu.etl.maven;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -37,7 +38,7 @@ public class JdkMojoUtils {
 
             for (CharSequence line : list) {
                 if (StringUtils.startsWith(line, "package", 0, true, true)) {
-                    return StringUtils.trimBlank(StringUtils.splitByBlank(line)[1], ';');
+                    return StringUtils.trimBlank(StringUtils.splitByBlank(StringUtils.trimBlank(line))[1], ';');
                 }
             }
             return null;
@@ -52,13 +53,12 @@ public class JdkMojoUtils {
      * @param file        忽略文件
      * @param charsetName 字符集
      * @return 所有规则
-     * @throws MojoFailureException 读取文件发生错误
+     * @throws IOException 读取文件发生错误
      */
-    public static Set<String> readIgnorefile(File file, String charsetName) throws MojoFailureException {
+    public static Set<String> readIgnorefile(File file, String charsetName) throws IOException {
         Set<String> list = new LinkedHashSet<String>();
-        BufferedReader in = null;
+        BufferedReader in = IO.getBufferedReader(file, charsetName);
         try {
-            in = IO.getBufferedReader(file, charsetName);
             String line;
             while ((line = in.readLine()) != null) {
                 if (StringUtils.isNotBlank(line)) {
@@ -66,10 +66,8 @@ public class JdkMojoUtils {
                 }
             }
             return list;
-        } catch (Exception e) {
-            throw new MojoFailureException(file.getAbsolutePath(), e);
         } finally {
-            IO.close(in);
+            in.close();
         }
     }
 

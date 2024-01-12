@@ -3027,45 +3027,41 @@ public class StringUtils {
         if (str == null) {
             return list;
         }
-        if (column < 1) {
+        if (column <= 0) {
             throw new IllegalArgumentException(String.valueOf(column));
         }
-
         if (column == 1) {
             list.add(str.toString());
             return list;
         }
 
-        boolean lastCharIsBlank = false;
         int count = column - 1; // 需要分隔的字段个数
+        boolean continueWhitespace = false;
         StringBuilder buf = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            lastCharIsBlank = false;
 
             if (Character.isWhitespace(c)) {
-                if (buf.length() > 0) {
-                    if (list.size() == count) {
-                        list.add(buf.append(str.subSequence(i, str.length())).toString());
-                        return list;
-                    } else {
-                        list.add(buf.toString());
-                        buf.setLength(0);
-                    }
+                if (continueWhitespace) {
+                    continue;
                 }
-                lastCharIsBlank = true;
-                continue;
+
+                list.add(buf.toString());
+                buf.setLength(0);
+
+                if (list.size() == count) {
+                    list.add(buf.append(StringUtils.ltrimBlank(str.subSequence(i, str.length()))).toString());
+                    return list;
+                }
+
+                continueWhitespace = true;
             } else {
                 buf.append(c);
+                continueWhitespace = false;
             }
         }
 
-        if (buf.length() > 0) {
-            list.add(buf.toString());
-            buf.setLength(0);
-        } else if (lastCharIsBlank) {
-            list.add("");
-        }
+        list.add(buf.toString());
         return list;
     }
 

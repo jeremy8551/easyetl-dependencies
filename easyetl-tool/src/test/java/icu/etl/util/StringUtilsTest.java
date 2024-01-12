@@ -53,7 +53,8 @@ public class StringUtilsTest {
     @Test
     public void tsetsplitByBlank() {
         List<String> a = StringUtils.splitByBlank("1 2      ", 2);
-        Assert.assertTrue(a.size() == 2 && a.get(1).equals("2      "));
+        Assert.assertEquals(2, a.size());
+        Assert.assertEquals("2      ", a.get(1));
 
         a = StringUtils.splitByBlank("1", 2);
         Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
@@ -72,6 +73,22 @@ public class StringUtilsTest {
 
         a = StringUtils.splitByBlank("1", 2);
         Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
+
+        a = StringUtils.splitByBlank(" 1 ", 3);
+        Assert.assertEquals(3, a.size());
+        Assert.assertEquals("", a.get(0));
+        Assert.assertEquals("1", a.get(1));
+        Assert.assertEquals("", a.get(2));
+
+        a = StringUtils.splitByBlank(" 1 ", 2);
+        Assert.assertEquals(2, a.size());
+        Assert.assertEquals("", a.get(0));
+        Assert.assertEquals("1 ", a.get(1));
+
+        a = StringUtils.splitByBlank(" 1 2 3 ", 2);
+        Assert.assertEquals(2, a.size());
+        Assert.assertEquals("", a.get(0));
+        Assert.assertEquals("1 2 3 ", a.get(1));
     }
 
     @Test

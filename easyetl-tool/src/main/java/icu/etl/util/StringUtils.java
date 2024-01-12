@@ -3077,6 +3077,7 @@ public class StringUtils {
             return list;
         }
 
+        boolean continueWhitespace = false;
         StringBuilder blank = new StringBuilder(str.length());
         StringBuilder field = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
@@ -3084,28 +3085,35 @@ public class StringUtils {
 
             if (Character.isWhitespace(c)) {
                 blank.append(c);
-                if (field.length() > 0) {
-                    list.add(field.toString());
-                    field.setLength(0);
+                if (continueWhitespace) {
+                    continue;
                 }
-                continue;
+
+                list.add(field.toString());
+                field.setLength(0);
+                continueWhitespace = true;
             } else {
                 field.append(c);
                 if (blank.length() > 0) {
                     list.add(blank.toString());
                     blank.setLength(0);
                 }
+                continueWhitespace = false;
             }
         }
 
-        if (field.length() > 0) {
+        boolean hasField = field.length() > 0;
+        boolean hasBlank = blank.length() > 0;
+
+        if (hasField && hasBlank) {
+            throw new RuntimeException(field + " " + blank);
+        }
+
+        if (hasField) {
             list.add(field.toString());
-            field.setLength(0);
         } else {
-            if (blank.length() > 0) {
-                list.add(blank.toString());
-                blank.setLength(0);
-            }
+            list.add(blank.toString());
+            list.add("");
         }
 
         return list;

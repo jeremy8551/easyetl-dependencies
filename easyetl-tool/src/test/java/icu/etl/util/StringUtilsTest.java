@@ -52,43 +52,57 @@ public class StringUtilsTest {
 
     @Test
     public void tsetsplitByBlank() {
-        List<String> a = StringUtils.splitByBlank("1 2      ", 2);
-        Assert.assertEquals(2, a.size());
-        Assert.assertEquals("2      ", a.get(1));
+        List<String> list = StringUtils.splitByBlank("1 2      ", 2);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals("2      ", list.get(1));
 
-        a = StringUtils.splitByBlank("1", 2);
-        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
+        list = StringUtils.splitByBlank("1", 2);
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("1"));
 
-        a = StringUtils.splitByBlank("1 ", 2);
-        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1"));
+        list = StringUtils.splitByBlank("1 ", 2);
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("1"));
 
-        a = StringUtils.splitByBlank("1 2", 2);
-        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2"));
+        list = StringUtils.splitByBlank("1 2", 2);
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("1") && list.get(1).equals("2"));
 
-        a = StringUtils.splitByBlank("1 2   30000000    ", 2);
-        Assert.assertTrue(a.size() == 2 && a.get(0).equals("1") && a.get(1).equals("2   30000000    "));
+        list = StringUtils.splitByBlank("1 2   30000000    ", 2);
+        Assert.assertTrue(list.size() == 2 && list.get(0).equals("1") && list.get(1).equals("2   30000000    "));
 
-        a = StringUtils.splitByBlank("1 2   30000000    ", 1);
-        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1 2   30000000    "));
+        list = StringUtils.splitByBlank("1 2   30000000    ", 1);
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("1 2   30000000    "));
 
-        a = StringUtils.splitByBlank("1", 2);
-        Assert.assertTrue(a.size() == 1 && a.get(0).equals("1"));
+        list = StringUtils.splitByBlank("1", 2);
+        Assert.assertTrue(list.size() == 1 && list.get(0).equals("1"));
 
-        a = StringUtils.splitByBlank(" 1 ", 3);
-        Assert.assertEquals(3, a.size());
-        Assert.assertEquals("", a.get(0));
-        Assert.assertEquals("1", a.get(1));
-        Assert.assertEquals("", a.get(2));
+        list = StringUtils.splitByBlank(" 1 ", 3);
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("1", list.get(1));
+        Assert.assertEquals("", list.get(2));
 
-        a = StringUtils.splitByBlank(" 1 ", 2);
-        Assert.assertEquals(2, a.size());
-        Assert.assertEquals("", a.get(0));
-        Assert.assertEquals("1 ", a.get(1));
+        list = StringUtils.splitByBlank(" 1 ", 2);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("1 ", list.get(1));
 
-        a = StringUtils.splitByBlank(" 1 2 3 ", 2);
-        Assert.assertEquals(2, a.size());
-        Assert.assertEquals("", a.get(0));
-        Assert.assertEquals("1 2 3 ", a.get(1));
+        list = StringUtils.splitByBlank(" 1 2 3 ", 2);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("1 2 3 ", list.get(1));
+
+        list = StringUtils.splitByBlank(" 1 2 3 ", 1);
+        Assert.assertEquals(1, list.size());
+        Assert.assertEquals(" 1 2 3 ", list.get(0));
+
+        list = StringUtils.splitByBlank(" 1 2 3 ", 2);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("1 2 3 ", list.get(1));
+
+        list = StringUtils.splitByBlank(" ", 3);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("", list.get(1));
     }
 
     @Test
@@ -98,6 +112,34 @@ public class StringUtilsTest {
         Assert.assertEquals("1 2  3    ", StringUtils.join(StringUtils.splitByBlanks("1 2  3    "), ""));
         Assert.assertEquals(" ", StringUtils.join(StringUtils.splitByBlanks(" "), ""));
         Assert.assertEquals("1", StringUtils.join(StringUtils.splitByBlanks("1"), ""));
+
+        List<String> list = StringUtils.splitByBlanks("1");
+        Assert.assertEquals(1, list.size());
+        Assert.assertEquals("1", list.get(0));
+
+        list = StringUtils.splitByBlanks(" 1 ");
+        Assert.assertEquals(5, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals(" ", list.get(1));
+        Assert.assertEquals("1", list.get(2));
+        Assert.assertEquals(" ", list.get(3));
+        Assert.assertEquals("", list.get(4));
+
+        list = StringUtils.splitByBlanks("0  1  2");
+        Assert.assertEquals(5, list.size());
+        Assert.assertEquals("0", list.get(0));
+        Assert.assertEquals("  ", list.get(1));
+        Assert.assertEquals("1", list.get(2));
+        Assert.assertEquals("  ", list.get(3));
+        Assert.assertEquals("2", list.get(4));
+
+        list = StringUtils.splitByBlanks("  1  ");
+        Assert.assertEquals(5, list.size());
+        Assert.assertEquals("", list.get(0));
+        Assert.assertEquals("  ", list.get(1));
+        Assert.assertEquals("1", list.get(2));
+        Assert.assertEquals("  ", list.get(3));
+        Assert.assertEquals("", list.get(4));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package icu.etl.util;
+package icu.etl;
 
 public class Easyetl {
 }

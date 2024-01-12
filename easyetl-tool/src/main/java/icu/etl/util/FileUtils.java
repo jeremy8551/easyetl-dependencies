@@ -20,6 +20,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import icu.etl.Easyetl;
+
 /**
  * 文件帮助类
  *
@@ -753,8 +755,7 @@ public final class FileUtils {
                     } else {
                         // 在临时目录下建立应用名
                         List<String> list = new ArrayList<String>(5);
-                        StringUtils.split(ClassUtils.getPackageName(Easyetl.class, 2), '.', list);
-                        list.add(Easyetl.class.getSimpleName().toLowerCase());
+                        StringUtils.split(Easyetl.class.getName().toLowerCase(), '.', list);
 
                         // 拼接文件路径
                         String filepath = Settings.getTempDir();

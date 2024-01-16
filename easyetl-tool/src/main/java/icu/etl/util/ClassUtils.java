@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +51,7 @@ public class ClassUtils {
      * @param obj 对象
      * @return 返回true表示参数是JAVA的基本类型
      */
-    public static boolean isPrimitiveTypes(Object obj) {
+    public static boolean isPrimitiveType(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -80,7 +79,6 @@ public class ClassUtils {
         if (obj instanceof Character) {
             return true;
         }
-
         return obj instanceof Boolean;
     }
 
@@ -230,8 +228,7 @@ public class ClassUtils {
     public static Method getMethod(Object obj, String name, Class<?>... parameterTypes) {
         Class<?> cls = (obj instanceof Class) ? ((Class<?>) obj) : obj.getClass();
         try {
-            Method method = cls.getMethod(name, parameterTypes);
-            return method;
+            return cls.getMethod(name, parameterTypes);
         } catch (Throwable e) {
             Method[] methods = cls.getDeclaredMethods();
             List<Method> list = new ArrayList<Method>(methods.length);
@@ -272,7 +269,7 @@ public class ClassUtils {
      * @param cls            类信息
      * @param name           方法名
      * @param parameterTypes 方法参数
-     * @return
+     * @return 返回true表示方法存在 false表示方法不存在
      */
     public static boolean containsMethod(Class<?> cls, String name, Class<?>... parameterTypes) {
         try {
@@ -311,6 +308,45 @@ public class ClassUtils {
                     JUL.warn(obj.getClass().getName(), e);
                 }
             }
+        }
+    }
+
+    /**
+     * 修改实例对象中的静态字段值
+     *
+     * @param obj   实例对象
+     * @param field 字段类型
+     * @param value 新值
+     */
+    public static void setField(Object obj, Field field, Object value) {
+        try {
+            field.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(obj, value);
+        } catch (Throwable e) {
+            throw new RuntimeException(e.getLocalizedMessage(), e);
+        }
+    }
+
+    /**
+     * 返回对象中某个属性值
+     *
+     * @param obj   对象
+     * @param field 对象中属性信息
+     * @param <E>   属性值的类型
+     * @return 属性值
+     */
+    public static <E> Object getField(Object obj, Field field) {
+        try {
+            field.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            return field.get(obj);
+        } catch (Throwable e) {
+            throw new RuntimeException(e.getLocalizedMessage(), e);
         }
     }
 
@@ -1008,8 +1044,8 @@ public class ClassUtils {
             throw new NullPointerException();
         }
 
-        for (Iterator<Class<?>> it = c.iterator(); it.hasNext(); ) {
-            if (ClassUtils.equals(cls, it.next())) {
+        for (Class<?> aClass : c) {
+            if (ClassUtils.equals(cls, aClass)) {
                 return true;
             }
         }

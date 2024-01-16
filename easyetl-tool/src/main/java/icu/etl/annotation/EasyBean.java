@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @author jeremy8551@qq.com
  * @createtime 2021-02-08
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface EasyBean {

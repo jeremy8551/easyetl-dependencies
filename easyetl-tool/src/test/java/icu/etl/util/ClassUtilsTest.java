@@ -2,6 +2,7 @@ package icu.etl.util;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
@@ -260,6 +261,62 @@ public class ClassUtilsTest {
     public void testsetField() {
         LogCeshi lc = new LogCeshi();
         ClassUtils.setField(lc, "N.*", String.class, "new");
+    }
+
+    @Test
+    public void testsetField1() throws NoSuchFieldException {
+        LogCeshi lc = new LogCeshi();
+        Assert.assertEquals("n", ClassUtils.getField(lc, LogCeshi.class.getDeclaredField("N")));
+        Assert.assertEquals("n1", ClassUtils.getField(lc, LogCeshi.class.getDeclaredField("N1")));
+        Assert.assertEquals("n2", ClassUtils.getField(lc, LogCeshi.class.getDeclaredField("N2")));
+        Assert.assertEquals("n3", ClassUtils.getField(lc, LogCeshi.class.getDeclaredField("N3")));
+    }
+
+    @Test
+    public void testsetField2() throws NoSuchFieldException {
+        LogCeshi lc = new LogCeshi();
+//        ClassUtils.setField(lc, LogCeshi.class.getDeclaredField("N"), "n00");
+        ClassUtils.setField(lc, LogCeshi.class.getDeclaredField("N1"), "n11");
+        ClassUtils.setField(lc, LogCeshi.class.getDeclaredField("N2"), "n22");
+//        ClassUtils.setField(lc, LogCeshi.class.getDeclaredField("N3"), "n33");
+//        Assert.assertEquals("n00", lc.getN());
+        Assert.assertEquals("n11", lc.getN1());
+        Assert.assertEquals("n22", lc.getN2());
+//        Assert.assertEquals("n33", lc.getN3());
+    }
+
+    /**
+     * 判断属性是否被 static 修饰
+     */
+    @Test
+    public void testsetField3() throws NoSuchFieldException {
+        Field[] fields = LogCeshi.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (StringUtils.inArrayIgnoreCase(field.getName(), "n", "n1", "n3")) {
+                boolean isStatic = Modifier.isStatic(field.getModifiers());
+                Assert.assertTrue(isStatic);
+            } else {
+                boolean isStatic = Modifier.isStatic(field.getModifiers());
+                Assert.assertFalse(isStatic);
+            }
+        }
+    }
+
+    /**
+     * 判断属性是否被 final 修饰
+     */
+    @Test
+    public void testsetField4() {
+        Field[] fields = LogCeshi.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (StringUtils.inArrayIgnoreCase(field.getName(), "n", "n3")) {
+                boolean isFinal = Modifier.isFinal(field.getModifiers());
+                Assert.assertTrue(isFinal);
+            } else {
+                boolean isFinal = Modifier.isFinal(field.getModifiers());
+                Assert.assertFalse(isFinal);
+            }
+        }
     }
 
 //    @Test

@@ -64,7 +64,7 @@ public final class FileUtils {
      */
     public static void assertDelete(File file) {
         if (!Atomic.delete(file)) {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(16, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg016", file));
         }
     }
 
@@ -75,7 +75,7 @@ public final class FileUtils {
      */
     public static void assertExists(File file) {
         if (file == null || !file.exists()) {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(37, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg037", file));
         }
     }
 
@@ -87,7 +87,7 @@ public final class FileUtils {
     public static void assertFile(File file) {
         FileUtils.assertExists(file);
         if (!file.isFile()) {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(60, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg060", file));
         }
     }
 
@@ -99,7 +99,7 @@ public final class FileUtils {
     public static void assertDirectory(File file) {
         FileUtils.assertExists(file);
         if (!file.isDirectory()) {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(61, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg061", file));
         }
     }
 
@@ -113,7 +113,7 @@ public final class FileUtils {
         if (filepath != null && Atomic.createDirectory(new File(filepath), false)) {
             return new File(filepath);
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(59, filepath));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg059", filepath));
         }
     }
 
@@ -137,7 +137,7 @@ public final class FileUtils {
         if (Atomic.createDirectory(file, force)) {
             return file;
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(59, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg059", file));
         }
     }
 
@@ -151,7 +151,7 @@ public final class FileUtils {
         if (Atomic.createFile(file, false)) {
             return file;
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(58, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg058", file));
         }
     }
 
@@ -172,7 +172,7 @@ public final class FileUtils {
      */
     public static void assertClearDirectory(File file) {
         if (!Atomic.clearDir(file)) {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(55, file));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg055", file));
         }
     }
 
@@ -333,7 +333,7 @@ public final class FileUtils {
         if (Atomic.createFile(file, false)) {
             return file;
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(58, file.getAbsolutePath()));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg058", file.getAbsolutePath()));
         }
     }
 
@@ -349,7 +349,7 @@ public final class FileUtils {
         if (Atomic.createDirectory(file, false)) {
             return file;
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(59, file.getAbsolutePath()));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg059", file.getAbsolutePath()));
         }
     }
 
@@ -367,7 +367,7 @@ public final class FileUtils {
         if (Atomic.createDirectory(file, false)) {
             return file;
         } else {
-            throw new UnsupportedOperationException(ResourcesUtils.getIoxMessage(59, file.getAbsolutePath()));
+            throw new UnsupportedOperationException(ResourcesUtils.getMessage("io.standard.output.msg059", file.getAbsolutePath()));
         }
     }
 
@@ -943,7 +943,7 @@ public final class FileUtils {
             } else if (Atomic.copy(dest, bakfile) && Atomic.delete(dest)) {
                 restore = true;
             } else {
-                throw new IOException(ResourcesUtils.getIoxMessage(35, dest.getAbsolutePath(), bakfile.getAbsolutePath()));
+                throw new IOException(ResourcesUtils.getMessage("io.standard.output.msg035", dest.getAbsolutePath(), bakfile.getAbsolutePath()));
             }
         }
 
@@ -960,7 +960,7 @@ public final class FileUtils {
                     return false;
                 }
             }
-            throw new IOException(ResourcesUtils.getIoxMessage(35, file.getAbsolutePath(), dest.getAbsolutePath()));
+            throw new IOException(ResourcesUtils.getMessage("io.standard.output.msg035", file.getAbsolutePath(), dest.getAbsolutePath()));
         }
     }
 
@@ -1277,7 +1277,7 @@ public final class FileUtils {
 
         FileUtils.assertCreateFile(file);
         if (!file.canWrite()) {
-            throw new IllegalArgumentException(ResourcesUtils.getIoxMessage(62, file));
+            throw new IllegalArgumentException(ResourcesUtils.getMessage("io.standard.output.msg062", file));
         }
 
         // 读取p对象中的参数值并替换到资源文件file中同名参数值
@@ -1700,7 +1700,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getIoxMessage(58, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("io.standard.output.msg058", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -1712,7 +1712,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getIoxMessage(59, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("io.standard.output.msg059", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -1724,7 +1724,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getIoxMessage(16, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("io.standard.output.msg016", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -1736,7 +1736,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getIoxMessage(57, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("io.standard.output.msg057", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -1772,7 +1772,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getIoxMessage(55, file));
+            JUL.warn(ResourcesUtils.getMessage("io.standard.output.msg055", file));
         }
         return false;
     }

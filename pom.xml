@@ -253,7 +253,7 @@
 
             <dependency>
                 <groupId>icu.etl</groupId>
-                <artifactId>easyetl-file</artifactId>
+                <artifactId>easyetl-increment</artifactId>
                 <version>${revision}</version>
                 <scope>provided</scope>
             </dependency>

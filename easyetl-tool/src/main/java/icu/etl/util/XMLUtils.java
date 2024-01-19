@@ -43,7 +43,7 @@ public class XMLUtils {
             DocumentBuilder documentBuilder = xml.newDocumentBuilder();
             return documentBuilder.parse(in);
         } catch (Exception e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(1), e);
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg001"), e);
         }
     }
 
@@ -72,9 +72,9 @@ public class XMLUtils {
             Document doc = builder.parse(file);
             return doc.getDocumentElement();
         } catch (IOException e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(2, e.toString()));
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg002", e.toString()));
         } catch (Exception ex) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(3, ex.toString()));
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg003", ex.toString()));
         }
     }
 
@@ -93,7 +93,7 @@ public class XMLUtils {
             Document doc = builder.parse(in);
             return doc.getDocumentElement();
         } catch (Exception e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(1), e);
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg001"), e);
         }
     }
 
@@ -125,7 +125,7 @@ public class XMLUtils {
         try {
             return StringUtils.trimBlank(node.getAttributes().getNamedItem(name).getNodeValue());
         } catch (Exception e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(4, node.getNodeName(), name), e);
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg004", node.getNodeName(), name), e);
         }
     }
 
@@ -160,7 +160,7 @@ public class XMLUtils {
         try {
             return Integer.parseInt(value);
         } catch (Exception e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(5, node.getNodeName(), name, value));
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg005", node.getNodeName(), name, value));
         }
     }
 
@@ -181,7 +181,7 @@ public class XMLUtils {
         try {
             return Integer.parseInt(value);
         } catch (Exception e) {
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(5, node.getNodeName(), name, value));
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg005", node.getNodeName(), name, value));
         }
     }
 
@@ -217,7 +217,7 @@ public class XMLUtils {
             try {
                 return StringUtils.isBlank(item.getNodeValue());
             } catch (Exception e) {
-                throw new RuntimeException(ResourcesUtils.getXmlMessage(5, node.getNodeName(), name), e);
+                throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg005", node.getNodeName(), name), e);
             }
         }
     }
@@ -372,8 +372,8 @@ public class XMLUtils {
 
         int end = StringUtils.indexOf(xml, "?>", begin + 4, true);
         if (end == -1) {
-            String errMsg = ResourcesUtils.getXmlMessage(9, "?>");
-            throw new RuntimeException(ResourcesUtils.getXmlMessage(13, errMsg, xml));
+            String errMsg = ResourcesUtils.getMessage("xml.standard.output.msg009", "?>");
+            throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg013", errMsg, xml));
         }
 
         String content = StringUtils.trimBlank(xml.substring(begin + 5, end)); // 截取xml头信息
@@ -482,8 +482,8 @@ public class XMLUtils {
                 if (StringUtils.inArray(str.charAt(from), '\'', '\"')) { // 引号属性值开始的位置
                     int end = XMLUtils.indexXmlPropertyValueEndPos(str, from);
                     if (end == -1) {
-                        String errMsg = ResourcesUtils.getXmlMessage(10, c);
-                        throw new RuntimeException(ResourcesUtils.getXmlMessage(13, errMsg, str));
+                        String errMsg = ResourcesUtils.getMessage("xml.standard.output.msg010", c);
+                        throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg013", errMsg, str));
                     }
 
                     String val = StringUtils.unquotation(StringUtils.trimBlank(str.substring(i + 1, end + 1)));
@@ -514,8 +514,8 @@ public class XMLUtils {
             else if (c == '\'' || c == '\"') {
                 int end = XMLUtils.indexXmlPropertyValueEndPos(str, i);
                 if (end == -1) {
-                    String errMsg = ResourcesUtils.getXmlMessage(10, c);
-                    throw new RuntimeException(ResourcesUtils.getXmlMessage(13, errMsg, str));
+                    String errMsg = ResourcesUtils.getMessage("xml.standard.output.msg010", c);
+                    throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg013", errMsg, str));
                 }
 
                 String val = StringUtils.unquotation(StringUtils.trimBlank(str.substring(i, end + 1)));
@@ -611,8 +611,8 @@ public class XMLUtils {
             if (ignoreNoName) {
                 return;
             } else {
-                String errMsg = ResourcesUtils.getXmlMessage(11, val);
-                throw new RuntimeException(ResourcesUtils.getXmlMessage(13, errMsg, str));
+                String errMsg = ResourcesUtils.getMessage("xml.standard.output.msg011", val);
+                throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg013", errMsg, str));
             }
         }
 
@@ -621,8 +621,8 @@ public class XMLUtils {
             if (ignoreNoName) {
                 return;
             } else {
-                String errMsg = ResourcesUtils.getXmlMessage(11, val);
-                throw new RuntimeException(ResourcesUtils.getXmlMessage(13, errMsg, str));
+                String errMsg = ResourcesUtils.getMessage("xml.standard.output.msg011", val);
+                throw new RuntimeException(ResourcesUtils.getMessage("xml.standard.output.msg013", errMsg, str));
             }
         }
         property.setValue(val); // 设置属性

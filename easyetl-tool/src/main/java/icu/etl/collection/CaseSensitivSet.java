@@ -38,10 +38,10 @@ public class CaseSensitivSet implements Set<String> {
 
     public synchronized boolean add(String str) {
         if (str == null) {
-            return this.containsNull() ? false : this.set.add(null);
+            return !this.containsNull() && this.set.add(null);
         } else {
             String key = this.get(str);
-            return key == null ? this.set.add(str) : false;
+            return key == null && this.set.add(str);
         }
     }
 
@@ -105,10 +105,10 @@ public class CaseSensitivSet implements Set<String> {
 
     public synchronized boolean remove(Object obj) {
         if (obj == null) {
-            return this.containsNull() ? this.set.remove(null) : false;
+            return this.containsNull() && this.set.remove(null);
         } else if (obj instanceof String) {
             String key = this.get((String) obj);
-            return key == null ? false : this.set.remove(key);
+            return key != null && this.set.remove(key);
         } else {
             return false;
         }

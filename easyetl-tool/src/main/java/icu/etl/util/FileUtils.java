@@ -878,7 +878,7 @@ public final class FileUtils {
         File newfile = FileUtils.allocate(parent, file.getName());
 
         if (JUL.isDebugEnabled()) {
-            JUL.debug(ResourcesUtils.getFilesMessage(2, file, parent));
+            JUL.debug(ResourcesUtils.getMessage("file.standard.output.msg002", file, parent));
         }
 
         return FileUtils.rename(file, newfile, null);
@@ -921,7 +921,7 @@ public final class FileUtils {
         }
 
         if (JUL.isDebugEnabled()) {
-            JUL.debug(ResourcesUtils.getFilesMessage(1, file, dest));
+            JUL.debug(ResourcesUtils.getMessage("file.standard.output.msg001", file, dest));
         }
 
         // 需要恢复重命名之前的状态
@@ -1748,7 +1748,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getFilesMessage(5, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("file.standard.output.msg005", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -1760,7 +1760,7 @@ public final class FileUtils {
         }
 
         if (JUL.isWarnEnabled()) {
-            JUL.warn(ResourcesUtils.getFilesMessage(3, file == null ? "null" : file.getAbsolutePath()));
+            JUL.warn(ResourcesUtils.getMessage("file.standard.output.msg003", file == null ? "null" : file.getAbsolutePath()));
         }
         return false;
     }
@@ -2050,7 +2050,7 @@ public final class FileUtils {
             // 文件复制自身
             if (file.equals(dest)) {
                 if (JUL.isWarnEnabled()) {
-                    JUL.warn(ResourcesUtils.getFilesMessage(6, file));
+                    JUL.warn(ResourcesUtils.getMessage("file.standard.output.msg006", file));
                 }
                 return true;
             }

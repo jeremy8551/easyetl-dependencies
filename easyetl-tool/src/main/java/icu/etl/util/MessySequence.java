@@ -308,12 +308,12 @@ public class MessySequence implements CharSequence {
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < this.length; ) {
             int number = this.position[i] + 1;
-            buf.append(ResourcesUtils.getCommonMessage(4, number));
+            buf.append(ResourcesUtils.getMessage("commons.standard.output.msg004", number));
             if (++i < this.length) {
                 buf.append(", ");
             }
         }
-        return ResourcesUtils.getCommonMessage(5, this.source, buf, StringUtils.toCase(this.charsetName, false, null));
+        return ResourcesUtils.getMessage("commons.standard.output.msg005", this.source, buf, StringUtils.toCase(this.charsetName, false, null));
     }
 
     public String toString() {

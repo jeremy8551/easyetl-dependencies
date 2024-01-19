@@ -1,5 +1,7 @@
 package icu.etl.util;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 /**
  * 资源文件工具
@@ -296,157 +296,8 @@ public class ResourcesUtils {
         return false;
     }
 
-    /**
-     * 在数字 {@code no} 前面加上符号0
-     *
-     * @param no 数字
-     * @return 数字字符串
-     */
-    private static String toNumber(int no) {
-        StringBuilder buf = new StringBuilder(3);
-        for (int i = 0, loop = 3 - String.valueOf(no).length(); i < loop; i++) {
-            buf.append('0');
-        }
-        return buf.append(no).toString();
-    }
-
     public static boolean existsScriptMessage(String key) {
         return existsMessage("script.command." + key.trim() + ".name");
     }
-
-    public static String getScriptStderrMessage(int no, Object... args) {
-        String name = "script.message.stderr" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getScriptStdoutMessage(int no, Object... args) {
-        String name = "script.message.stdout" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getOSMessage(int no, Object... args) {
-        String name = "os.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-//    public static String getTelnetMessage(int no, Object... args) {
-//        String name = "telnet.standard.output.msg" + toNumber(no, 3);
-//        return ResourcesUtils.getMessage(name, args);
-//    }
-
-    public static String getSSH2JschMessage(int no, Object... args) {
-        String name = "ssh2.jsch.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-//    public static String getSSH2GanymedMessage(int no, Object... args) {
-//        String name = "ssh2.ganymed.standard.output.msg" + toNumber(no, 3);
-//        return ResourcesUtils.getMessage(name, args);
-//    }
-
-    public static String getTimerMessage(int no, Object... args) {
-        String name = "timer.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getIoxMessage(int no, Object... args) {
-        String name = "io.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getExpressionMessage(int no, Object... args) {
-        String name = "expression.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getCryptoMessage(int no, Object... args) {
-        String name = "crypto.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getXmlMessage(int no, Object... args) {
-        String name = "xml.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getTaskMessage(int no, Object... args) {
-        String name = "task.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getDatabaseMessage(int no, Object... args) {
-        String name = "database.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getDateMessage(int no, Object... args) {
-        String name = "date.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-//    public static String getWebSphereMessage(int no, Object... args) {
-//        String name = "container.websphere.output.msg" + toNumber(no, 3);
-//        return ResourcesUtils.getMessage(name, args);
-//    }
-
-    public static String getFtpApacheMessage(int no, Object... args) {
-        String name = "ftp.apache.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getMailMessage(int no, Object... args) {
-        String name = "mail.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getClassMessage(int no, Object... args) {
-        String name = "class.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getIocMessage(int no, Object... args) {
-        String name = "ioc.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getParamMessage(int no, Object... args) {
-        String name = "param.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getExtractMessage(int no, Object... args) {
-        String name = "extract.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getFilesMessage(int no, Object... args) {
-        String name = "file.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getCommonMessage(int no, Object... args) {
-        String name = "commons.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getDataSourceMessage(int no, Object... args) {
-        String name = "dataSource.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getIncrementMessage(int no, Object... args) {
-        String name = "increment.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-    public static String getLoadMessage(int no, Object... args) {
-        String name = "load.standard.output.msg" + toNumber(no);
-        return ResourcesUtils.getMessage(name, args);
-    }
-
-//    public static String getScriptMessage(int no, Object... args) {
-//        String name = "script.standard.output.msg" + toNumber(no, 3);
-//        return ResourcesUtils.getMessage(name, args);
-//    }
 
 }

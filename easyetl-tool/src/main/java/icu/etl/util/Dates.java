@@ -1510,21 +1510,21 @@ public final class Dates {
         long hour = seconds / 3600;
         if (hour > 0) {
             buf.append(hour);
-            buf.append(ResourcesUtils.getDateMessage(1));
+            buf.append(ResourcesUtils.getMessage("date.standard.output.msg001"));
 
             long i = (seconds % 3600);
             long minute = i / 60;
             if (minute > 0) {
                 buf.append(' ');
                 buf.append(minute);
-                buf.append(ResourcesUtils.getDateMessage(2));
+                buf.append(ResourcesUtils.getMessage("date.standard.output.msg002"));
             }
 
             long second = i % 60;
             if (second > 0 && displaySecond) {
                 buf.append(' ');
                 buf.append(second);
-                buf.append(ResourcesUtils.getDateMessage(3));
+                buf.append(ResourcesUtils.getMessage("date.standard.output.msg003"));
             }
             return buf;
         }
@@ -1532,20 +1532,20 @@ public final class Dates {
         long minute = seconds / 60;
         if (minute > 0) {
             buf.append(minute);
-            buf.append(ResourcesUtils.getDateMessage(2));
+            buf.append(ResourcesUtils.getMessage("date.standard.output.msg002"));
 
             long second = seconds % 60;
             if (second > 0 && displaySecond) {
                 buf.append(' ');
                 buf.append(second);
-                buf.append(ResourcesUtils.getDateMessage(3));
+                buf.append(ResourcesUtils.getMessage("date.standard.output.msg003"));
             }
             return buf;
         }
 
         if (displaySecond || seconds < 60) {
             buf.append(seconds);
-            buf.append(ResourcesUtils.getDateMessage(3));
+            buf.append(ResourcesUtils.getMessage("date.standard.output.msg003"));
         }
         return buf;
     }

@@ -386,7 +386,7 @@ public class ClassUtils {
         // 优先检查用户自定义的 CLASSPATH
         if (ClassUtils.CLASSPATH != null) {
             if (JUL.isDebugEnabled()) {
-                JUL.debug(ResourcesUtils.getCommonMessage(8, cls.getName(), ClassUtils.CLASSPATH));
+                JUL.debug(ResourcesUtils.getMessage("commons.standard.output.msg008", cls.getName(), ClassUtils.CLASSPATH));
             }
 
             if (ClassUtils.isClasspath0(ClassUtils.CLASSPATH, cls)) {
@@ -398,7 +398,7 @@ public class ClassUtils {
         String classpath0 = StringUtils.decodeJvmUtf8HexString(cls.getResource("/").getFile());
         if (classpath0 != null) {
             if (JUL.isDebugEnabled()) {
-                JUL.debug(ResourcesUtils.getCommonMessage(9, cls.getName(), classpath0));
+                JUL.debug(ResourcesUtils.getMessage("commons.standard.output.msg009", cls.getName(), classpath0));
             }
 
             if (ClassUtils.isClasspath0(classpath0, cls)) {
@@ -410,7 +410,7 @@ public class ClassUtils {
         String classpath1 = StringUtils.decodeJvmUtf8HexString(cls.getResource("").getPath());
         if (classpath1 != null) {
             if (JUL.isDebugEnabled()) {
-                JUL.debug(ResourcesUtils.getCommonMessage(10, cls.getName(), classpath1));
+                JUL.debug(ResourcesUtils.getMessage("commons.standard.output.msg010", cls.getName(), classpath1));
             }
 
             if (ClassUtils.isClasspath1(classpath1)) {
@@ -437,7 +437,7 @@ public class ClassUtils {
                 String classPackageName = cls.getPackage().getName().replace('.', File.separatorChar);
                 String classfilepath = FileUtils.joinPath(file.getAbsolutePath(), classPackageName);
                 if (JUL.isDebugEnabled()) {
-                    JUL.debug(ResourcesUtils.getCommonMessage(12, cls.getName(), classfilepath));
+                    JUL.debug(ResourcesUtils.getMessage("commons.standard.output.msg012", cls.getName(), classfilepath));
                 }
 
                 if (ClassUtils.isClasspath1(classfilepath)) {
@@ -445,7 +445,7 @@ public class ClassUtils {
                 }
             } else {
                 if (JUL.isWarnEnabled()) {
-                    JUL.warn(ResourcesUtils.getCommonMessage(13, cls.getName(), file.getAbsolutePath())); // 类路径不合法
+                    JUL.warn(ResourcesUtils.getMessage("commons.standard.output.msg013", cls.getName(), file.getAbsolutePath())); // 类路径不合法
                 }
             }
         }
@@ -454,7 +454,7 @@ public class ClassUtils {
         String jarfilepath = ClassUtils.getJarPath(cls);
         if (jarfilepath != null) {
             if (JUL.isDebugEnabled()) {
-                JUL.debug(ResourcesUtils.getCommonMessage(11, cls.getName(), jarfilepath)); // 类路径不合法
+                JUL.debug(ResourcesUtils.getMessage("commons.standard.output.msg011", cls.getName(), jarfilepath)); // 类路径不合法
             }
 
             return new File(jarfilepath).getAbsolutePath();
@@ -797,7 +797,7 @@ public class ClassUtils {
         try {
             return (E) cls.newInstance();
         } catch (Throwable e) {
-            throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, cls.getName()), e);
+            throw new IllegalArgumentException(ResourcesUtils.getMessage("class.standard.output.msg012", cls.getName()), e);
         }
     }
 
@@ -817,13 +817,13 @@ public class ClassUtils {
 
         Class<?> cls = ClassUtils.forName(classname, true, classLoader);
         if (cls == null) {
-            throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, classname));
+            throw new IllegalArgumentException(ResourcesUtils.getMessage("class.standard.output.msg012", classname));
         }
 
         try {
             return (E) cls.newInstance();
         } catch (Throwable e) {
-            throw new IllegalArgumentException(ResourcesUtils.getClassMessage(12, cls.getName()), e);
+            throw new IllegalArgumentException(ResourcesUtils.getMessage("class.standard.output.msg012", cls.getName()), e);
         }
     }
 

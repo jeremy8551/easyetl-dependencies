@@ -16,7 +16,7 @@ public class Annotations {
     /**
      * 返回方法上所有注解信息
      *
-     * @param <E>
+     * @param <E>            泛型类型
      * @param method         方法
      * @param annotationName 注解类名
      * @return 注解集合

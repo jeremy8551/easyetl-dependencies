@@ -25,7 +25,7 @@ public class CaseSensitivSet implements Set<String> {
     /**
      * 初始化
      *
-     * @param c
+     * @param c 集合
      */
     public CaseSensitivSet(Collection<String> c) {
         this();
@@ -72,7 +72,7 @@ public class CaseSensitivSet implements Set<String> {
     /**
      * 判断集合元素中是否存在空指针数据
      *
-     * @return
+     * @return 返回true表示存在空指针数据
      */
     public boolean containsNull() {
         for (Iterator<String> it = this.set.iterator(); it.hasNext(); ) {
@@ -159,11 +159,6 @@ public class CaseSensitivSet implements Set<String> {
         }
     }
 
-    /**
-     * 如果集合中的元素不在参数 c 中则删除
-     *
-     * @return true表示至少删除了一个元素 false表示未删除任何元素
-     */
     public synchronized boolean retainAll(Collection<?> c) {
         if (c == null) {
             throw new NullPointerException();
@@ -185,7 +180,7 @@ public class CaseSensitivSet implements Set<String> {
      *
      * @param c   集合
      * @param str 元素
-     * @return
+     * @return 返回true表示集合中存在字符串参数
      */
     private boolean contains(Collection<?> c, String str) {
         if (str == null) {

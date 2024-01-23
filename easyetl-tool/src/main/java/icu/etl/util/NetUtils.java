@@ -1,5 +1,8 @@
 package icu.etl.util;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,9 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 网络工具类
@@ -30,8 +30,8 @@ public class NetUtils {
      * 将 IP 地址转为主机对象
      *
      * @param ip IP地址
-     * @return
-     * @throws IOException
+     * @return 地址信息
+     * @throws IOException 转换发生错误
      */
     public static InetAddress toAddress(String ip) throws IOException {
         if (StringUtils.isBlank(ip)) {
@@ -50,7 +50,7 @@ public class NetUtils {
      * 将主机名转为主机的 IP 地址信息
      *
      * @param hostname 主机名
-     * @return
+     * @return IP地址信息
      */
     public static String toHostAddress(String hostname) {
         try {
@@ -63,8 +63,8 @@ public class NetUtils {
     /**
      * 判断字符串是否是合法的 mac 地址
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 返回true表示字符串是一个mac地址 false表示字符串不是mac地址
      */
     public static boolean isMacAddress(String str) {
         if (str == null) {
@@ -95,8 +95,8 @@ public class NetUtils {
     /**
      * 判断字符串参数是否是一个合法的ip地址
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 返回true表示字符串是一个IP地址 false表示字符串不是一个IP地址
      */
     public static boolean isIP(String str) {
         return isIPv4(str) || isIPv6(str);
@@ -105,8 +105,8 @@ public class NetUtils {
     /**
      * 判断 IPv4 地址是否正确
      *
-     * @param ip
-     * @return
+     * @param ip 字符串
+     * @return 返回true表示字符串是一个IPv4地址 false表示字符串不是一个IPv4地址
      */
     public static boolean isIPv4(String ip) {
         if (ip == null) {
@@ -134,8 +134,8 @@ public class NetUtils {
     /**
      * 判断 IPv6 地址是否正确
      *
-     * @param ip
-     * @return
+     * @param ip 字符串
+     * @return 返回true表示字符串是一个IPv6地址 false表示字符串不是一个IPv6地址
      */
     public static boolean isIPv6(String ip) {
         if (ip == null) {
@@ -148,16 +148,16 @@ public class NetUtils {
         }
 
         /**
-         * IPv6地址为128位长，但通常写作8组，每组为四个十六进制数的形式。
-         * 如果四个数字都是零，可以被省略
-         * 同时前导的零可以省略
-         * 遵从这些规则，如果因为省略而出现了两个以上的冒号的话，可以压缩为一个，但这种零压缩在地址中只能出现一次。
+         * IPv6地址为128位长，但通常写作8组，每组为四个十六进制数的形式。<br>
+         * 如果四个数字都是零，可以被省略<br>
+         * 同时前导的零可以省略<br>
+         * 遵从这些规则，如果因为省略而出现了两个以上的冒号的话，可以压缩为一个，但这种零压缩在地址中只能出现一次。<br>
          *
-         * 2001:0DB8:0000:0000:0000:0000:1428:57ab
-         * 2001:0DB8:0000:0000:0000::1428:57ab
-         * 2001:0DB8:0:0:0:0:1428:57ab
-         * 2001:0DB8:0::0:1428:57ab
-         * 2001:0DB8::1428:57ab
+         * 2001:0DB8:0000:0000:0000:0000:1428:57ab <br>
+         * 2001:0DB8:0000:0000:0000::1428:57ab <br>
+         * 2001:0DB8:0:0:0:0:1428:57ab <br>
+         * 2001:0DB8:0::0:1428:57ab <br>
+         * 2001:0DB8::1428:57ab <br>
          */
         for (String group : groups) {
             if (group.length() > 4) { // 只能是0-4之间的位数
@@ -177,8 +177,8 @@ public class NetUtils {
     /**
      * 判断字符串参数是否是host
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 返回true表示字符串表示host false表示字符串不是一个host
      */
     public static boolean isHost(String str) {
         return str != null && (str.indexOf('.') != -1 || isLocalHost(str));
@@ -187,8 +187,8 @@ public class NetUtils {
     /**
      * 判断字符串参数是否是有效的端口号, 从 0 到 65535 之间的整数
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 返回true表示字符串是一个端口号 false表示字符串不是一个端口号
      */
     public static boolean isPort(String str) {
         int port = -1;
@@ -198,8 +198,8 @@ public class NetUtils {
     /**
      * 判断是否是本地机器的HOST值
      *
-     * @param host
-     * @return
+     * @param host 字符串
+     * @return 返回true表示字符串是一个本地host
      */
     public static boolean isLocalHost(String host) {
         return StringUtils.inArrayIgnoreCase(host, "127.0.0.1", "localhost", "local");
@@ -209,7 +209,7 @@ public class NetUtils {
      * 解析content_Range字段值
      *
      * @param range 数组0=文件起始位置(单位：字节) 数组1=文件终止位置(单位：字节) 数组2=文件长度(单位：字节)
-     * @return
+     * @return 返回字节数组
      */
     public static long[] parseContentRange(String range) {
         long[] array = new long[3];
@@ -236,7 +236,7 @@ public class NetUtils {
      *
      * @param contentType text/html;charset=GB2312
      *                    application/soap+xml; charset=UTF-8
-     * @return
+     * @return 字符串
      */
     public static String parseContentTypeCharset(String contentType) {
         if (StringUtils.isBlank(contentType)) {
@@ -265,24 +265,32 @@ public class NetUtils {
     /**
      * 关闭 Socket 连接
      *
-     * @param socket
+     * @param socket 网络链接
      */
     public static void closeSocketQuietly(Socket socket) {
         if (socket != null) {
             try {
                 socket.shutdownInput();
             } catch (IOException e) {
+                if (JUL.isDebugEnabled()) {
+                    JUL.debug(e.getLocalizedMessage(), e);
+                }
             }
 
             try {
                 socket.shutdownOutput();
             } catch (IOException e) {
+                if (JUL.isDebugEnabled()) {
+                    JUL.debug(e.getLocalizedMessage(), e);
+                }
             }
 
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (JUL.isDebugEnabled()) {
+                    JUL.debug(e.getLocalizedMessage(), e);
+                }
             }
         }
     }
@@ -290,28 +298,28 @@ public class NetUtils {
     /**
      * 格式化日期字符串为日期
      *
-     * @param val
-     * @return
+     * @param val 字符串
+     * @return 日期
      */
     public static Date format(String val) {
-        Date d = null;
+        Date date = null;
         try {
             SimpleDateFormat sf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
-            d = sf.parse(val);
+            date = sf.parse(val);
         } catch (ParseException e) {
             try {
                 SimpleDateFormat sf = new SimpleDateFormat("EEE, dd-MMM-yy HH:mm:ss Z", Locale.US);
-                d = sf.parse(val);
+                date = sf.parse(val);
             } catch (ParseException e1) {
                 try {
                     SimpleDateFormat sf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy", Locale.US);
-                    d = sf.parse(val);
+                    date = sf.parse(val);
                 } catch (ParseException e2) {
                     throw new RuntimeException("Date string format error: " + val);
                 }
             }
         }
-        return d;
+        return date;
     }
 
     /**
@@ -319,7 +327,7 @@ public class NetUtils {
      *
      * @param uri   定位符, {@literal http://x.x.x.x:xx/uri }
      * @param param 参数, key=value
-     * @return
+     * @return 字符串
      */
     public static String joinUriParams(String uri, String param) {
         if (uri == null || "#".equals(uri) || StringUtils.isBlank(param)) {
@@ -332,8 +340,8 @@ public class NetUtils {
     /**
      * 按数组中先后顺序合并多个 uri 字符串
      *
-     * @param uris
-     * @return
+     * @param uris 定位符数组
+     * @return 字符串
      */
     public static String joinUri(String... uris) {
         if (uris == null) {
@@ -370,7 +378,7 @@ public class NetUtils {
      * @param response HttpServletResponse对象
      * @param file     下载文件
      * @param filename 下载后显示文件名
-     * @throws IOException
+     * @throws IOException 输入流发生错误
      */
     private static void downFile(HttpServletResponse response, File file, String filename) throws IOException {
         response.setContentType("APPLICATION/OCTET-STREAM");
@@ -387,7 +395,7 @@ public class NetUtils {
      * @param response HttpServletResponse对象
      * @param file     下载文件
      * @param filename 下载后显示文件名
-     * @throws IOException
+     * @throws IOException 输入流发生错误
      */
     public static void downFile(HttpServletRequest request, HttpServletResponse response, File file, String filename) throws IOException {
         String name = encodeFilename(request, StringUtils.defaultString(filename, file.getName()));
@@ -399,8 +407,8 @@ public class NetUtils {
      *
      * @param request  HttpServletRequest对象
      * @param filename 文件名
-     * @return
-     * @throws IOException
+     * @return 文件名编码
+     * @throws IOException 输入流发生错误
      */
     public static String encodeFilename(HttpServletRequest request, String filename) throws IOException {
         if (request == null) {

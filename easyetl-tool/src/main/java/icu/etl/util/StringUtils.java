@@ -107,7 +107,7 @@ public class StringUtils {
      *
      * @param str         字符串
      * @param charsetName 字符集编码
-     * @return
+     * @return 字节长度
      */
     public static int length(String str, String charsetName) {
         try {
@@ -182,11 +182,11 @@ public class StringUtils {
     }
 
     /**
-     * 字符串数组中最长字符串的长度（按字节计算）
+     * 计算数组中显示最宽的字符串
      *
      * @param charsetName 字符串字符集
      * @param array       字符串数组
-     * @return
+     * @return 显示宽度
      */
     public static int width(String charsetName, String[] array) {
         if (array == null || array.length == 0) {
@@ -259,14 +259,14 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串参数str是否为空白字符串(为null或全是空白字符)
-     * isBlank("") == true
-     * isBlank("12") == false
-     * isBlank(" ") == true
-     * isBlank(null) == true
+     * 判断字符串参数str是否为空白字符串(为null或全是空白字符) <br>
+     * isBlank("") == true <br>
+     * isBlank("12") == false <br>
+     * isBlank(" ") == true <br>
+     * isBlank(null) == true <br>
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示参数为空指针或空字符 false表示参数不为空指针或空字符
      */
     public static boolean isBlank(CharSequence str) {
         if (str != null) {
@@ -284,7 +284,7 @@ public class StringUtils {
      * ST.isBlank(null) == true
      *
      * @param array 字符串数组
-     * @return
+     * @return 返回true表示参数为空指针或空字符 false表示参数不为空指针或空字符
      */
     public static boolean isBlank(CharSequence[] array) {
         if (array != null && array.length > 0) {
@@ -305,7 +305,7 @@ public class StringUtils {
      * isNotBlank(null) == false
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示参数不为空指针或空字符 false表示参数为空指针或空字符
      */
     public static boolean isNotBlank(CharSequence str) {
         return !StringUtils.isBlank(str);
@@ -315,7 +315,7 @@ public class StringUtils {
      * 判断字符是否是 ASCII 码表字符
      *
      * @param c 字符
-     * @return true是ASCII码
+     * @return 返回true表示参数是ASCII码
      */
     public static boolean isAscii(char c) {
         return c >= 0 && c <= 127;
@@ -328,7 +328,7 @@ public class StringUtils {
      * ST.trim(" 123") == "123"
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String trim(String str) {
         return str == null ? null : str.trim();
@@ -384,7 +384,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 字符数组
-     * @return
+     * @return 字符串
      */
     public static String trim(CharSequence str, char... array) {
         if (str == null) {
@@ -409,7 +409,7 @@ public class StringUtils {
      *
      * @param obj   字符串
      * @param array 待删除字符
-     * @return
+     * @return 字符串
      */
     public static String trimBlank(Object obj, char... array) {
         if (obj == null) {
@@ -478,7 +478,7 @@ public class StringUtils {
      * 删除字符串参数str左右二端的小括号()与空白字符
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String trimParenthes(CharSequence str) {
         if (str == null) {
@@ -505,7 +505,7 @@ public class StringUtils {
      * rTrim(null) == null
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String rtrim(CharSequence str) {
         if (str == null) {
@@ -524,7 +524,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 字符数组
-     * @return
+     * @return 字符串
      */
     public static String rtrim(CharSequence str, char... array) {
         if (str == null) {
@@ -549,7 +549,7 @@ public class StringUtils {
      *
      * @param obj   字符串
      * @param array 待删除字符
-     * @return
+     * @return 字符串
      */
     public static String rtrimBlank(Object obj, char... array) {
         if (obj == null) {
@@ -578,7 +578,7 @@ public class StringUtils {
      * ltrim("12345") == "12345"
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String ltrim(CharSequence str) {
         if (str == null) {
@@ -598,7 +598,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 字符数组
-     * @return
+     * @return 字符串
      */
     public static String ltrim(CharSequence str, char... array) {
         if (str == null) {
@@ -626,7 +626,7 @@ public class StringUtils {
      *
      * @param obj   字符串
      * @param array 待删除字符
-     * @return
+     * @return 字符串
      */
     public static String ltrimBlank(Object obj, char... array) {
         if (obj == null) {
@@ -655,7 +655,7 @@ public class StringUtils {
      * objToStr(null) = ""
      *
      * @param obj 参数对象
-     * @return
+     * @return 字符串
      */
     public static String objToStr(Object obj) {
         if (obj == null) {
@@ -672,7 +672,7 @@ public class StringUtils {
      * @param begin       字符串开始位置（从0开始）
      * @param length      替换长度（从0开始）
      * @param replacement 替换后的内容
-     * @return
+     * @return 字符串
      */
     public static String replace(CharSequence str, int begin, int length, CharSequence replacement) {
         if (begin < 0) {
@@ -703,7 +703,7 @@ public class StringUtils {
      * @param str    字符串
      * @param oldStr 字符串
      * @param newStr 字符串
-     * @return
+     * @return 字符串
      */
     public static String replace(String str, String oldStr, String newStr) {
         if (str == null) {
@@ -726,7 +726,7 @@ public class StringUtils {
      * @param str    字符串
      * @param oldStr 字符串
      * @param newStr 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceAll(CharSequence str, String oldStr, String newStr) {
         if (str == null) {
@@ -758,7 +758,7 @@ public class StringUtils {
      * @param str    字符串
      * @param oldStr 字符串
      * @param newStr 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceLast(String str, String oldStr, String newStr) {
         if (str == null) {
@@ -780,7 +780,7 @@ public class StringUtils {
      *
      * @param str 字符串
      * @param map 变量集合
-     * @return
+     * @return 字符串
      */
     public static String replaceEnvironment(String str, Map<String, String> map) {
         if (str == null || map == null) {
@@ -795,7 +795,7 @@ public class StringUtils {
      * replaceEnvironmentVariable("mkdir ${HOME}/f/k/adb", ) == "mkdir /home/xxx/f/k/adb"
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceEnvironment(String str) {
         if (str == null) {
@@ -809,7 +809,7 @@ public class StringUtils {
      * 使用系统属性信息替换字符串参数str中的shell型变量
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceProperties(String str) {
         if (str == null) {
@@ -824,7 +824,7 @@ public class StringUtils {
      *
      * @param str 字符串
      * @param p   属性集合
-     * @return
+     * @return 字符串
      */
     public static String replaceProperties(String str, Properties p) {
         if (str == null || p == null) {
@@ -842,7 +842,7 @@ public class StringUtils {
      * @param str     字符串
      * @param map     变量名变量值映射的集合
      * @param convert 把 map 对象中 Object 转为 String
-     * @return
+     * @return 字符串
      */
     public static String replaceVariable(String str, Map<String, Object> map, Format convert) {
         if (str == null || map == null) {
@@ -859,7 +859,7 @@ public class StringUtils {
      * @param map     属性名与属性值的映射集合
      * @param index   开始替换位置
      * @param convert 类型转换器
-     * @return
+     * @return 字符串
      */
     protected static String replaceVariable(String str, Map<String, Object> map, int index, Format convert) {
         if (index == -1) {
@@ -906,7 +906,7 @@ public class StringUtils {
      *
      * @param str 字符串
      * @param map 变量集合
-     * @return
+     * @return 字符串
      */
     public static String replaceVariable(String str, Map<String, String> map) {
         if (str == null || map == null) {
@@ -924,7 +924,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 变量名和变量值映射数组, 如: new String[] {变量名1, 变量值1, 变量名2, 变量值2}
-     * @return
+     * @return 字符串
      */
     public static String replaceVariable(String str, CharSequence... array) {
         if (str == null || array == null || array.length <= 1) {
@@ -941,7 +941,7 @@ public class StringUtils {
      * @param str   字符串
      * @param map   变量名与变量值的映射
      * @param index 占位符 ${ 起始位置
-     * @return
+     * @return 字符串
      */
     protected static String replaceVariable(String str, Map<String, String> map, int index) {
         if (index == -1) {
@@ -983,7 +983,7 @@ public class StringUtils {
      * @param str   字符串
      * @param array 变量名与变量值的映射
      * @param index 占位符 ${ 起始位置
-     * @return
+     * @return 字符串
      */
     protected static String replaceVariable(String str, CharSequence[] array, int index) {
         if (index == -1) {
@@ -1023,7 +1023,7 @@ public class StringUtils {
      *
      * @param array 属性数组
      * @param key   属性名
-     * @return
+     * @return 属性值
      */
     protected static String getValue(CharSequence[] array, String key) {
         for (int i = 0; i < array.length; i += 2) {
@@ -1042,7 +1042,7 @@ public class StringUtils {
      * @param str   字符串
      * @param p     变量名与变量值的映射
      * @param index 占位符 ${ 起始位置
-     * @return
+     * @return 字符串
      */
     private static String replaceVariable(String str, Properties p, int index) {
         if (index == -1) {
@@ -1081,7 +1081,7 @@ public class StringUtils {
      * 替换字符串参数 str 中所有全角字符为半角字符
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceHalfWidthChar(String str) {
         if (str == null) {
@@ -1104,7 +1104,7 @@ public class StringUtils {
      * 替换字符串参数 str 中所有空白字符为半角空格
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String replaceHalfWidthBlank(String str) {
         if (str == null) {
@@ -1127,7 +1127,7 @@ public class StringUtils {
      * @param begin       开始截取为止(包含), 从0开始，单位：字节
      * @param length      截取的长度, 单位字节
      * @param charsetName 字符集, 为空时使用默认值
-     * @return
+     * @return 字符串
      */
     public static String substring(String str, int begin, int length, String charsetName) {
         if (StringUtils.isBlank(charsetName)) {
@@ -1145,7 +1145,7 @@ public class StringUtils {
      * @param begin       开始截取位(包含本身), 从0开始
      * @param length      截取的长度,单位字节
      * @param charsetName 字符集
-     * @return
+     * @return 字符串
      */
     protected static String substring(byte[] array, int begin, int length, String charsetName) {
         if (array == null) {
@@ -1171,7 +1171,7 @@ public class StringUtils {
      * @param index 位置(单位: 字符)
      * @param left  左截的位数(单位: 字符)
      * @param right 右截的位数(单位: 字符)
-     * @return
+     * @return 字符串
      */
     public static String substring(CharSequence str, int index, int left, int right) {
         if (str == null) {
@@ -1197,7 +1197,7 @@ public class StringUtils {
      * @param index 位置(单位: 字符)
      * @param left  左截的位数(单位: 字符)
      * @param right 右截的位数(单位: 字符)
-     * @return
+     * @return 字符串
      */
     public static String substr(CharSequence str, int index, int left, int right) {
         if (str == null) {
@@ -1248,7 +1248,7 @@ public class StringUtils {
      *
      * @param obj    字符串
      * @param length 截取长度,单位字符
-     * @return
+     * @return 字符串
      */
     public static String left(Object obj, int length) {
         if (obj == null) {
@@ -1275,7 +1275,7 @@ public class StringUtils {
      * @param obj    参数对象
      * @param length 截取长度,单位字符
      * @param c      默认填充字符
-     * @return
+     * @return 字符串
      */
     public static String left(Object obj, int length, char c) {
         if (obj == null) {
@@ -1309,7 +1309,7 @@ public class StringUtils {
      * @param obj         字符串
      * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集
-     * @return
+     * @return 字符串
      */
     public static String left(Object obj, int width, String charsetName) {
         if (obj == null) {
@@ -1408,7 +1408,7 @@ public class StringUtils {
      *
      * @param obj    字符串
      * @param length 截取长度,单位字符
-     * @return
+     * @return 字符串
      */
     public static String right(Object obj, int length) {
         if (obj == null) {
@@ -1431,7 +1431,7 @@ public class StringUtils {
      * @param obj    参数对象
      * @param length 截取长度,单位字符
      * @param c      填充字符
-     * @return
+     * @return 字符串
      */
     public static String right(Object obj, int length, char c) {
         if (obj == null) {
@@ -1464,7 +1464,7 @@ public class StringUtils {
      * @param obj         参数对象
      * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集（为空自动使用默认值）
-     * @return
+     * @return 字符串
      */
     public static String right(Object obj, int width, String charsetName) {
         if (obj == null) {
@@ -1510,7 +1510,7 @@ public class StringUtils {
      * @param width       显示宽度，单位是英文字符在显示器中显示的宽度，一个中文字符作为2个显示宽度
      * @param charsetName 字符集（为空自动使用默认值）
      * @param d           填充字符
-     * @return
+     * @return 字符串
      */
     public static String right(Object obj, int width, String charsetName, char d) {
         if (obj == null) {
@@ -1612,7 +1612,7 @@ public class StringUtils {
      * 对 str 参数中 ‘\’ 字符进行转义（填写2个 ‘\’ 符号）
      *
      * @param str 字符串，为null时返回null
-     * @return
+     * @return 字符串
      */
     public static String escape(CharSequence str) {
         return escape(str, '\\');
@@ -1623,7 +1623,7 @@ public class StringUtils {
      *
      * @param str    字符串，为null时返回null
      * @param escape 转义字符
-     * @return
+     * @return 字符串
      */
     public static String escape(CharSequence str, char escape) {
         if (str == null) {
@@ -1668,7 +1668,7 @@ public class StringUtils {
      * 替换字符串参数str中的回车符\r与换行符\n为 \\r \\n
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String escapeLineSeparator(CharSequence str) {
         if (str == null) {
@@ -1709,7 +1709,7 @@ public class StringUtils {
      * \\u002E 转成 点'.'
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String unescape(CharSequence str) {
         if (str == null) {
@@ -1793,7 +1793,7 @@ public class StringUtils {
      * quote(null) = null
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String quote(CharSequence str) {
         return str == null ? null : new StringBuilder(str.length() + 2).append('\'').append(str).append('\'').toString();
@@ -1802,8 +1802,8 @@ public class StringUtils {
     /**
      * 在字符串二端加双引号
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 字符串
      */
     public static String quotes(CharSequence str) {
         return str == null ? null : new StringBuilder(str.length() + 2).append('\"').append(str).append('\"').toString();
@@ -1813,7 +1813,7 @@ public class StringUtils {
      * 删除一次字符串参数str左右二端的单引号
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String unquote(CharSequence str) {
         if (str == null) {
@@ -1830,7 +1830,7 @@ public class StringUtils {
      * 删除一次字符串参数str左右二端的双引号
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String unquotes(CharSequence str) {
         if (str == null) {
@@ -1847,7 +1847,7 @@ public class StringUtils {
      * 删除一次字符串参数str左右二端的单引号或双引号
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String unquotation(CharSequence str) {
         if (str == null) {
@@ -2324,7 +2324,7 @@ public class StringUtils {
      *
      * @param ite       遍历器
      * @param delimiter 分隔符
-     * @return
+     * @return 字符串
      */
     public static String join(Iterable<?> ite, String delimiter) {
         if (ite == null) {
@@ -2347,7 +2347,7 @@ public class StringUtils {
      * @param iterable  集合
      * @param delimiter 分隔符
      * @param escape    转义字符
-     * @return
+     * @return 字符串
      */
     public static String join(Iterable<String> iterable, String delimiter, char escape) {
         if (iterable == null) {
@@ -2371,7 +2371,7 @@ public class StringUtils {
      * 在字符串数组参数array中的每个字符串的左右端添加单引号，按顺序逐个遍历数组中的字符串并在每个元素后面添加一个半角逗号分分隔符
      *
      * @param array 字符串数组
-     * @return
+     * @return 字符串
      */
     public static String joinUseQuoteComma(CharSequence... array) {
         if (array == null) {
@@ -2394,7 +2394,7 @@ public class StringUtils {
      *
      * @param array     数组
      * @param delimiter 分隔符
-     * @return
+     * @return 字符串
      */
     public static String join(Object[] array, String delimiter) {
         if (array == null) {
@@ -2421,7 +2421,8 @@ public class StringUtils {
     public static String[] split(CharSequence str, String delimiter) {
         List<String> list = new ArrayList<String>();
         StringUtils.split(str, delimiter, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        return list.toArray(array);
     }
 
     /**
@@ -2461,12 +2462,13 @@ public class StringUtils {
      * @param str        字符串
      * @param delimiter  分隔符
      * @param ignoreCase true表示忽略大小写
-     * @return
+     * @return 字段数组
      */
     public static String[] split(CharSequence str, String delimiter, boolean ignoreCase) {
         List<String> list = new ArrayList<String>();
         StringUtils.split(str, delimiter, ignoreCase, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        return list.toArray(array);
     }
 
     /**
@@ -2507,12 +2509,13 @@ public class StringUtils {
      * @param str        字符串
      * @param delimiter  分隔符集合
      * @param ignoreCase true表示忽略大小写
-     * @return
+     * @return 字段数组
      */
     public static String[] split(CharSequence str, Collection<String> delimiter, boolean ignoreCase) {
         List<String> list = new ArrayList<String>();
         StringUtils.split(str, delimiter, ignoreCase, list);
-        return list.toArray(new String[list.size()]);
+        String[] array = new String[list.size()];
+        return list.toArray(array);
     }
 
     /**
@@ -2867,56 +2870,10 @@ public class StringUtils {
     }
 
     /**
-     * 解析 java类名
-     *
-     * @param str Java类名
-     * @return
-     */
-    public static String[] splitJavaName(CharSequence str) {
-        List<String> list = new ArrayList<String>();
-        StringUtils.splitJavaName(str, list);
-        String[] array = new String[list.size()];
-        list.toArray(array);
-        return array;
-    }
-
-    /**
-     * 解析 java类名
-     *
-     * @param str
-     * @param list
-     */
-    public static void splitJavaName(CharSequence str, Collection<String> list) {
-        if (str == null) {
-            return;
-        }
-        if (str.length() == 0) {
-            list.add(str.toString());
-            return;
-        }
-
-        int begin = 0;
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (Character.isUpperCase(c)) {
-                if (i > 0) {
-                    list.add(str.subSequence(begin, i).toString());
-                    begin = i;
-                }
-                continue;
-            }
-        }
-
-        if (begin >= 0 && begin < str.length()) {
-            list.add(str.subSequence(begin, str.length()).toString());
-        }
-    }
-
-    /**
      * 解析参数字符串 str，如：commandName 'param1' "param2" (value3)
      *
      * @param str 字符串
-     * @return
+     * @return 参数数组
      */
     public static String[] splitParameters(CharSequence str) {
         ArrayList<String> list = new ArrayList<String>();
@@ -3020,7 +2977,7 @@ public class StringUtils {
      *
      * @param str    字符串
      * @param column 分隔后的字段
-     * @return
+     * @return 字段集合
      */
     public static List<String> splitByBlank(CharSequence str, int column) {
         List<String> list = new ArrayList<String>();
@@ -3123,7 +3080,7 @@ public class StringUtils {
      * 使用空白作为字段分隔符解析提取字符串参数str中的字段, 返回字段数组
      *
      * @param str 字符串
-     * @return
+     * @return 字段数组
      */
     public static String[] splitByBlank(CharSequence str) {
         List<String> list = new ArrayList<String>();
@@ -3138,7 +3095,7 @@ public class StringUtils {
      *
      * @param str         字符串
      * @param charsetName 字符集
-     * @return
+     * @return 字节数组
      */
     public static byte[] toBytes(CharSequence str, String charsetName) {
         try {
@@ -3153,7 +3110,7 @@ public class StringUtils {
      * 如果输入参数 obj 是字符串则将字符串大小写转换
      * 如果输入参数 obj 是集合且集合中元素为String类型，将集合中所有字符串进行大小写转行
      *
-     * @param <E>
+     * @param <E>    泛型类型
      * @param obj    字符串或集合
      *               支持的类及数据结构: String, List&lt;String&gt;, Set&lt;String&gt;, Map&lt;String&gt;, char[]
      * @param lower  true表示转为小写字母; false表示转为大写字母
@@ -3241,7 +3198,7 @@ public class StringUtils {
      * 将Object 对象强制转换为字符串并执行大小写转换
      *
      * @param obj 字符串
-     * @return
+     * @return 字符串
      */
     protected static String toCaseStr(Object obj, boolean lower, Locale locale) {
         return obj == null ? null : (lower ? obj.toString().toLowerCase(locale) : obj.toString().toUpperCase(locale));
@@ -3251,7 +3208,7 @@ public class StringUtils {
      * 将半角字符转为全角字符
      *
      * @param c 半角字符
-     * @return
+     * @return 全角字符
      */
     public static char toFullWidthChar(char c) {
         if (c < 32 || c > 126) {
@@ -3268,7 +3225,7 @@ public class StringUtils {
      *
      * @param array       字节数组
      * @param charsetName 字符集
-     * @return
+     * @return 字符串
      */
     public static String toString(byte[] array, String charsetName) {
         try {
@@ -3282,7 +3239,7 @@ public class StringUtils {
      * 将输入参数 obj 转为字符串
      *
      * @param obj 对象信息
-     * @return
+     * @return 字符串
      */
     public static String toString(Object obj) {
         if (obj == null) {
@@ -3475,7 +3432,7 @@ public class StringUtils {
      *
      * @param bytes 字节数组
      * @param radix 基数可以转换进制的范围，从 Character.MIN_RADIX 到 Character.MAX_RADIX, 超出范围后变为10进制
-     * @return
+     * @return 指定进制的字符串
      */
     public static String toRadixString(byte[] bytes, int radix) {
         return new BigInteger(1, bytes).toString(radix);
@@ -3508,8 +3465,8 @@ public class StringUtils {
      *
      * @param str         字符串
      * @param charsetName 字符集
-     * @return
-     * @throws IOException
+     * @return 字符串
+     * @throws IOException 字符串转为字节数组发生错误
      */
     public static String toHexString(String str, String charsetName) throws IOException {
         if (str == null) {
@@ -3525,7 +3482,7 @@ public class StringUtils {
      * 将字节数组转为二进制字符串
      *
      * @param bytes 字节数组
-     * @return
+     * @return 二进制字符串
      */
     public static String toBinaryString(byte[] bytes) {
         return new BigInteger(1, bytes).toString(2);
@@ -3588,7 +3545,7 @@ public class StringUtils {
     /**
      * 32-bit UUID
      *
-     * @return
+     * @return 字符串
      */
     public static String toRandomUUID() {
         String uuid = UUID.randomUUID().toString(); // 0f38fc7a-782d-4747-b6de-ebd0ee782748
@@ -3606,7 +3563,7 @@ public class StringUtils {
      *
      * @param c     字符
      * @param array 字符数组
-     * @return
+     * @return 返回true表示字符在数组范围内
      */
     public static boolean inArray(char c, char... array) {
         if (array == null || array.length == 0) {
@@ -3624,10 +3581,10 @@ public class StringUtils {
     /**
      * 判断字符数组参数array中是否含有指定字符参数c（忽略大小写）
      *
-     * @param c
-     * @param array
-     * @param ignoreCase
-     * @return
+     * @param c          字符
+     * @param array      字符数组
+     * @param ignoreCase 是否忽略大小写
+     * @return 返回true表示字符在数组范围内
      */
     public static boolean inArray(char c, char[] array, boolean ignoreCase) {
         if (array == null) {
@@ -3657,7 +3614,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 字符串数组
-     * @return
+     * @return 返回true表示字符序列在数组范围内
      */
     public static boolean inArray(CharSequence str, CharSequence... array) {
         if (array == null || str == null) {
@@ -3677,7 +3634,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param array 字符串数组
-     * @return
+     * @return 返回true表示字符序列在数组范围内
      */
     public static boolean inArrayIgnoreCase(String str, String... array) {
         if (array == null || str == null) {
@@ -3698,7 +3655,7 @@ public class StringUtils {
      * @param str        字符串
      * @param c          字符串集合
      * @param ignoreCase true表示忽略大小写
-     * @return
+     * @return 返回true表示字符序列在集合范围内
      */
     public static boolean inCollection(String str, Collection<String> c, boolean ignoreCase) {
         if (c == null) {
@@ -3728,11 +3685,11 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串前缀与字符串prefix相符
+     * 判断字符串是否以指定字符串前缀开始
      *
      * @param str    字符串
      * @param prefix 字符串
-     * @return
+     * @return 返回true表示字符串以指定前缀开头
      */
     public static boolean startsWithIgnoreCase(CharSequence str, String prefix) {
         if (prefix == null || prefix.length() == 0) {
@@ -3888,7 +3845,7 @@ public class StringUtils {
      * 把字符串中第一个字符变成大写字母
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String firstCharToUpper(CharSequence str) {
         if (str == null) {
@@ -3909,7 +3866,7 @@ public class StringUtils {
      * 把字符串中第一个字符变成小写字母
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String firstCharToLower(CharSequence str) {
         if (str == null) {
@@ -3932,7 +3889,7 @@ public class StringUtils {
      * @param cs           字符型变量
      * @param charsetName1 字符集1
      * @param charsetName2 字符集2
-     * @return
+     * @return 字符串
      */
     public static String encodeCharset(CharSequence cs, String charsetName1, String charsetName2) {
         if (StringUtils.isBlank(charsetName1)) {
@@ -3948,7 +3905,7 @@ public class StringUtils {
      * 将字符串从 GBK 转为 UTF-8
      *
      * @param cs 字符型变量
-     * @return
+     * @return 字符串
      */
     public static String encodeGBKtoUTF8(CharSequence cs) {
         return StringUtils.encodeCharset(cs, CharsetName.GBK, CharsetName.UTF_8);
@@ -3958,17 +3915,17 @@ public class StringUtils {
      * 将字符串从 UTF-8 转为 GBK
      *
      * @param cs 字符型变量
-     * @return
+     * @return 字符串
      */
     public static String encodeUTF8toGBK(CharSequence cs) {
         return StringUtils.encodeCharset(cs, CharsetName.UTF_8, CharsetName.GBK);
     }
 
     /**
-     * 将url字符串中的非ascii码转为16进制字符串
+     * 将字符串中的非ascii码转为16进制字符串
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 字符串
      */
     public static String encodeJvmUtf8HexString(CharSequence str) {
         if (str == null) {
@@ -4019,7 +3976,7 @@ public class StringUtils {
      * JVM把非ASCII字符转为十六进制字符串, 对十六进制字符串反向解析生成可读字符串
      *
      * @param str 十六进制字符串
-     * @return
+     * @return 字符串
      */
     public static String decodeJvmUtf8HexString(CharSequence str) {
         if (str == null) {
@@ -4082,7 +4039,7 @@ public class StringUtils {
      *
      * @param str    字符串
      * @param prefix 字符串前缀
-     * @return
+     * @return 字符串
      */
     public static String addLinePrefix(CharSequence str, CharSequence prefix) {
         StringBuilder buf = new StringBuilder(str.length() + prefix.length() * 10);
@@ -4168,7 +4125,7 @@ public class StringUtils {
      * 删除字符串参数str中的空白字符
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String removeBlank(CharSequence str) {
         if (str == null) {
@@ -4217,7 +4174,7 @@ public class StringUtils {
      * null或空字符返回输入字符串本身
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String removePrefix(CharSequence str) {
         if (str == null) {
@@ -4256,7 +4213,7 @@ public class StringUtils {
      * 输入参数为null时返回null, 输入参数为空字符串时返回空字符
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String removeSuffix(CharSequence str) {
         if (str == null) {
@@ -4269,8 +4226,8 @@ public class StringUtils {
     /**
      * 删除字符串右侧的回车或回车换行符
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 字符串
      */
     public static String removeEOL(CharSequence str) {
         if (str == null) {
@@ -4299,7 +4256,7 @@ public class StringUtils {
      * 删除字符串参数 str 中的回车符与换行符
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static StringBuilder removeLineSeparator(CharSequence str) {
         if (str == null) {
@@ -4320,7 +4277,7 @@ public class StringUtils {
      * 判断字符参数c是否为26个英文字母之一(包括大写与小写)
      *
      * @param c 字符
-     * @return
+     * @return 返回true表示字符参数c是否为26个英文字母之一
      */
     public static boolean isLetter(char c) {
         return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(c) != -1;
@@ -4331,7 +4288,7 @@ public class StringUtils {
      * 判断字符数组参数array是否全部为数字（0,1,2,3,4,5,6,7,8,9）
      *
      * @param str 字符
-     * @return
+     * @return 返回true表示字符参数c是否为26个英文字母之一
      */
     public static boolean isLetterOrNumber(CharSequence str) {
         if (str == null) {
@@ -4351,7 +4308,7 @@ public class StringUtils {
      * 判断输入字符是否为ASCII中除数据，英文字母，控制字符外的其他字符如： -
      *
      * @param c 字符
-     * @return
+     * @return 返回true表示字符是否为ASCII中除数据
      */
     public static boolean isSymbol(char c) {
         return ".,;:'\"<>/\\|~`!@#$%^&*()_+={}[]?- ".indexOf(c) != -1;
@@ -4361,7 +4318,7 @@ public class StringUtils {
      * 判断字符数组参数array是否全部为数字（0,1,2,3,4,5,6,7,8,9）
      *
      * @param array 字符数组
-     * @return
+     * @return 返回true表示字符数组参数array是否全部为数字
      */
     public static boolean isNumber(char... array) {
         if (array == null || array.length == 0) {
@@ -4380,7 +4337,7 @@ public class StringUtils {
      * 逐个判断字符串 str 中的每个字符，判断是否全部为数字字符
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符序列中的字符都是数字字符
      */
     public static boolean isNumber(CharSequence str) {
         if (str == null || str.length() == 0) {
@@ -4422,7 +4379,7 @@ public class StringUtils {
      * 判断字符串参数 str 二端是否有小括号
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串两端有小括号
      */
     public static boolean containsParenthes(CharSequence str) {
         if (str == null || str.length() <= 1) {
@@ -4436,7 +4393,7 @@ public class StringUtils {
      * 判断字符串参数 str 二端是否有单引号
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串两端有单引号
      */
     public static boolean containsQuotation(CharSequence str) {
         if (str == null || str.length() <= 1) {
@@ -4450,7 +4407,7 @@ public class StringUtils {
      * 判断字符串参数 str 二端是否有双引号
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串两端有双引号 false表示字符串两端没有双引号
      */
     public static boolean containsDoubleQuotation(CharSequence str) {
         if (str == null || str.length() <= 1) {
@@ -4465,7 +4422,7 @@ public class StringUtils {
      *
      * @param str        字符串
      * @param defaultStr 默认值
-     * @return str 或 defaultStr
+     * @return 字符串
      */
     public static String defaultString(CharSequence str, CharSequence defaultStr) {
         if (StringUtils.isBlank(str)) {
@@ -4479,7 +4436,7 @@ public class StringUtils {
      * 判断字符串参数str转为int对象是否会发生异常
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串是整数 false表示字符串不是整数
      */
     public static boolean isInt(String str) {
         try {
@@ -4494,7 +4451,7 @@ public class StringUtils {
      * 判断字符串参数str转为 Double 对象是否会发生异常
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串是Double false表示字符串不是Double
      */
     public static boolean isDouble(String str) {
         try {
@@ -4509,7 +4466,7 @@ public class StringUtils {
      * 判断字符串参数str转为 Long 对象是否会发生异常
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串是Long false表示字符串不是Long
      */
     public static boolean isLong(String str) {
         try {
@@ -4524,7 +4481,7 @@ public class StringUtils {
      * 判断字符串参数str转为 BigDecimal 对象是否会发生异常
      *
      * @param str 字符串
-     * @return
+     * @return 返回true表示字符串是Decimal false表示字符串不是Decimal
      */
     public static boolean isDecimal(String str) {
         try {
@@ -4596,7 +4553,7 @@ public class StringUtils {
      *
      * @param str        字符串
      * @param defaultVal 默认值
-     * @return
+     * @return 整数
      */
     public static int parseInt(String str, int defaultVal) {
         try {
@@ -4610,7 +4567,7 @@ public class StringUtils {
      * 把字符串数组中的所有元素转为整数，如果转换失败则抛出异常信息
      *
      * @param array 字符串数组
-     * @return
+     * @return 整数数组
      */
     public static int[] parseInt(String[] array) {
         if (array == null) {
@@ -4630,7 +4587,7 @@ public class StringUtils {
      * 将整数转为36进制字符串详见方法：{@linkplain #toHexadecimalString(int, int)}
      *
      * @param str 字符串
-     * @return
+     * @return 整数
      */
     public static int parseHexadecimal(CharSequence str) {
         if (StringUtils.isBlank(str)) {
@@ -4657,7 +4614,7 @@ public class StringUtils {
      * 十六进制字符串转为字节数组
      *
      * @param str 十六进制字符串
-     * @return
+     * @return 字节数组
      */
     public static byte[] parseHexString(String str) {
         if (str == null) {
@@ -4680,7 +4637,7 @@ public class StringUtils {
      *
      * @param str   字符串
      * @param regex 正则表达式
-     * @return
+     * @return 匹配器
      */
     public static Matcher compile(String str, String regex) {
         Pattern compile = Pattern.compile(regex);

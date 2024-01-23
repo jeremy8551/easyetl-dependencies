@@ -82,7 +82,7 @@ public class XMLUtils {
      * 返回 xml 配置文件根节点
      *
      * @param in xml输入流
-     * @return
+     * @return 元素
      */
     public static Element getRoot(InputStream in) {
         try {
@@ -153,7 +153,7 @@ public class XMLUtils {
      *
      * @param node 节点
      * @param name 属性名
-     * @return
+     * @return 整数
      */
     public static int getAttributeAsInt(Node node, String name) {
         String value = getAttribute(node, name);
@@ -170,7 +170,7 @@ public class XMLUtils {
      * @param node       节点
      * @param name       属性名
      * @param defaultVal 默认值
-     * @return
+     * @return 整数
      */
     public static int getAttributeAsInt(Node node, String name, int defaultVal) {
         String value = getAttribute(node, name, null);
@@ -191,7 +191,7 @@ public class XMLUtils {
      * @param node       节点
      * @param name       属性名
      * @param defaultVal 默认值
-     * @return
+     * @return 布尔值
      */
     public static boolean getAttributeAsBoolean(Node node, String name, String defaultVal) {
         String value = getAttribute(node, name, null);
@@ -227,7 +227,7 @@ public class XMLUtils {
      *
      * @param node     节点
      * @param nodeName 子节点名
-     * @return
+     * @return 节点个数
      */
     public static int getNodeNumber(Node node, String nodeName) {
         int count = 0;
@@ -249,7 +249,7 @@ public class XMLUtils {
      * {@literal "string" == &quot;string&quot; }
      *
      * @param str 字符串
-     * @return
+     * @return 转义后的字符串
      */
     public static String escape(String str) {
         if (str == null) {
@@ -296,7 +296,7 @@ public class XMLUtils {
      * {@literal &quot;string&quot; == "string" }
      *
      * @param str 字符串
-     * @return
+     * @return 字符串
      */
     public static String unescape(String str) {
         if (str == null) {
@@ -409,6 +409,9 @@ public class XMLUtils {
                 return charsetName;
             }
         } catch (Exception e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
         }
 
         try {
@@ -417,6 +420,9 @@ public class XMLUtils {
                 return charsetName;
             }
         } catch (Exception e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
         }
 
         try {
@@ -425,6 +431,9 @@ public class XMLUtils {
                 return charsetName;
             }
         } catch (Exception e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
         }
 
         try {
@@ -433,6 +442,9 @@ public class XMLUtils {
                 return charsetName;
             }
         } catch (Exception e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
         }
 
         try {
@@ -441,6 +453,9 @@ public class XMLUtils {
                 return charsetName;
             }
         } catch (Exception e) {
+            if (JUL.isDebugEnabled()) {
+                JUL.debug(e.getLocalizedMessage(), e);
+            }
         }
 
         return null;
@@ -540,8 +555,8 @@ public class XMLUtils {
     /**
      * remove &lt;!DOCTYPE .. &gt; from xml content
      *
-     * @param xml
-     * @return
+     * @param xml XML信息
+     * @return 字符串
      */
     public static String removeXmlDoctype(String xml) {
         if (xml == null) {
@@ -586,12 +601,12 @@ public class XMLUtils {
      *
      * @param str  xml内容
      * @param from 属性值开始位置, 单引号或双引号的起始位置
-     * @return
+     * @return 位置信息
      */
     private static int indexXmlPropertyValueEndPos(String str, int from) {
-        char bc = str.charAt(from); // 单引号或双引号
+        char c = str.charAt(from); // 单引号或双引号
         for (int i = from + 1; i < str.length(); i++) {
-            if (str.charAt(i) == bc) {
+            if (str.charAt(i) == c) {
                 return i;
             }
         }

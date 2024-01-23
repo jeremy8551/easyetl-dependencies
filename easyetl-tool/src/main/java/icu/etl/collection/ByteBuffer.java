@@ -93,7 +93,7 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 返回缓冲区默认增加的大小
      *
-     * @return
+     * @return 增量大小
      */
     public int getIncrCapacity() {
         return this.incrCapacity;
@@ -107,9 +107,9 @@ public class ByteBuffer implements Appendable, CharsetName {
     public void setIncrCapacity(int size) {
         if (size <= 0) {
             throw new IllegalArgumentException(String.valueOf(size));
-        } else {
-            this.incrCapacity = size;
         }
+
+        this.incrCapacity = size;
     }
 
     /**
@@ -120,10 +120,10 @@ public class ByteBuffer implements Appendable, CharsetName {
     public void restore(int size) {
         if (size < 0) {
             throw new IllegalArgumentException(String.valueOf(size));
-        } else {
-            this.value = new byte[size];
-            this.count = 0;
         }
+
+        this.value = new byte[size];
+        this.count = 0;
     }
 
     /**
@@ -140,7 +140,7 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 返回缓冲区中的字节数组（不是副本，操作数据需要谨慎）
      *
-     * @return
+     * @return 字节数组
      */
     protected byte[] getBytes() {
         return this.value;
@@ -172,7 +172,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * @param array  字节数组
      * @param offset 数组起始位置
      * @param length 长度
-     * @return
+     * @return 字节缓冲区
      */
     protected final ByteBuffer addByteArrays(byte[] array, int offset, int length) {
         if (length < 0) {
@@ -196,23 +196,23 @@ public class ByteBuffer implements Appendable, CharsetName {
     public void set(int index, byte value) {
         if (index < 0 || index >= this.count) {
             throw new IllegalArgumentException(index + ", " + value);
-        } else {
-            this.value[index] = value;
         }
+
+        this.value[index] = value;
     }
 
     /**
      * 返回指定位置上的字节
      *
      * @param index 字节数组中的位置，从0开始
-     * @return
+     * @return 字节
      */
     public byte byteAt(int index) {
         if (index < 0 || index >= this.count) {
             throw new IllegalArgumentException(String.valueOf(index));
-        } else {
-            return this.value[index];
         }
+        
+        return this.value[index];
     }
 
     /**
@@ -222,7 +222,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * @param array  字节数组
      * @param offset 字节数组起始位置（从0开始）
      * @param length 插入长度
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer insert(int index, byte[] array, int offset, int length) {
         if (array == null || length == 0) {
@@ -248,8 +248,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 追加字符串
      *
      * @param str 字符串
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(String str) throws IOException {
         return str == null ? this : this.append(str, this.charsetName);
@@ -260,8 +260,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      *
      * @param str         字符串
      * @param charsetName 字符串的字符集
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(String str, String charsetName) throws IOException {
         if (str == null || str.length() == 0) {
@@ -278,7 +278,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 追加字节缓冲区
      *
      * @param bytes 字节数组
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer append(ByteBuffer bytes) {
         if (bytes == null || bytes.length() == 0) {
@@ -294,7 +294,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 追加字节数组
      *
      * @param array 字节数组
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer append(byte[] array) {
         return array == null || array.length == 0 ? this : this.addByteArrays(array, 0, array.length);
@@ -306,7 +306,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * @param array  字节数组
      * @param offset 数组起始位置
      * @param length 长度
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer append(byte[] array, int offset, int length) {
         if (array == null) {
@@ -327,8 +327,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      *
      * @param c           字符
      * @param charsetName 字符的编码集
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(char c, String charsetName) throws IOException {
         String str = String.valueOf(c);
@@ -340,7 +340,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 追加字节
      *
      * @param b
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer append(byte b) {
         this.expandValueArray(4);
@@ -353,8 +353,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      *
      * @param in     输入流
      * @param length 读取字节个数
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(InputStream in, int length) throws IOException {
         if (length < 0) {
@@ -374,8 +374,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 从 <code> InputStream </code> 输入流中读取字节，并将字节数组保存到当前对象中
      *
      * @param in 输入流
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(InputStream in) throws IOException {
         if (in != null) {
@@ -392,8 +392,8 @@ public class ByteBuffer implements Appendable, CharsetName {
      *
      * @param in    输入流
      * @param array 字节缓冲区
-     * @return
-     * @throws IOException
+     * @return 字节缓冲区
+     * @throws IOException 访问输入流发生错误
      */
     public ByteBuffer append(InputStream in, byte[] array) throws IOException {
         if (in != null) {
@@ -425,9 +425,9 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 使用指定的语言环境、格式字符串和参数，将一个格式化字符串追加到此 Chars 右端
      *
-     * @param format
-     * @param args
-     * @return
+     * @param format 字符串格式
+     * @param args   参数数组
+     * @return 字节缓冲区
      */
     public ByteBuffer append(String format, Object... args) {
         if (this.formatter == null || this.formatter.locale() != Locale.getDefault()) {
@@ -441,10 +441,10 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 使用指定的语言环境、格式字符串和参数，将一个格式化字符串追加到此 Chars 右端
      *
-     * @param locale
-     * @param format
-     * @param args
-     * @return
+     * @param locale 语音环境
+     * @param format 字符串格式
+     * @param args   参数数组
+     * @return 字节缓冲区
      */
     public ByteBuffer append(Locale locale, String format, Object... args) {
         if ((this.formatter == null) || (this.formatter.locale() != locale)) {
@@ -481,7 +481,7 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 字节数组大小
      *
-     * @return
+     * @return 字节数组大小
      */
     public int length() {
         return this.count;
@@ -490,7 +490,7 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * true表示字节数组length为0
      *
-     * @return
+     * @return 返回true表示缓冲区容量为空
      */
     public boolean isEmpty() {
         return this.count <= 0;
@@ -517,7 +517,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * 把字节数组转成字符串
      *
      * @param charsetName 字符集
-     * @return
+     * @return 字符串
      */
     public String toString(String charsetName) {
         try {
@@ -544,7 +544,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      *
      * @param begin 截取起始位置，从0开始
      * @param end   截取终止位置(不包含在内)
-     * @return
+     * @return 字节缓冲区
      */
     public ByteBuffer subbytes(int begin, int end) {
         if (begin < 0) {
@@ -564,8 +564,8 @@ public class ByteBuffer implements Appendable, CharsetName {
     /**
      * 向输出流中写入全部字节
      *
-     * @param out
-     * @throws IOException
+     * @param out 输出流
+     * @throws IOException 输出流发生错误
      */
     public void write(OutputStream out) throws IOException {
         if (out == null) {
@@ -582,7 +582,7 @@ public class ByteBuffer implements Appendable, CharsetName {
      * @param out    输出流
      * @param offset 起始位置
      * @param length 长度
-     * @throws IOException
+     * @throws IOException 输出流发生错误
      */
     public void write(OutputStream out, int offset, int length) throws IOException {
         if (out == null) {
@@ -613,7 +613,7 @@ public class ByteBuffer implements Appendable, CharsetName {
         return new OutputStreamImpl(this);
     }
 
-    class OutputStreamImpl extends OutputStream {
+    static class OutputStreamImpl extends OutputStream {
         private ByteBuffer buffer;
 
         public OutputStreamImpl(ByteBuffer buffer) {

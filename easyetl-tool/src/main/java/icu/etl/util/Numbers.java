@@ -29,8 +29,8 @@ public class Numbers {
     /**
      * 求最大值
      *
-     * @param array
-     * @return
+     * @param array 整数数组
+     * @return 最大值
      */
     public static int max(int... array) {
         if (array.length == 0) {
@@ -50,7 +50,7 @@ public class Numbers {
      * 求和
      *
      * @param array 整数数组
-     * @return
+     * @return 数组中元素之和
      */
     public static int sum(int... array) {
         int sum = 0;
@@ -64,14 +64,14 @@ public class Numbers {
      * 求和
      *
      * @param list 整数集合
-     * @return
+     * @return 集合中元素之和
      */
     public static int sum(List<Integer> list) {
         int sum = 0;
         for (int i = 0; i < list.size(); i++) {
             Integer number = list.get(i);
             if (number != null) {
-                sum += number.intValue();
+                sum += number;
             }
         }
         return sum;
@@ -84,7 +84,7 @@ public class Numbers {
      * 输入-100 返回3
      *
      * @param number 数字
-     * @return
+     * @return 参数的位数
      */
     public static int digit(Integer number) {
         if (number == null) {
@@ -128,7 +128,7 @@ public class Numbers {
      *
      * @param number 整数
      * @param array  数组
-     * @return
+     * @return 返回true表示整数包含在数组中 false表示不存在
      */
     public static boolean inArray(int number, int... array) {
         if (array != null) {
@@ -160,9 +160,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static Integer plus(Integer i1, Integer i2) {
         if (i1 == null) {
@@ -178,9 +178,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static BigInteger plus(BigInteger i1, BigInteger i2) {
         if (i1 == null) {
@@ -196,9 +196,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static BigDecimal plus(BigDecimal i1, BigDecimal i2) {
         if (i1 == null) {
@@ -214,9 +214,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static Double plus(Double i1, Double i2) {
         if (i1 == null) {
@@ -232,9 +232,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static Long plus(Long i1, Long i2) {
         if (i1 == null) {
@@ -250,9 +250,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static Short plus(Short i1, Short i2) {
         if (i1 == null) {
@@ -268,9 +268,9 @@ public class Numbers {
     /**
      * 返回 i1 + i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之和
      */
     public static Float plus(Float i1, Float i2) {
         if (i1 == null) {
@@ -285,9 +285,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static Integer subtract(Integer i1, Integer i2) {
         if (i1 == null) {
@@ -303,9 +303,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static BigInteger subtract(BigInteger i1, BigInteger i2) {
         if (i1 == null) {
@@ -321,9 +321,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static BigDecimal subtract(BigDecimal i1, BigDecimal i2) {
         if (i1 == null) {
@@ -339,9 +339,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static Double subtract(Double i1, Double i2) {
         if (i1 == null) {
@@ -357,9 +357,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static Long subtract(Long i1, Long i2) {
         if (i1 == null) {
@@ -375,9 +375,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static Short subtract(Short i1, Short i2) {
         if (i1 == null) {
@@ -393,9 +393,9 @@ public class Numbers {
     /**
      * 返回 i1 - i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 参数之差
      */
     public static Float subtract(Float i1, Float i2) {
         if (i1 == null) {
@@ -410,9 +410,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘基
      */
     public static Integer multiply(Integer i1, Integer i2) {
         if (i1 == null) {
@@ -428,9 +428,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static BigInteger multiply(BigInteger i1, BigInteger i2) {
         if (i1 == null) {
@@ -446,9 +446,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static BigDecimal multiply(BigDecimal i1, BigDecimal i2) {
         if (i1 == null) {
@@ -464,9 +464,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static Double multiply(Double i1, Double i2) {
         if (i1 == null) {
@@ -482,9 +482,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static Long multiply(Long i1, Long i2) {
         if (i1 == null) {
@@ -500,9 +500,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static Short multiply(Short i1, Short i2) {
         if (i1 == null) {
@@ -518,9 +518,9 @@ public class Numbers {
     /**
      * 返回 i1 乘 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 乘积
      */
     public static Float multiply(Float i1, Float i2) {
         if (i1 == null) {
@@ -535,9 +535,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Integer divide(Integer i1, Integer i2) {
         if (i1 == null) {
@@ -553,9 +553,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static BigInteger divide(BigInteger i1, BigInteger i2) {
         if (i1 == null) {
@@ -571,9 +571,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static BigDecimal divide(BigDecimal i1, BigDecimal i2) {
         if (i1 == null) {
@@ -589,9 +589,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Double divide(Double i1, Double i2) {
         if (i1 == null) {
@@ -607,9 +607,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Long divide(Long i1, Long i2) {
         if (i1 == null) {
@@ -625,9 +625,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Short divide(Short i1, Short i2) {
         if (i1 == null) {
@@ -643,9 +643,9 @@ public class Numbers {
     /**
      * 返回 i1 除 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Float divide(Float i1, Float i2) {
         if (i1 == null) {
@@ -660,9 +660,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Integer mod(Integer i1, Integer i2) {
         if (i1 == null) {
@@ -678,9 +678,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static BigInteger mod(BigInteger i1, BigInteger i2) {
         if (i1 == null) {
@@ -696,9 +696,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Double mod(Double i1, Double i2) {
         if (i1 == null) {
@@ -714,9 +714,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Long mod(Long i1, Long i2) {
         if (i1 == null) {
@@ -732,9 +732,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Short mod(Short i1, Short i2) {
         if (i1 == null) {
@@ -750,9 +750,9 @@ public class Numbers {
     /**
      * 返回 i1 取余 i2 结果
      *
-     * @param i1
-     * @param i2
-     * @return
+     * @param i1 数值
+     * @param i2 数值
+     * @return 余数
      */
     public static Float mod(Float i1, Float i2) {
         if (i1 == null) {
@@ -767,8 +767,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(Integer i1, Integer i2) {
@@ -788,8 +788,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(BigInteger i1, BigInteger i2) {
@@ -809,8 +809,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(BigDecimal i1, BigDecimal i2) {
@@ -830,8 +830,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(Double i1, Double i2) {
@@ -851,8 +851,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(Long i1, Long i2) {
@@ -872,8 +872,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(Short i1, Short i2) {
@@ -893,8 +893,8 @@ public class Numbers {
     /**
      * i1 是否大于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于 i2
      */
     public static boolean greater(Float i1, Float i2) {
@@ -913,8 +913,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(Integer i1, Integer i2) {
@@ -934,8 +934,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(BigInteger i1, BigInteger i2) {
@@ -955,8 +955,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(BigDecimal i1, BigDecimal i2) {
@@ -976,8 +976,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(Double i1, Double i2) {
@@ -997,8 +997,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(Long i1, Long i2) {
@@ -1018,8 +1018,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(Short i1, Short i2) {
@@ -1039,8 +1039,8 @@ public class Numbers {
     /**
      * i1 是否小于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于 i2
      */
     public static boolean less(Float i1, Float i2) {
@@ -1059,8 +1059,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(Integer i1, Integer i2) {
@@ -1080,8 +1080,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(BigInteger i1, BigInteger i2) {
@@ -1100,8 +1100,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(BigDecimal i1, BigDecimal i2) {
@@ -1121,8 +1121,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(Double i1, Double i2) {
@@ -1142,8 +1142,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(Long i1, Long i2) {
@@ -1163,8 +1163,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(Short i1, Short i2) {
@@ -1184,8 +1184,8 @@ public class Numbers {
     /**
      * i1 是否大于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 大于等于 i2
      */
     public static boolean greaterEquals(Float i1, Float i2) {
@@ -1204,8 +1204,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(Integer i1, Integer i2) {
@@ -1225,8 +1225,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(BigInteger i1, BigInteger i2) {
@@ -1246,8 +1246,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(BigDecimal i1, BigDecimal i2) {
@@ -1267,8 +1267,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(Double i1, Double i2) {
@@ -1288,8 +1288,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(Long i1, Long i2) {
@@ -1309,8 +1309,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(Short i1, Short i2) {
@@ -1330,8 +1330,8 @@ public class Numbers {
     /**
      * i1 是否小于等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 小于等于 i2
      */
     public static boolean lessEquals(Float i1, Float i2) {
@@ -1350,8 +1350,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(Integer i1, Integer i2) {
@@ -1371,8 +1371,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(BigInteger i1, BigInteger i2) {
@@ -1392,8 +1392,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(BigDecimal i1, BigDecimal i2) {
@@ -1413,8 +1413,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(Double i1, Double i2) {
@@ -1434,8 +1434,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(Long i1, Long i2) {
@@ -1455,8 +1455,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(Short i1, Short i2) {
@@ -1476,8 +1476,8 @@ public class Numbers {
     /**
      * i1 是否等于 i2
      *
-     * @param i1
-     * @param i2
+     * @param i1 数值
+     * @param i2 数值
      * @return true表示 i1 等于 i2
      */
     public static boolean equals(Float i1, Float i2) {
@@ -1496,7 +1496,7 @@ public class Numbers {
     /**
      * 判断是否为零
      *
-     * @param val
+     * @param val 数值
      * @return null返回false；
      */
     public static boolean isZero(BigDecimal val) {

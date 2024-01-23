@@ -62,7 +62,7 @@ public class OSUtils {
      * @return 返回true表示是aix系统 false表示不是aix系统
      */
     public static boolean isAix() {
-        return StringUtils.objToStr(System.getProperty("os.name")).toLowerCase().equals("aix");
+        return StringUtils.objToStr(System.getProperty("os.name")).equalsIgnoreCase("aix");
     }
 
 }

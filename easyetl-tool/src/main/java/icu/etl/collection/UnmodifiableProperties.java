@@ -168,7 +168,7 @@ public class UnmodifiableProperties extends Properties implements Cloneable {
         obj.store(new PropertiesWriter(writer, CharsetName.UTF_8), comments);
     }
 
-    class PropertiesWriter extends OutputStream {
+    private static class PropertiesWriter extends OutputStream {
 
         /** 字符输出流 */
         private Writer out;

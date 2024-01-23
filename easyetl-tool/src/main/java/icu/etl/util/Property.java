@@ -52,7 +52,7 @@ public class Property {
     /**
      * 返回属性排序编号
      *
-     * @return
+     * @return 排序编号
      */
     public int getOrder() {
         return order;
@@ -61,7 +61,7 @@ public class Property {
     /**
      * 设置属性排序编号
      *
-     * @param order
+     * @param order 排序编号
      */
     public void setOrder(int order) {
         this.order = order;
@@ -70,7 +70,7 @@ public class Property {
     /**
      * 设置属性名
      *
-     * @param name
+     * @param name 属性名
      */
     public void setKey(String name) {
         if (name == null) {
@@ -83,7 +83,7 @@ public class Property {
     /**
      * 设置属性值
      *
-     * @param value
+     * @param value 属性值
      */
     public void setValue(Object value) {
         this.value = value;
@@ -92,7 +92,7 @@ public class Property {
     /**
      * 返回属性名
      *
-     * @return
+     * @return 属性名
      */
     public String getKey() {
         return name;
@@ -101,7 +101,7 @@ public class Property {
     /**
      * 返回属性值
      *
-     * @return
+     * @return 属性值
      */
     @SuppressWarnings("unchecked")
     public <E> E getValue() {
@@ -111,7 +111,7 @@ public class Property {
     /**
      * 将属性值转为字符串
      *
-     * @return
+     * @return 字符串
      */
     public String getString() {
         return this.value == null ? null : this.value.toString();
@@ -120,7 +120,7 @@ public class Property {
     /**
      * 返回属性描述信息
      *
-     * @return
+     * @return 属性描述信息
      */
     public String getDescription() {
         return description;
@@ -129,7 +129,7 @@ public class Property {
     /**
      * 设置属性描述信息
      *
-     * @param description
+     * @param description 属性描述信息
      */
     public void setDescription(String description) {
         this.description = description;

@@ -11,7 +11,7 @@ import java.util.RandomAccess;
 /**
  * 自然方式访问数据
  * 特点如下：
- * 固定长度的集合 （添加数据元到List 不会自动扩展容量，需要调用 {@linkplain #expandCapacity(int)}} 方法分配大小）
+ * 固定长度的集合 （添加数据元到List 不会自动扩展容量，需要调用 {@linkplain RandomAccessList#expandCapacity(int)}} 方法分配大小）
  * 添加值时自动从 1 开始 （而不是0）;
  * 访问值时自动从 1 开始 （而不是0）;
  *

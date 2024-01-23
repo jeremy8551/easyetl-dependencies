@@ -80,7 +80,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加对象, 使用对象的 toString() 方法将对象转为的字符串，并添加到缓冲区
      *
      * @param obj 对象
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(Object obj) {
         if (obj == null) {
@@ -109,7 +109,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加异常信息
      *
      * @param e 异常信息
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(Throwable e) {
         if (e != null) {
@@ -122,7 +122,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加字符串
      *
      * @param str 字符串
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(String str) {
         if (str == null) {
@@ -146,7 +146,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * @param str    字符串
      * @param offset 字符串起始位置, 从0开始
      * @param length 追加长度, 从0开始
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(String str, int offset, int length) {
         if (offset < 0) {
@@ -176,7 +176,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加字符串
      *
      * @param buf 字符串
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(CharBuffer buf) {
         if (buf == null) {
@@ -200,7 +200,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * @param array  字符数组
      * @param offset 起始位置
      * @param length 长度
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(char[] array, int offset, int length) {
         if (offset < 0) {
@@ -229,7 +229,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加 StringBuffer 对象
      *
      * @param buf StringBuffer对象
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(StringBuffer buf) {
         return this.append(buf, 0, buf.length());
@@ -241,7 +241,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * @param buf    StringBuffer对象
      * @param offset 起始位置
      * @param length 长度
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(StringBuffer buf, int offset, int length) {
         if (offset < 0) {
@@ -264,8 +264,8 @@ public class CharBuffer implements Appendable, CharSequence {
      * 从 Reader 对象中读取字符流
      *
      * @param in Read 读取类
-     * @return
-     * @throws IOException
+     * @return 字符缓冲区
+     * @throws IOException 从输入流中读取数据发生错误
      */
     public CharBuffer append(Reader in) throws IOException {
         if (in != null) {
@@ -283,8 +283,8 @@ public class CharBuffer implements Appendable, CharSequence {
      * @param in     Read 读取类
      * @param buf    缓冲区长度
      * @param length 长度
-     * @return
-     * @throws IOException
+     * @return 字符缓冲区
+     * @throws IOException 从输入流中读取数据发生错误
      */
     public CharBuffer append(Reader in, char[] buf, int length) throws IOException {
         if (in != null) {
@@ -300,7 +300,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * 追加 StringBuilder 对象
      *
      * @param buf StringBuilder对象
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(StringBuilder buf) {
         if (buf != null) {
@@ -315,7 +315,7 @@ public class CharBuffer implements Appendable, CharSequence {
      * @param buf    StringBuilder对象
      * @param offset 起始位置
      * @param length 长度
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer append(StringBuilder buf, int offset, int length) {
         if (buf == null) {
@@ -381,7 +381,7 @@ public class CharBuffer implements Appendable, CharSequence {
      *
      * @param index 位置,从0开始
      * @param c     字符
-     * @return
+     * @return 字符缓冲区
      */
     public CharBuffer set(int index, char c) {
         if (index < 0 || index >= this.count) {
@@ -395,7 +395,7 @@ public class CharBuffer implements Appendable, CharSequence {
     /**
      * 字符数组是否为空
      *
-     * @return
+     * @return 返回true表示字符缓冲区是空
      */
     public boolean isEmpty() {
         return this.count == 0;
@@ -415,7 +415,7 @@ public class CharBuffer implements Appendable, CharSequence {
     /**
      * 返回缓冲区中的字符数组（不是副本，操作数据需要谨慎）
      *
-     * @return
+     * @return 字符数组
      */
     public char[] value() {
         return this.value;

@@ -54,7 +54,7 @@ public class TimeWatch {
      * <p>
      * 计时器用时计算公式: 当前时间 - 开始时间 - 暂停时间
      *
-     * @return
+     * @return 用时时间，单位：毫秒
      */
     public long useMillis() {
         return System.currentTimeMillis() - this.startMillis - this.pause.getPauseMillis();
@@ -63,7 +63,7 @@ public class TimeWatch {
     /**
      * 返回计时器用时时间（单位：秒）
      *
-     * @return
+     * @return 用时时间，单位：秒
      */
     public long useSeconds() {
         return this.useMillis() / 1000;

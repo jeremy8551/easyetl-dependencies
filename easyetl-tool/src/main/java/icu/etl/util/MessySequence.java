@@ -73,10 +73,9 @@ public class MessySequence implements CharSequence {
     public MessySequence(CharsetEncoder encoder) {
         if (encoder == null) {
             throw new NullPointerException();
-        } else {
-            this.encoder = encoder;
-            this.charsetName = encoder.charset().name();
         }
+        this.encoder = encoder;
+        this.charsetName = encoder.charset().name();
     }
 
     /**
@@ -145,7 +144,7 @@ public class MessySequence implements CharSequence {
     /**
      * 乱码字符个数
      *
-     * @return
+     * @return 字符个数
      */
     public int length() {
         return this.length;
@@ -175,7 +174,7 @@ public class MessySequence implements CharSequence {
      * 使用字符数组 array 替换字符串中的乱码字符
      *
      * @param array 字符数组
-     * @return
+     * @return 替换后的字符串
      */
     public String replace(char... array) {
         String replace = array.length == 0 ? "■" : new String(array); // 乱码替换字符
@@ -192,9 +191,9 @@ public class MessySequence implements CharSequence {
     }
 
     /**
-     * 返回 true 表示字符串中存在乱码字符
+     * 判断字符串中是否存在乱码字符
      *
-     * @return
+     * @return 返回 true 表示字符串中存在乱码字符
      */
     public boolean contains() {
         return this.length != 0;
@@ -203,7 +202,7 @@ public class MessySequence implements CharSequence {
     /**
      * 乱码字符的数组
      *
-     * @return
+     * @return 乱码字符的数组
      */
     public char[] toArray() {
         if (this.length == 0) {
@@ -218,7 +217,7 @@ public class MessySequence implements CharSequence {
     /**
      * 乱码字符所在位置的数组（从0开始）
      *
-     * @return
+     * @return 位置数组
      */
     public int[] getPosition() {
         if (this.length == 0) {
@@ -233,7 +232,7 @@ public class MessySequence implements CharSequence {
     /**
      * 返回字符集编码器
      *
-     * @return
+     * @return 字符集编码器
      */
     public CharsetEncoder getEncoder() {
         return this.encoder;
@@ -242,7 +241,7 @@ public class MessySequence implements CharSequence {
     /**
      * 返回字符集编码
      *
-     * @return
+     * @return 字符集编码
      */
     public String getCharsetName() {
         return this.charsetName;
@@ -251,7 +250,7 @@ public class MessySequence implements CharSequence {
     /**
      * 返回在删除乱码之前的字符串
      *
-     * @return
+     * @return 字符串
      */
     public String getSource() {
         return this.source;
@@ -263,7 +262,7 @@ public class MessySequence implements CharSequence {
      * 2) 乱码字符替换为半角字符 tip <br>
      *
      * @param tip 半角字符
-     * @return
+     * @return 字符图形
      */
     public String highlights(char tip) {
         if (tip < 32 || tip > 126) { // 只能用半角字符
@@ -298,7 +297,7 @@ public class MessySequence implements CharSequence {
      * 显示乱码详细信息 <br>
      * 字符串{ xxxx } 中第 x 个字符, 第 y 个字符是非字符集中的字符!
      *
-     * @return
+     * @return 乱码字符串
      */
     public String toMessyString() {
         if (this.length == 0) {

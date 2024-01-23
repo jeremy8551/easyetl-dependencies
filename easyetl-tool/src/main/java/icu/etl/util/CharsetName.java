@@ -8,19 +8,11 @@ package icu.etl.util;
  */
 public interface CharsetName {
 
-    public final static String GBK = "GBK";
+    String GBK = "GBK";
 
-    public final static String UTF_8 = "UTF-8";
+    String UTF_8 = "UTF-8";
 
-    public final static String UTF_16 = "UTF-16";
-
-    public final static String UTF_16BE = "UTF-16BE";
-
-    public final static String UTF_16LE = "UTF-16LE";
-
-    public final static String ISO_8859_1 = "ISO-8859-1";
-
-    public final static String US_ASCII = "US-ASCII";
+    String ISO_8859_1 = "ISO-8859-1";
 
     /**
      * 字符集

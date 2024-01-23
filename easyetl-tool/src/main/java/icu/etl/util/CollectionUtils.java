@@ -51,8 +51,8 @@ public class CollectionUtils {
     /**
      * 返回属性名集合
      *
-     * @param p
-     * @return
+     * @param p 属性集合
+     * @return 属性名集合
      */
     public static Set<String> stringPropertyNames(Properties p) {
         if (p == null) {
@@ -73,7 +73,7 @@ public class CollectionUtils {
     /**
      * 删除集合参数c中的重复数据项
      *
-     * @param <E>
+     * @param <E>  泛型信息
      * @param list 集合
      * @param c    判断重复数据的规则
      * @return 一个新创建的集合副本，其中没有重复数据
@@ -103,11 +103,11 @@ public class CollectionUtils {
      * 参数 args1 数组作为Map 集合的关键字
      * 参数 args2 数组作为 Map 集合的数值
      *
-     * @param <E>
-     * @param <F>
+     * @param <E>   泛型信息
+     * @param <F>   泛型信息
      * @param args1 数组1
      * @param args2 数组2
-     * @return
+     * @return 映射集合
      */
     public static <E, F> Map<E, F> toHashMap(E[] args1, F[] args2) {
         if (args1 == null) {
@@ -135,7 +135,7 @@ public class CollectionUtils {
      * 将字符串集合参数list中的字符串转为字符串数组
      *
      * @param c 字符串集合
-     * @return
+     * @return 字符串数组
      */
     public static String[] toArray(Collection<String> c) {
         if (c == null) {
@@ -169,9 +169,9 @@ public class CollectionUtils {
      * 集合中只能有一个元素, 并返回该元素
      * 如果集合中没有元素或超过一个元素就直接抛出异常信息
      *
-     * @param <E>
-     * @param ite
-     * @return
+     * @param <E> 泛型信息
+     * @param ite 便利器接口
+     * @return 第一个元素
      */
     public static <E> E onlyOne(Iterable<E> ite) {
         if (ite == null) {
@@ -195,9 +195,9 @@ public class CollectionUtils {
     /**
      * 返回集合第一个元素
      *
-     * @param <E>
+     * @param <E> 泛型信息
      * @param ite List集合
-     * @return
+     * @return 第一个元素
      */
     public static <E> E firstElement(Iterable<E> ite) {
         if (ite == null) {
@@ -211,9 +211,9 @@ public class CollectionUtils {
     /**
      * 返回数组最后一个元素
      *
-     * @param <E>
+     * @param <E> 泛型信息
      * @param c   集合
-     * @return
+     * @return 最后一个元素
      */
     public static <E> E lastElement(Collection<E> c) {
         if (c == null || c.size() == 0) {
@@ -221,9 +221,8 @@ public class CollectionUtils {
         }
 
         E object = null;
-        Iterator<E> it = c.iterator();
-        while (it.hasNext()) {
-            object = it.next();
+        for (E e : c) {
+            object = e;
         }
         return object;
     }
@@ -259,7 +258,7 @@ public class CollectionUtils {
     /**
      * 返回集合参数 list 中指定位置上的元素
      *
-     * @param <E>
+     * @param <E>   泛型信息
      * @param list  集合列表
      * @param index 位置信息
      * @return 如果位置参数 index 超过了集合 list 的范围则返回 null
@@ -289,11 +288,11 @@ public class CollectionUtils {
     /**
      * 判断集合参数 ite 中是否含有参数对象 obj
      *
-     * @param <E>
+     * @param <E> 泛型信息
      * @param ite 集合
-     * @param obj
+     * @param obj 对象
      * @param c   比对对象
-     * @return
+     * @return 返回true表示集合参数中包含元素 false表示不包含
      */
     public static <E> boolean contain(Iterable<E> ite, E obj, Comparator<E> c) {
         if (ite == null) {
@@ -303,8 +302,8 @@ public class CollectionUtils {
             throw new NullPointerException();
         }
 
-        for (Iterator<E> it = ite.iterator(); it.hasNext(); ) {
-            if (c.compare(obj, it.next()) == 0) {
+        for (E e : ite) {
+            if (c.compare(obj, e) == 0) {
                 return true;
             }
         }
@@ -314,10 +313,10 @@ public class CollectionUtils {
     /**
      * 在忽略字符大小写的情况下判断 map 中是否存在 key
      *
-     * @param <E>
+     * @param <E>  泛型信息
      * @param map  属性集合
      * @param name 属性名
-     * @return
+     * @return 返回true表示集合中包含属性 false表示集合中不包含属性
      */
     public static <E> boolean containsKeyIgnoreCase(Map<String, E> map, String name) {
         if (map == null) {
@@ -327,8 +326,9 @@ public class CollectionUtils {
             throw new NullPointerException();
         }
 
-        for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
-            if (it.next().equalsIgnoreCase(name)) {
+        Set<String> set = map.keySet();
+        for (String str : set) {
+            if (str.equalsIgnoreCase(name)) {
                 return true;
             }
         }

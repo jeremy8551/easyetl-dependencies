@@ -2,10 +2,8 @@ package icu.etl.collection;
 
 import java.io.Serializable;
 import java.util.AbstractCollection;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -146,7 +144,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * （集合的迭代器返回的第一个元素将成为第一个元素，或队列的前面。）
      *
      * @param c 要将其元素放置到队列中的集合
-     * @throws NullPointerException
      */
     public ArrayDeque(Collection<? extends E> c) {
         this.allocateElements(c.size());
@@ -157,7 +154,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 在此队列的指定位置上插入指定的元素。
      *
      * @param e the element to add
-     * @throws NullPointerException if the specified element is null
      */
     public void addFirst(E e) {
         if (e == null) {
@@ -177,7 +173,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 此方法相当于 {@link #add}.
      *
      * @param e the element to add
-     * @throws NullPointerException if the specified element is null
      */
     public void addLast(E e) {
         if (e == null) {
@@ -194,8 +189,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 将指定的元素插入此三角形的前面。
      *
      * @param e 要添加的元素
-     * @return {@code true} (由 {@link Deque#offerFirst} 这个决定)
-     * @throws NullPointerException
      */
     public boolean offerFirst(E e) {
         this.addFirst(e);
@@ -206,8 +199,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 在此队列的末尾插入指定的元素。
      *
      * @param e 要添加的元素
-     * @return {@code true} (由 {@link Deque#offerLast} 这个决定)
-     * @throws NullPointerException
      */
     public boolean offerLast(E e) {
         this.addLast(e);
@@ -216,8 +207,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
 
     /**
      * 移除队列中第一个元素
-     *
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E removeFirst() {
         E x = this.pollFirst();
@@ -230,8 +219,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
 
     /**
      * 移除队列尾部的元素
-     *
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E removeLast() {
         E x = this.pollLast();
@@ -271,8 +258,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
 
     /**
      * 返回队列中第一个元素
-     *
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E getFirst() {
         E result = (E) this.elements[this.head];
@@ -285,8 +270,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
 
     /**
      * 返回队列尾端的元素
-     *
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E getLast() {
         E result = (E) this.elements[(this.tail - 1) & (this.elements.length - 1)];
@@ -367,7 +350,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      *
      * @param e 要添加的元素
      * @return 由 {@link Collection#add} 指定
-     * @throws NullPointerException
      */
     public boolean add(E e) {
         this.addLast(e);
@@ -382,7 +364,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      *
      * @param e 要添加的元素
      * @return {@code true} 由 {@link Queue#offer} 指定
-     * @throws NullPointerException
      */
     public boolean offer(E e) {
         return this.offerLast(e);
@@ -395,7 +376,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 此方法相当于 {@link #removeFirst}.
      *
      * @return 此 队列 表示的队列的头
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E remove() {
         return this.removeFirst();
@@ -421,7 +401,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 此方法相当于 {@link #getFirst}.
      *
      * @return 此队列表示的队列的头
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E element() {
         return this.getFirst();
@@ -444,7 +423,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 此方法相当于 {@link #addFirst}.
      *
      * @param e 要添加的元素
-     * @throws NullPointerException
      */
     public void push(E e) {
         this.addFirst(e);
@@ -457,7 +435,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 此方法等效于 {@link #removeFirst()}.
      *
      * @return 此队列前面的元素（此队列表示的堆栈顶部）
-     * @throws NoSuchElementException {@inheritDoc}
      */
     public E pop() {
         return this.removeFirst();
@@ -473,7 +450,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      * 在元素数组中的指定位置删除元素，并根据需要调整头部和尾部。这可能导致元素在数组中前后移动。
      * 此方法称为delete而不是remove，以强调其语义不同于 List.remove(int）的语义。
      *
-     * @return
+     * @return 返回true表示删除成功
      */
     private boolean delete(int i) {
         this.checkInvariants();
@@ -517,7 +494,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     /**
      * 返回此队列中的元素数。
      *
-     * @return
+     * @return 元素数
      */
     public int size() {
         return (this.tail - this.head) & (this.elements.length - 1);
@@ -526,7 +503,7 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
     /**
      * 如果此数据不包含任何元素，则返回true。
      *
-     * @return
+     * @return 如果此数据不包含任何元素，则返回true
      */
     public boolean isEmpty() {
         return this.head == this.tail;
@@ -669,8 +646,6 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
      *
      * @param a 存储数据块元素的数组（如果足够大）；否则将为此目的分配相同运行时类型的新数组
      * @return 包含此数据集中所有元素的数组
-     * @throws ArrayStoreException
-     * @throws NullPointerException
      */
     public <T> T[] toArray(T[] a) {
         int size = size();
@@ -685,19 +660,19 @@ public class ArrayDeque<E> extends AbstractCollection<E> implements Cloneable, S
         return a;
     }
 
-    /**
-     * 返回此队列的一个副本
-     *
-     * @return 此队列的一个副本
-     */
-    public ArrayDeque<E> clone() {
-        try {
-            ArrayDeque<E> result = (ArrayDeque<E>) super.clone();
-            result.elements = Arrays.copyOf(this.elements, this.elements.length);
-            return result;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
+//    /**
+//     * 返回此队列的一个副本
+//     *
+//     * @return 此队列的一个副本
+//     */
+//    public ArrayDeque<E> clone() {
+//        try {
+//            ArrayDeque<E> result = (ArrayDeque<E>) super.clone();
+//            result.elements = Arrays.copyOf(this.elements, this.elements.length);
+//            return result;
+//        } catch (CloneNotSupportedException e) {
+//            throw new AssertionError();
+//        }
+//    }
 
 }

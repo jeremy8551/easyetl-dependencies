@@ -45,7 +45,7 @@ public class Matrix<E> implements Cloneable {
      *
      * @param row 行数（从0开始）
      * @param col 列数（从0开始）
-     * @return
+     * @return 元素
      */
     @SuppressWarnings("unchecked")
     protected E elementData(int row, int col) {
@@ -81,9 +81,7 @@ public class Matrix<E> implements Cloneable {
                 newCol = col;
             }
 
-            /**
-             * 逐行扩容
-             */
+            // 逐行扩容
             for (int i = 0; i < this.matrix.length; i++) {
                 Object[] oldRowElement = this.matrix[i];
                 Object[] newRowElement = (Object[]) new Object[newCol];
@@ -109,7 +107,7 @@ public class Matrix<E> implements Cloneable {
     /**
      * 矩阵行数
      *
-     * @return
+     * @return 行数
      */
     public int getRow() {
         return row;
@@ -118,7 +116,7 @@ public class Matrix<E> implements Cloneable {
     /**
      * 矩阵列数
      *
-     * @return
+     * @return 列数
      */
     public int getColumn() {
         return col;
@@ -144,7 +142,7 @@ public class Matrix<E> implements Cloneable {
      *
      * @param row    行号;从0开始
      * @param values 列值集合
-     * @return
+     * @return 数值集合
      */
     @SuppressWarnings("unchecked")
     public ArrayList<E> setRow(int row, E... values) {
@@ -162,7 +160,7 @@ public class Matrix<E> implements Cloneable {
      *
      * @param row 行号;从0开始
      * @param col 列号;从0开始
-     * @return
+     * @return 数值
      */
     public E get(int row, int col) {
         this.checkRange(row, col);

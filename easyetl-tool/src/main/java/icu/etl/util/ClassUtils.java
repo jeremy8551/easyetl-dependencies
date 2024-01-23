@@ -489,7 +489,7 @@ public class ClassUtils {
      * 判断类路径下是否存在 WEB-INF/classes 目录
      *
      * @param classpath 类路径
-     * @return
+     * @return 返回true表示classpath正确 false表示classpath错误
      */
     private static String getClasspath(String classpath) {
         String prefix = "WEB-INF";
@@ -517,7 +517,7 @@ public class ClassUtils {
      *
      * @param classpath 类路径
      * @param cls       类信息
-     * @return
+     * @return 返回true表示classpath正确 false表示classpath错误
      */
     private static boolean isClasspath0(String classpath, Class<?> cls) {
         if (classpath == null || classpath.length() == 0 || StringUtils.inArray(classpath, "/", "\\")) {
@@ -533,7 +533,7 @@ public class ClassUtils {
      * 校验 classpath 是否正确
      *
      * @param classpath 类路径
-     * @return
+     * @return 返回true表示classpath正确 false表示classpath错误
      */
     private static boolean isClasspath1(String classpath) {
         return classpath != null //
@@ -589,7 +589,7 @@ public class ClassUtils {
      *              例如: /jdbc.properties
      *              /images/show.gif
      * @param array 参数对象数组，最多只能设置一个元素
-     * @return
+     * @return 输入流
      */
     public static InputStream getResourceAsStream(String name, Object... array) {
         Object obj = Ensure.onlyOne(array);
@@ -652,7 +652,7 @@ public class ClassUtils {
      *                    0表示显示原包名
      *                    -1表示从右向左边显示包名
      *                    1表示从左向右边显示包名
-     * @return
+     * @return 包名
      */
     public static String getPackageName(String packageName, int level) {
         if (packageName == null || level == 0) {

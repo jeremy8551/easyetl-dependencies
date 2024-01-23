@@ -46,7 +46,7 @@ public class IO {
     /**
      * 返回输入流缓存的默认长度，单位字符
      *
-     * @return
+     * @return 默认长度，单位：字符
      */
     private static int getReaderBufferSize() {
         String length = System.getProperty(PROPERTY_READBUF);

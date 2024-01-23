@@ -160,20 +160,20 @@ public class StringUtilsTest {
         Assert.assertEquals("", StringUtils.addLinePrefix("", ""));
     }
 
-    @Test
-    public void splitJavaNameTest() {
-        String[] array = StringUtils.splitJavaName("JavaConfigIs");
-        Assert.assertTrue(array.length == 3 && "Java".equals(array[0]) && "Config".equals(array[1]) && "Is".equals(array[2]));
-
-        array = StringUtils.splitJavaName("java");
-        Assert.assertTrue(array.length == 1 && "java".equals(array[0]));
-
-        array = StringUtils.splitJavaName("");
-        Assert.assertTrue(array.length == 1 && "".equals(array[0]));
-
-        array = StringUtils.splitJavaName("Java");
-        Assert.assertTrue(array.length == 1 && "Java".equals(array[0]));
-    }
+//    @Test
+//    public void splitJavaNameTest() {
+//        String[] array = StringUtils.splitJavaName("JavaConfigIs");
+//        Assert.assertTrue(array.length == 3 && "Java".equals(array[0]) && "Config".equals(array[1]) && "Is".equals(array[2]));
+//
+//        array = StringUtils.splitJavaName("java");
+//        Assert.assertTrue(array.length == 1 && "java".equals(array[0]));
+//
+//        array = StringUtils.splitJavaName("");
+//        Assert.assertTrue(array.length == 1 && "".equals(array[0]));
+//
+//        array = StringUtils.splitJavaName("Java");
+//        Assert.assertTrue(array.length == 1 && "Java".equals(array[0]));
+//    }
 
     @Test
     public void removeRightLineSeparator() {

@@ -5,7 +5,6 @@ import javax.naming.InitialContext;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ResourcesUtils {
     public final static String PROPERTY_RESOURCE = ResourcesUtils.class.getPackage().getName().split("\\.")[0] + "." + ResourcesUtils.class.getPackage().getName().split("\\.")[1] + ".resource";
 
     /** 资源文件名（不包含扩展名） */
-    public static String ResourceName = "Messages";
+    public static String ResourceName = ResourcesUtils.class.getPackage().getName().replace('.', '_') + "_Messages";
 
     /** 资源文件 */
     private static ResourceBundle INTERNAL = ResourceBundle.getBundle(ResourcesUtils.ResourceName, Locale.getDefault());
@@ -69,9 +68,8 @@ public class ResourcesUtils {
     public static void setInternalBundle(ResourceBundle bundle) {
         if (bundle == null) {
             throw new NullPointerException();
-        } else {
-            INTERNAL = bundle;
         }
+        INTERNAL = bundle;
     }
 
     /**
@@ -117,8 +115,7 @@ public class ResourcesUtils {
 
         BufferedReader in = null;
         try {
-            InputStream is = Ensure.notNull(ResourcesUtils.class.getResourceAsStream(uri));
-            in = new BufferedReader(new InputStreamReader(is, CharsetName.UTF_8));
+            in = new BufferedReader(new InputStreamReader(ResourcesUtils.class.getResourceAsStream(uri), CharsetName.UTF_8));
 
             List<String> list = new ArrayList<String>();
             String line;

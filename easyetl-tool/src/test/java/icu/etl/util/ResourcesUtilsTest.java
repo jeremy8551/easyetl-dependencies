@@ -15,4 +15,9 @@ public class ResourcesUtilsTest {
 
         Assert.assertFalse(ResourcesUtils.existsMessage("test.msg.stdout"));
     }
+
+    @Test
+    public void test1() {
+        Assert.assertEquals("test", ResourcesUtils.getMessage("test.standard.output.msg001"));
+    }
 }

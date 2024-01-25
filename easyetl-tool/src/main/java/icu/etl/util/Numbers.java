@@ -1358,10 +1358,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1379,10 +1376,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1400,10 +1394,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1421,10 +1412,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1442,10 +1430,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1463,10 +1448,7 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
-            return false;
-        }
-        if (i1 != null && i2 == null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
 
@@ -1484,12 +1466,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null || i2 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
-            return false;
-        }
+        
         return i1.floatValue() == i2.floatValue();
     }
 

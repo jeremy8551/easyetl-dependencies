@@ -11,7 +11,7 @@ public class LogUtils {
     public final static String PROPERTY_LOG_STACKTRACE = StringUtils.class.getPackage().getName().split("\\.")[0] + "." + StringUtils.class.getPackage().getName().split("\\.")[1] + ".logStackTrace";
 
     /** 是否打印日志跟踪信息 */
-    public static boolean print = Boolean.parseBoolean(System.getProperty(PROPERTY_LOG_STACKTRACE));
+    public static volatile boolean print = Boolean.parseBoolean(System.getProperty(PROPERTY_LOG_STACKTRACE));
 
     /**
      * 返回堆栈信息 <br>

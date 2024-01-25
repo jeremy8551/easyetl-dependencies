@@ -89,7 +89,7 @@ public class IO {
      * @param array 数组
      */
     public static void flushQuiet(Flushable... array) {
-        if (array == null || array.length == 0) {
+        if (array == null) {
             return;
         }
 
@@ -112,7 +112,7 @@ public class IO {
      * @param array 数组
      */
     public static void flushQuietly(Flushable... array) {
-        if (array == null || array.length == 0) {
+        if (array == null) {
             return;
         }
 
@@ -162,7 +162,7 @@ public class IO {
      * @param array 数组
      */
     public static void closeQuiet(Object... array) {
-        if (array == null || array.length == 0) {
+        if (array == null) {
             return;
         }
 
@@ -184,7 +184,7 @@ public class IO {
      * @param array 数组
      */
     public static void closeQuietly(Object... array) {
-        if (array == null || array.length == 0) {
+        if (array == null) {
             return;
         }
 

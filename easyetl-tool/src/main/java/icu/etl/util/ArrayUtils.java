@@ -432,7 +432,7 @@ public class ArrayUtils {
         ArrayList<E> list = new ArrayList<E>();
         for (int i = 0; i < array.length; i++) {
             E[] a = array[i];
-            if (a != null && a.length != 0) {
+            if (a != null) {
                 for (E obj : a) {
                     list.add(obj);
                 }
@@ -510,11 +510,11 @@ public class ArrayUtils {
     public static String[] copyOf(String[] array, int length) {
         if (array == null) {
             return array;
-        } else {
-            String[] newarray = new String[length];
-            System.arraycopy(array, 0, newarray, 0, Math.min(array.length, length));
-            return newarray;
         }
+        
+        String[] newarray = new String[length];
+        System.arraycopy(array, 0, newarray, 0, Math.min(array.length, length));
+        return newarray;
     }
 
     /**

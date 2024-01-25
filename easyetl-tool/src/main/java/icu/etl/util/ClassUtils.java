@@ -165,9 +165,8 @@ public class ClassUtils {
 
         if (f == null) {
             throw new RuntimeException(name);
-        } else {
-            return cls.getName() + "." + f.getName();
         }
+        return cls.getName() + "." + f.getName();
     }
 
     /**

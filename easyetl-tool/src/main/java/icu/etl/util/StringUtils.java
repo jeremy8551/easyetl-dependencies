@@ -398,7 +398,7 @@ public class StringUtils {
         while (left < length && StringUtils.inArray(str.charAt(left), array)) {
             left++;
         }
-        while (left <= right && right >= 0 && StringUtils.inArray(str.charAt(right), array)) {
+        while (left <= right && StringUtils.inArray(str.charAt(right), array)) {
             right--;
         }
         return str.subSequence(left, right + 1).toString();
@@ -421,7 +421,7 @@ public class StringUtils {
         while (sp < len && (Character.isWhitespace(str.charAt(sp)) || StringUtils.inArray(str.charAt(sp), array))) {
             sp++;
         }
-        while (sp <= ep && ep >= 0 && (Character.isWhitespace(str.charAt(ep)) || StringUtils.inArray(str.charAt(ep), array))) {
+        while (sp <= ep && (Character.isWhitespace(str.charAt(ep)) || StringUtils.inArray(str.charAt(ep), array))) {
             ep--;
         }
         return str.subSequence(sp, ep + 1).toString();

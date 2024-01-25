@@ -140,11 +140,11 @@ public class CollectionUtils {
     public static String[] toArray(Collection<String> c) {
         if (c == null) {
             return null;
-        } else {
-            String[] array = new String[c.size()];
-            c.toArray(array);
-            return array;
         }
+
+        String[] array = new String[c.size()];
+        c.toArray(array);
+        return array;
     }
 
     /**
@@ -156,13 +156,13 @@ public class CollectionUtils {
     public static ArrayList<String> toList(List<?> list) {
         if (list == null) {
             return new ArrayList<String>();
-        } else {
-            ArrayList<String> newList = new ArrayList<String>(list.size());
-            for (Object str : list) {
-                newList.add(StringUtils.rtrimBlank(str));
-            }
-            return newList;
         }
+
+        ArrayList<String> newList = new ArrayList<String>(list.size());
+        for (Object str : list) {
+            newList.add(StringUtils.rtrimBlank(str));
+        }
+        return newList;
     }
 
     /**
@@ -176,20 +176,20 @@ public class CollectionUtils {
     public static <E> E onlyOne(Iterable<E> ite) {
         if (ite == null) {
             return null;
-        } else {
-            E obj = null;
-            Iterator<E> it = ite.iterator();
-            if (it.hasNext()) {
-                obj = it.next();
-            } else {
-                throw new IllegalArgumentException(String.valueOf(ite));
-            }
-
-            if (it.hasNext()) { // 判断是否能读取下一个
-                throw new IllegalArgumentException(String.valueOf(ite));
-            }
-            return obj;
         }
+
+        E obj = null;
+        Iterator<E> it = ite.iterator();
+        if (it.hasNext()) {
+            obj = it.next();
+        } else {
+            throw new IllegalArgumentException(String.valueOf(ite));
+        }
+
+        if (it.hasNext()) { // 判断是否能读取下一个
+            throw new IllegalArgumentException(String.valueOf(ite));
+        }
+        return obj;
     }
 
     /**
@@ -202,10 +202,10 @@ public class CollectionUtils {
     public static <E> E firstElement(Iterable<E> ite) {
         if (ite == null) {
             return null;
-        } else {
-            Iterator<E> it = ite.iterator();
-            return it.hasNext() ? it.next() : null;
         }
+
+        Iterator<E> it = ite.iterator();
+        return it.hasNext() ? it.next() : null;
     }
 
     /**
@@ -276,13 +276,13 @@ public class CollectionUtils {
     public static Properties cloneProperties(Properties src, Properties dest) {
         if (src == null || dest == null) {
             return dest;
-        } else {
-            Set<Object> names = src.keySet();
-            for (Object name : names) {
-                dest.put(name, src.get(name));
-            }
-            return dest;
         }
+
+        Set<Object> names = src.keySet();
+        for (Object name : names) {
+            dest.put(name, src.get(name));
+        }
+        return dest;
     }
 
     /**

@@ -50,7 +50,7 @@ public class Ensure {
         try {
             return Integer.parseInt(str);
         } catch (Throwable e) {
-            throw new IllegalArgumentException(str, e);
+            throw new IllegalArgumentException(e.getLocalizedMessage(), e);
         }
     }
 
@@ -160,9 +160,8 @@ public class Ensure {
     public static <E> E[] notEmpty(E[] array) {
         if (array == null || array.length == 0) {
             throw new IllegalArgumentException(Arrays.toString(array));
-        } else {
-            return array;
         }
+        return array;
     }
 
     /**

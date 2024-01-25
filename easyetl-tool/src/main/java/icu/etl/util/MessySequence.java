@@ -48,10 +48,10 @@ public class MessySequence implements CharSequence {
         CharsetEncoder encoder = charset.newEncoder();
         if (encoder == null) {
             throw new NullPointerException();
-        } else {
-            this.encoder = encoder;
-            this.charsetName = charsetName;
         }
+
+        this.encoder = encoder;
+        this.charsetName = charsetName;
     }
 
     /**
@@ -74,6 +74,7 @@ public class MessySequence implements CharSequence {
         if (encoder == null) {
             throw new NullPointerException();
         }
+
         this.encoder = encoder;
         this.charsetName = encoder.charset().name();
     }
@@ -157,6 +158,7 @@ public class MessySequence implements CharSequence {
         if (index >= this.length) {
             throw new IllegalArgumentException(String.valueOf(index));
         }
+
         return this.array[index];
     }
 
@@ -167,6 +169,7 @@ public class MessySequence implements CharSequence {
         if (start >= this.length || end > this.length || start > end) {
             throw new IllegalArgumentException(start + ", " + end);
         }
+        
         return new String(this.array, start, end - start);
     }
 

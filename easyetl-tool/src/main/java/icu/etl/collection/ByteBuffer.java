@@ -177,14 +177,15 @@ public class ByteBuffer implements Appendable, CharsetName {
     protected final ByteBuffer addByteArrays(byte[] array, int offset, int length) {
         if (length < 0) {
             throw new IllegalArgumentException(String.valueOf(length));
-        } else if (length == 0) {
-            return this;
-        } else {
-            this.expandValueArray(length);
-            System.arraycopy(array, offset, this.value, this.count, length);
-            this.count += length;
+        }
+        if (length == 0) {
             return this;
         }
+
+        this.expandValueArray(length);
+        System.arraycopy(array, offset, this.value, this.count, length);
+        this.count += length;
+        return this;
     }
 
     /**
@@ -211,7 +212,7 @@ public class ByteBuffer implements Appendable, CharsetName {
         if (index < 0 || index >= this.count) {
             throw new IllegalArgumentException(String.valueOf(index));
         }
-        
+
         return this.value[index];
     }
 
@@ -227,21 +228,23 @@ public class ByteBuffer implements Appendable, CharsetName {
     public ByteBuffer insert(int index, byte[] array, int offset, int length) {
         if (array == null || length == 0) {
             return this;
-        } else if ((index < 0) || (index > this.count)) {
-            throw new IllegalArgumentException(String.valueOf(index));
-        } else if ((offset < 0) || (length < 0) || (offset > array.length - length)) {
-            throw new IllegalArgumentException(index + ", " + StringUtils.toString(array, " ") + ", " + offset + ", " + length);
-        } else {
-            int newCount = this.count + length;
-            if (newCount > value.length) {
-                expandValueArray(length);
-            }
-
-            System.arraycopy(this.value, index, this.value, index + length, this.count - index);
-            System.arraycopy(array, offset, this.value, index, length);
-            this.count = newCount;
-            return this;
         }
+        if ((index < 0) || (index > this.count)) {
+            throw new IllegalArgumentException(String.valueOf(index));
+        }
+        if ((offset < 0) || (length < 0) || (offset > array.length - length)) {
+            throw new IllegalArgumentException(index + ", " + StringUtils.toString(array, " ") + ", " + offset + ", " + length);
+        }
+
+        int newCount = this.count + length;
+        if (newCount > value.length) {
+            expandValueArray(length);
+        }
+
+        System.arraycopy(this.value, index, this.value, index + length, this.count - index);
+        System.arraycopy(array, offset, this.value, index, length);
+        this.count = newCount;
+        return this;
     }
 
     /**
@@ -266,12 +269,13 @@ public class ByteBuffer implements Appendable, CharsetName {
     public ByteBuffer append(String str, String charsetName) throws IOException {
         if (str == null || str.length() == 0) {
             return this;
-        } else if (StringUtils.isBlank(charsetName)) {
-            throw new IllegalArgumentException(charsetName);
-        } else {
-            byte[] array = str.getBytes(charsetName);
-            return addByteArrays(array, 0, array.length);
         }
+        if (StringUtils.isBlank(charsetName)) {
+            throw new IllegalArgumentException(charsetName);
+        }
+
+        byte[] array = str.getBytes(charsetName);
+        return addByteArrays(array, 0, array.length);
     }
 
     /**
@@ -283,11 +287,12 @@ public class ByteBuffer implements Appendable, CharsetName {
     public ByteBuffer append(ByteBuffer bytes) {
         if (bytes == null || bytes.length() == 0) {
             return this;
-        } else if (bytes == this) {
-            throw new IllegalArgumentException();
-        } else {
-            return this.addByteArrays(bytes.value, 0, bytes.count);
         }
+        if (bytes == this) {
+            throw new IllegalArgumentException();
+        }
+
+        return this.addByteArrays(bytes.value, 0, bytes.count);
     }
 
     /**
@@ -311,11 +316,12 @@ public class ByteBuffer implements Appendable, CharsetName {
     public ByteBuffer append(byte[] array, int offset, int length) {
         if (array == null) {
             return this;
-        } else if (length < 0 || offset < 0 || (offset + length) > array.length) {
-            throw new IllegalArgumentException(StringUtils.toString(array, " ") + ", " + offset + ", " + length);
-        } else {
-            return this.addByteArrays(array, offset, length);
         }
+        if (length < 0 || offset < 0 || (offset + length) > array.length) {
+            throw new IllegalArgumentException(StringUtils.toString(array, " ") + ", " + offset + ", " + length);
+        }
+
+        return this.addByteArrays(array, offset, length);
     }
 
     public ByteBuffer append(char c) throws IOException {
@@ -360,6 +366,7 @@ public class ByteBuffer implements Appendable, CharsetName {
         if (length < 0) {
             throw new IllegalArgumentException(String.valueOf(length));
         }
+
         if (in != null) {
             byte[] array = new byte[length];
             int size = in.read(array, 0, array.length);
@@ -549,16 +556,18 @@ public class ByteBuffer implements Appendable, CharsetName {
     public ByteBuffer subbytes(int begin, int end) {
         if (begin < 0) {
             throw new StringIndexOutOfBoundsException(begin);
-        } else if (end > this.count) {
-            throw new StringIndexOutOfBoundsException(end);
-        } else if (begin > end) {
-            throw new StringIndexOutOfBoundsException(end - begin);
-        } else {
-            int length = end - begin;
-            ByteBuffer buf = new ByteBuffer(length, 5, this.charsetName);
-            buf.addByteArrays(this.value, begin, length);
-            return buf;
         }
+        if (end > this.count) {
+            throw new StringIndexOutOfBoundsException(end);
+        }
+        if (begin > end) {
+            throw new StringIndexOutOfBoundsException(end - begin);
+        }
+
+        int length = end - begin;
+        ByteBuffer buf = new ByteBuffer(length, 5, this.charsetName);
+        buf.addByteArrays(this.value, begin, length);
+        return buf;
     }
 
     /**
@@ -571,6 +580,7 @@ public class ByteBuffer implements Appendable, CharsetName {
         if (out == null) {
             throw new NullPointerException();
         }
+
         if (this.count != 0) {
             out.write(this.value, 0, this.count);
         }
@@ -587,11 +597,12 @@ public class ByteBuffer implements Appendable, CharsetName {
     public void write(OutputStream out, int offset, int length) throws IOException {
         if (out == null) {
             throw new NullPointerException();
-        } else if (offset < 0 || length < 0 || (offset + length) > this.count) {
-            throw new IllegalArgumentException(offset + ", " + length);
-        } else {
-            out.write(this.value, offset, length);
         }
+        if (offset < 0 || length < 0 || (offset + length) > this.count) {
+            throw new IllegalArgumentException(offset + ", " + length);
+        }
+        
+        out.write(this.value, offset, length);
     }
 
     /**
@@ -640,8 +651,7 @@ public class ByteBuffer implements Appendable, CharsetName {
         }
 
         public String toString() {
-            String charsetName = StringUtils.defaultString(this.buffer.getCharsetName(), StringUtils.CHARSET);
-            return this.buffer.toString(charsetName);
+            return this.buffer.toString(StringUtils.charset(this.buffer.getCharsetName()));
         }
 
     }

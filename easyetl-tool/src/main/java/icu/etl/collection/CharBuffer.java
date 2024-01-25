@@ -85,24 +85,28 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer append(Object obj) {
         if (obj == null) {
             return this;
-        } else if (obj instanceof String) {
-            return this.append((String) obj);
-        } else if (obj instanceof StringBuilder) {
-            return this.append((StringBuilder) obj);
-        } else if (obj instanceof StringBuffer) {
-            return this.append((StringBuffer) obj);
-        } else if (obj instanceof CharBuffer) {
-            return this.append((CharBuffer) obj);
-        } else {
-            String str = (this.converter == null) ? obj.toString() : this.converter.format(obj);
-            int length = str.length();
-            if (length != 0) {
-                this.expandCapacity(length);
-                str.getChars(0, length, this.value, this.count);
-                this.count += length;
-            }
-            return this;
         }
+        if (obj instanceof String) {
+            return this.append((String) obj);
+        }
+        if (obj instanceof StringBuilder) {
+            return this.append((StringBuilder) obj);
+        }
+        if (obj instanceof StringBuffer) {
+            return this.append((StringBuffer) obj);
+        }
+        if (obj instanceof CharBuffer) {
+            return this.append((CharBuffer) obj);
+        }
+
+        String str = (this.converter == null) ? obj.toString() : this.converter.format(obj);
+        int length = str.length();
+        if (length != 0) {
+            this.expandCapacity(length);
+            str.getChars(0, length, this.value, this.count);
+            this.count += length;
+        }
+        return this;
     }
 
     /**
@@ -151,25 +155,27 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer append(String str, int offset, int length) {
         if (offset < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (length < 0) {
+        }
+        if (length < 0) {
             throw new IllegalArgumentException(String.valueOf(length));
-        } else if (str == null) {
-            return this;
-        } else {
-            int end = offset + length;
-            int size = str.length();
-            if (length == 0 || offset >= size) {
-                return this;
-            } else if (end > size) {
-                length = size - offset;
-                end = size;
-            }
-
-            this.expandCapacity(length);
-            str.getChars(offset, end, this.value, this.count);
-            this.count += length;
+        }
+        if (str == null) {
             return this;
         }
+
+        int end = offset + length;
+        int size = str.length();
+        if (length == 0 || offset >= size) {
+            return this;
+        } else if (end > size) {
+            length = size - offset;
+            end = size;
+        }
+
+        this.expandCapacity(length);
+        str.getChars(offset, end, this.value, this.count);
+        this.count += length;
+        return this;
     }
 
     /**
@@ -205,18 +211,21 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer append(char[] array, int offset, int length) {
         if (offset < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (length < 0) {
+        }
+        if (length < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (array == null || array.length == 0 || length == 0) {
-            return this;
-        } else if (array.length < (offset + length)) {
-            throw new IllegalArgumentException(array.length + " < " + offset + " + " + length);
-        } else {
-            this.expandCapacity(length);
-            System.arraycopy(array, offset, this.value, this.count, length);
-            this.count += length;
+        }
+        if (array == null || array.length == 0 || length == 0) {
             return this;
         }
+        if (array.length < (offset + length)) {
+            throw new IllegalArgumentException(array.length + " < " + offset + " + " + length);
+        }
+
+        this.expandCapacity(length);
+        System.arraycopy(array, offset, this.value, this.count, length);
+        this.count += length;
+        return this;
     }
 
     public CharBuffer append(char c) {
@@ -246,18 +255,21 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer append(StringBuffer buf, int offset, int length) {
         if (offset < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (length < 0) {
+        }
+        if (length < 0) {
             throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (buf == null) {
-            return this;
-        } else if (buf.length() < (offset + length)) {
-            throw new IllegalArgumentException(buf.length() + " < " + offset + " + " + length);
-        } else {
-            this.expandCapacity(length);
-            buf.getChars(offset, length - offset, this.value, this.count);
-            this.count += length;
+        }
+        if (buf == null) {
             return this;
         }
+        if (buf.length() < (offset + length)) {
+            throw new IllegalArgumentException(buf.length() + " < " + offset + " + " + length);
+        }
+
+        this.expandCapacity(length);
+        buf.getChars(offset, length - offset, this.value, this.count);
+        this.count += length;
+        return this;
     }
 
     /**
@@ -320,16 +332,18 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer append(StringBuilder buf, int offset, int length) {
         if (buf == null) {
             throw new IllegalArgumentException();
-        } else if (offset < 0 || offset > buf.length()) {
-            throw new IllegalArgumentException(String.valueOf(offset));
-        } else if (length < 0 || buf.length() < (offset + length)) {
-            throw new IllegalArgumentException(buf.length() + " " + offset + " " + length);
-        } else {
-            this.expandCapacity(length);
-            buf.getChars(offset, length - offset, this.value, this.count);
-            this.count += length;
-            return this;
         }
+        if (offset < 0 || offset > buf.length()) {
+            throw new IllegalArgumentException(String.valueOf(offset));
+        }
+        if (length < 0 || buf.length() < (offset + length)) {
+            throw new IllegalArgumentException(buf.length() + " " + offset + " " + length);
+        }
+
+        this.expandCapacity(length);
+        buf.getChars(offset, length - offset, this.value, this.count);
+        this.count += length;
+        return this;
     }
 
     public CharBuffer append(CharSequence cs) {
@@ -371,9 +385,9 @@ public class CharBuffer implements Appendable, CharSequence {
     public char charAt(int index) {
         if (index < 0 || index >= this.count) {
             throw new IllegalArgumentException(String.valueOf(index));
-        } else {
-            return this.value[index];
         }
+
+        return this.value[index];
     }
 
     /**
@@ -386,10 +400,10 @@ public class CharBuffer implements Appendable, CharSequence {
     public CharBuffer set(int index, char c) {
         if (index < 0 || index >= this.count) {
             throw new IllegalArgumentException(index + ", " + c);
-        } else {
-            this.value[index] = c;
-            return this;
         }
+
+        this.value[index] = c;
+        return this;
     }
 
     /**
@@ -431,9 +445,9 @@ public class CharBuffer implements Appendable, CharSequence {
     public String substring(int begin, int end) {
         if (begin < 0 || begin >= this.count || begin > end) {
             throw new IllegalArgumentException(begin + " " + end + " " + this.count);
-        } else {
-            return new String(this.value, begin, end - begin);
         }
+        
+        return new String(this.value, begin, end - begin);
     }
 
     public CharSequence subSequence(int start, int end) {

@@ -34,7 +34,7 @@ public class Numbers {
      */
     public static int max(int... array) {
         if (array.length == 0) {
-            throw new IllegalArgumentException(String.valueOf(array));
+            throw new IllegalArgumentException();
         }
 
         int max = array[0];
@@ -91,7 +91,7 @@ public class Numbers {
             return 0;
         } else {
             int val = number.intValue();
-            return Integer.toString(val < 0 ? 0 - val : val).length();
+            return Integer.toString(val < 0 ? -val : val).length();
         }
     }
 
@@ -775,10 +775,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -796,10 +796,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -817,10 +817,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -838,10 +838,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -859,10 +859,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -880,10 +880,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -901,10 +901,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
         return i1.floatValue() > i2.floatValue();
@@ -921,10 +921,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -942,10 +942,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -963,10 +963,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -984,10 +984,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1005,10 +1005,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1026,10 +1026,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1047,10 +1047,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return false;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
         return i1.floatValue() < i2.floatValue();
@@ -1067,10 +1067,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -1088,10 +1088,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
         return i1.compareTo(i2) >= 0;
@@ -1108,10 +1108,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -1129,10 +1129,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -1150,10 +1150,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -1171,10 +1171,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
 
@@ -1192,10 +1192,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return false;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return true;
         }
         return i1.floatValue() >= i2.floatValue();
@@ -1212,10 +1212,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1233,10 +1233,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1254,10 +1254,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1275,10 +1275,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1296,10 +1296,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1317,10 +1317,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
 
@@ -1338,10 +1338,10 @@ public class Numbers {
         if (i1 == null && i2 == null) {
             return true;
         }
-        if (i1 == null && i2 != null) {
+        if (i1 == null) {
             return true;
         }
-        if (i1 != null && i2 == null) {
+        if (i2 == null) {
             return false;
         }
         return i1.floatValue() <= i2.floatValue();
@@ -1469,7 +1469,7 @@ public class Numbers {
         if (i1 == null || i2 == null) {
             return false;
         }
-        
+
         return i1.floatValue() == i2.floatValue();
     }
 

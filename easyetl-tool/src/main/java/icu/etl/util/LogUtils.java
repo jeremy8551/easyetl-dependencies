@@ -8,6 +8,7 @@ package icu.etl.util;
  */
 public class LogUtils {
 
+    /** 属性值设置为true，表示打印日志堆栈 */
     public final static String PROPERTY_LOG_STACKTRACE = StringUtils.class.getPackage().getName().split("\\.")[0] + "." + StringUtils.class.getPackage().getName().split("\\.")[1] + ".logStackTrace";
 
     /** 是否打印日志跟踪信息 */

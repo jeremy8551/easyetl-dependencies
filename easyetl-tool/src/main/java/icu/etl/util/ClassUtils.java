@@ -1056,7 +1056,7 @@ public class ClassUtils {
      *
      * @param classLoader 类加载器
      * @param classpath   类路径
-     * @return 包名最短的类信息，可能是null
+     * @return 包名集合
      */
     public static Set<String> findShortPackage(ClassLoader classLoader, String classpath) {
         if (StringUtils.isBlank(classpath)) {
@@ -1076,16 +1076,16 @@ public class ClassUtils {
      * @param classLoader 类加载器
      * @param classpath   类路径
      * @param dir         目录
-     * @return 包名最短的类信息，可能是null
+     * @return 包名集合
      */
     private static Set<String> findShortPackage(ClassLoader classLoader, String classpath, File dir) {
         File[] files = FileUtils.array(dir.listFiles());
 
         Class<?> cls = findFirstClass(classLoader, classpath, files);
         if (cls != null) {
-            Set<String> list = new HashSet<String>();
-            list.add(cls.getPackage().getName());
-            return list;
+            Set<String> set = new HashSet<String>();
+            set.add(cls.getPackage().getName());
+            return set;
         }
 
         // 遍历目录

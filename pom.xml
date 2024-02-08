@@ -6,7 +6,7 @@
     <!-- 属性（子模块可以继承直接使用） -->
     <properties>
         <!-- easyetl项目的统一版本号 -->
-        <revision>2.0.9</revision>
+        <revision>2.1.0</revision>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 源代码字符集 -->
         <maven.compiler.charset>UTF-8</maven.compiler.charset> <!-- 源文件和资源文件的字符集，easyetl-maven-plugin 插件使用的字符集 -->

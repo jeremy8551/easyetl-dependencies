@@ -30,7 +30,7 @@ import icu.etl.Easyetl;
  */
 public final class FileUtils {
 
-    /** 系统默认字符集 */
+    /** 临时文件存储目录 */
     public final static String PROPERTY_TEMPDIR = FileUtils.class.getPackage().getName().split("\\.")[0] + "." + FileUtils.class.getPackage().getName().split("\\.")[1] + ".tempDir";
 
     /** 文件系统文件路径的分隔符集合 */

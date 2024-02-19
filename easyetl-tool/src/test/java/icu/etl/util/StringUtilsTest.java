@@ -192,12 +192,6 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void testindexOfSqlWords1() {
-        Assert.assertNull(StringUtils.lookupLocale(""));
-        Assert.assertNotNull(StringUtils.lookupLocale("zh_CN"));
-    }
-
-    @Test
     public void test13() {
         Assert.assertEquals("value", StringUtils.getValue(new String[]{"key", "value"}, "key"));
         Assert.assertNull(StringUtils.getValue(new String[]{"key", "value", "key1"}, "key1"));

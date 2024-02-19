@@ -1,5 +1,7 @@
 package icu.etl.util;
 
+import icu.etl.Easyetl;
+
 /**
  * 日志工具类
  *
@@ -9,7 +11,7 @@ package icu.etl.util;
 public class LogUtils {
 
     /** 属性值设置为true，表示打印日志堆栈 */
-    public final static String PROPERTY_LOG_STACKTRACE = StringUtils.class.getPackage().getName().split("\\.")[0] + "." + StringUtils.class.getPackage().getName().split("\\.")[1] + ".logStackTrace";
+    public final static String PROPERTY_LOG_STACKTRACE = Easyetl.class.getPackage().getName() + ".logStackTrace";
 
     /** 是否打印日志跟踪信息 */
     public static volatile boolean print = Boolean.parseBoolean(System.getProperty(PROPERTY_LOG_STACKTRACE));

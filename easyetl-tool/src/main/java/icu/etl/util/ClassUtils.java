@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import icu.etl.Easyetl;
+
 /**
  * 类信息工具
  *
@@ -28,7 +30,7 @@ import java.util.Set;
 public class ClassUtils {
 
     /** 设置脚本引擎默认 classpath 绝对路径 */
-    public final static String PROPERTY_CLASSPATH = ClassUtils.class.getPackage().getName().split("\\.")[0] + "." + ClassUtils.class.getPackage().getName().split("\\.")[1] + ".classpath";
+    public final static String PROPERTY_CLASSPATH = Easyetl.class.getPackage().getName() + ".classpath";
 
     /** 当前JAVA虚拟机的默认类路径 */
     public static String CLASSPATH = System.getProperty(PROPERTY_CLASSPATH);

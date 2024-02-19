@@ -31,7 +31,7 @@ import icu.etl.Easyetl;
 public final class FileUtils {
 
     /** 临时文件存储目录 */
-    public final static String PROPERTY_TEMPDIR = FileUtils.class.getPackage().getName().split("\\.")[0] + "." + FileUtils.class.getPackage().getName().split("\\.")[1] + ".tempDir";
+    public final static String PROPERTY_TEMPDIR = Easyetl.class.getPackage().getName() + ".tempDir";
 
     /** 文件系统文件路径的分隔符集合 */
     public final static List<String> pathSeparators = java.util.Collections.unmodifiableList(ArrayUtils.asList("/", "\\"));

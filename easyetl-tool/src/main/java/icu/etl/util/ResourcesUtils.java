@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import icu.etl.Easyetl;
+
 /**
  * 资源文件工具
  *
@@ -21,10 +23,10 @@ import java.util.ResourceBundle;
 public class ResourcesUtils {
 
     /** 外部资源配置文件路径 */
-    public final static String PROPERTY_RESOURCE = ResourcesUtils.class.getPackage().getName().split("\\.")[0] + "." + ResourcesUtils.class.getPackage().getName().split("\\.")[1] + ".resource";
+    public final static String PROPERTY_RESOURCE = Easyetl.class.getPackage().getName() + ".resource";
 
     /** 资源文件名（不包含扩展名） */
-    public static String ResourceName = ResourcesUtils.class.getPackage().getName().replace('.', '_') + "_Messages";
+    public static String ResourceName = Easyetl.class.getPackage().getName().replace('.', '_') + "_Messages";
 
     /** 资源文件 */
     private static ResourceBundle INTERNAL = ResourceBundle.getBundle(ResourcesUtils.ResourceName, Locale.getDefault());

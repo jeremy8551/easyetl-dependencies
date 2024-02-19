@@ -26,6 +26,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import icu.etl.Easyetl;
+
 /**
  * 字符串工具
  *
@@ -38,12 +40,26 @@ public class StringUtils {
     public final static String FULLWIDTH_BLANK = "　";
 
     /** 系统默认字符集 */
-    public final static String PROPERTY_CHARSET = StringUtils.class.getPackage().getName().split("\\.")[0] + "." + StringUtils.class.getPackage().getName().split("\\.")[1] + ".charset";
+    public final static String PROPERTY_CHARSET = Easyetl.class.getPackage().getName() + ".charset";
 
     /** 默认字符集 */
     public static String CHARSET = getCharset();
 
     public StringUtils() {
+    }
+
+    /**
+     * 返回默认字符集
+     *
+     * @return 字符集
+     */
+    private static String getCharset() {
+        String charset = System.getProperty(PROPERTY_CHARSET);
+        if (charset == null || charset.length() == 0) {
+            return System.getProperty("file.encoding");
+        } else {
+            return charset;
+        }
     }
 
     /**
@@ -57,23 +73,6 @@ public class StringUtils {
     }
 
     /**
-     * 返回默认字符集
-     *
-     * @return 字符集
-     */
-    public static String getCharset() {
-        if (CHARSET == null) {
-            String charset = System.getProperty(PROPERTY_CHARSET);
-            if (charset == null || charset.length() == 0) {
-                CHARSET = System.getProperty("file.encoding");
-            } else {
-                CHARSET = charset;
-            }
-        }
-        return CHARSET;
-    }
-
-    /**
      * 根据字符串参数 charsetName 搜索字符集信息
      *
      * @param name 字符集名(如: UTF-8)
@@ -83,21 +82,6 @@ public class StringUtils {
         try {
             return Charset.forName(name);
         } catch (Throwable x) {
-            return null;
-        }
-    }
-
-    /**
-     * 根据字符串参数 name 搜索国际化信息
-     *
-     * @param name 字符串，如：zh_CN
-     * @return 返回 null 表示字符串参数 name错误
-     */
-    public static Locale lookupLocale(String name) {
-        try {
-            Locale locale = new Locale(name);
-            return StringUtils.isBlank(locale.toString()) ? null : locale;
-        } catch (Throwable e) {
             return null;
         }
     }
@@ -146,20 +130,12 @@ public class StringUtils {
      * @return 显示宽度
      */
     public static int width(CharSequence str, String charsetName) {
-        try {
-            int length = 0;
-            for (int i = 0; i < str.length(); i++) {
-                char c = str.charAt(i);
-                if (StringUtils.isAscii(c) || String.valueOf(c).getBytes(charsetName).length == 1) {
-                    length++;
-                } else {
-                    length += 2;
-                }
-            }
-            return length;
-        } catch (Exception e) {
-            throw new RuntimeException(str + ", " + charsetName, e);
+        int length = 0;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            length += StringUtils.width(c, charsetName);
         }
+        return length;
     }
 
     /**
@@ -184,11 +160,11 @@ public class StringUtils {
     /**
      * 计算数组中显示最宽的字符串
      *
-     * @param charsetName 字符串字符集
      * @param array       字符串数组
+     * @param charsetName 字符串字符集
      * @return 显示宽度
      */
-    public static int width(String charsetName, String[] array) {
+    public static int width(String[] array, String charsetName) {
         if (array == null || array.length == 0) {
             return 0;
         }
@@ -197,7 +173,7 @@ public class StringUtils {
         for (int i = 0; i < array.length; i++) {
             String str = array[i];
             int length = StringUtils.width(str, charsetName);
-            if (str != null && length > max) {
+            if (length > max) {
                 max = length;
             }
         }

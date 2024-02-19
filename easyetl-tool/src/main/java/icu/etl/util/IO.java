@@ -21,6 +21,7 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.Set;
 
+import icu.etl.Easyetl;
 import icu.etl.collection.Throwables;
 
 /**
@@ -29,7 +30,7 @@ import icu.etl.collection.Throwables;
 public class IO {
 
     /** 输入流缓存的默认长度，单位字符 */
-    public final static String PROPERTY_READBUF = IO.class.getPackage().getName().split("\\.")[0] + "." + IO.class.getPackage().getName().split("\\.")[1] + ".readbuf";
+    public final static String PROPERTY_READBUF = Easyetl.class.getPackage().getName() + ".readbuf";
 
     /** 输入流的缓冲区长度，单位: 字符 */
     public static int READER_BUFFER_SIZE = 1024 * 10;

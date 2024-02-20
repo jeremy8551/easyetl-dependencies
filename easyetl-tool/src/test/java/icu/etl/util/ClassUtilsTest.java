@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import icu.etl.Easyetl;
 import icu.etl.collection.ArrayDeque;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class ClassUtilsTest {
         int b1 = str.indexOf('.', 0);
         int b2 = str.indexOf('.', b1 + 1);
 
-        assertEquals(str.substring(0, b2), ClassUtils.getPackageName(ClassUtils.class, 2));
+        assertEquals(str.substring(0, b2), Easyetl.class.getPackage().getName());
     }
 
     @Test

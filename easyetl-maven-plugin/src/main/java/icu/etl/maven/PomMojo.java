@@ -3,6 +3,7 @@ package icu.etl.maven;
 import java.io.File;
 import java.io.InputStream;
 
+import icu.etl.Easyetl;
 import icu.etl.util.ClassUtils;
 import icu.etl.util.Ensure;
 import icu.etl.util.FileUtils;
@@ -23,7 +24,19 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class PomMojo extends AbstractMojo {
 
     /** 类名 */
-    public final static String CLASS_NAME = "ProjectPom";
+    public static String CLASS_NAME = "ProjectPom";
+
+    /**
+     * 属性类的类名（不含包名）
+     */
+    @Parameter
+    private String className;
+
+    /**
+     * 属性类的包名
+     */
+    @Parameter
+    private String packageName;
 
     /**
      * 当前工程POM中定义的groupId
@@ -55,22 +68,16 @@ public class PomMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.sourceEncoding}")
     private String charsetName;
 
-    /**
-     * 包名
-     */
-    @Parameter
-    private String packageName;
-
     public void execute() throws MojoFailureException {
         FileUtils.assertCreateDirectory(this.sourceDir);
 
         // 创建目录
-        String packageName = StringUtils.defaultString(this.packageName, ClassUtils.getPackageName(PomMojo.class, 2)); // 包名
+        String packageName = StringUtils.defaultString(this.packageName, Easyetl.class.getPackage().getName()); // 包名
         String filepath = FileUtils.joinPath(this.sourceDir, packageName.replace('.', '/'));
         File dir = new File(filepath);
         FileUtils.assertCreateDirectory(dir);
 
-        String name = CLASS_NAME; // 类名
+        String name = StringUtils.defaultString(this.className, PomMojo.CLASS_NAME); // 类名
         String javaFile = name + ".java"; // java文件名
         File classfile = new File(dir, javaFile); // 类文件
         this.getLog().info("生成POM类: " + classfile.getAbsolutePath() + " ..");

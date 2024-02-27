@@ -750,22 +750,10 @@ public final class FileUtils {
             synchronized (FileUtils.class) {
                 if (tempDir == null) {
                     String value = System.getProperty(PROPERTY_TEMPDIR);
-                    if (FileUtils.isDirectory(value)) {
+                    if (value != null && value.length() > 0) {
                         tempDir = new File(value);
                     } else {
-                        // 在临时目录下建立应用名
-                        List<String> list = new ArrayList<String>(5);
-                        StringUtils.split(Easyetl.class.getName().toLowerCase(), '.', list);
-
-                        // 拼接文件路径
-                        String filepath = Settings.getTempDir();
-                        for (String str : list) {
-                            filepath = FileUtils.joinPath(filepath, str);
-                        }
-                        File dir = new File(filepath);
-
-                        FileUtils.assertCreateDirectory(dir, true);
-                        tempDir = dir;
+                        tempDir = FileUtils.getTempDir(true);
                     }
                 }
             }
@@ -776,6 +764,31 @@ public final class FileUtils {
         } else {
             return FileUtils.createDirectory(tempDir, array);
         }
+    }
+
+    /**
+     * 返回临时文件默认的存储目录
+     *
+     * @param c true表示自动创建目录 false表示不自动创建目录
+     * @return 目录
+     */
+    public static File getTempDir(boolean c) {
+        List<String> list = new ArrayList<String>(5);
+        StringUtils.split(Easyetl.class.getName().toLowerCase(), '.', list);
+
+        // 拼接文件路径
+        String filepath = Settings.getTempDir();
+        for (String str : list) {
+            filepath = FileUtils.joinPath(filepath, str);
+        }
+
+        // 创建目录
+        File dir = new File(filepath);
+        if (c) {
+            FileUtils.assertCreateDirectory(dir, true);
+        }
+
+        return dir;
     }
 
     /**

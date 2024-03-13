@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,15 +7,13 @@
         <groupId>icu.etl</groupId>
         <artifactId>easyetl-dependencies</artifactId>
         <version>${revision}</version>
-        <relativePath>../../easyetl-dependencies</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!-- 项目信息 -->
     <artifactId>easyetl-maven-plugin</artifactId>
-    <version>${revision}</version>
     <packaging>maven-plugin</packaging>
-
-    <description>maven easyetl compile plugin</description>
+    <description>easyetl的编译插件，用来编译子模块</description>
 
     <dependencies>
         <!-- 工具包 -->

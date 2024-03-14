@@ -115,7 +115,13 @@ public class DatesTest {
         assertEquals(array[1], Dates.parse("20190802"));
         assertEquals(array[2], Dates.parse("20190831"));
 
-        assertEquals("Date[Sun Jan 01 00:00:00 CST 2017, Wed Feb 01 00:00:00 CST 2017, null]", StringUtils.toString(Dates.parse("2017-01-01", "2017-02-01", null)));
+        // 因为不同操作系统的时区可能不同，导致java打印日期与时间时时区也不同，所以要先得到时区信息
+        Date date = new Date();
+        String str = date.toString();
+        String[] array1 = str.split("\\s+");
+        String zone = array1[array1.length - 2];
+
+        assertEquals("Date[Sun Jan 01 00:00:00 " + zone + " 2017, Wed Feb 01 00:00:00 " + zone + " 2017, null]", StringUtils.toString(Dates.parse("2017-01-01", "2017-02-01", null)));
     }
 
     @Test
